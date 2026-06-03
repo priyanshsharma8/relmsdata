@@ -237,6 +237,11 @@ body{
   padding:clamp(16px,2vw,25px);
   margin:auto;
   margin-top:clamp(20px,4vh,40px);
+
+  /* smooth resize feel */
+  transition:
+    width .2s ease,
+    padding .2s ease;
 }
 
 /* Title auto size */
@@ -263,59 +268,10 @@ button{
   white-space:nowrap;
 }
 
-/* Copy reset */
+/* Copy + Reset */
 .copyBtn,
 .resetBtn{
   width:49%;
-}
-
-/* ===== CLOCK AUTO SCALE ===== */
-
-.re-clock-wrap{
-  top:clamp(10px,2vh,20px);
-  right:clamp(10px,2vw,20px);
-}
-
-.re-clock-card{
-  width:clamp(220px,22vw,320px);
-  padding:clamp(12px,1.5vw,20px);
-}
-
-.flip-card{
-  width:clamp(55px,5vw,88px);
-  height:clamp(58px,6vw,90px);
-}
-
-.flip-card span{
-  font-size:clamp(24px,2vw,40px);
-}
-
-.flip-separator{
-  font-size:clamp(24px,2vw,40px);
-}
-
-.ampm-box{
-  font-size:clamp(12px,1vw,18px);
-  padding:
-    clamp(6px,1vw,10px)
-    clamp(8px,1vw,12px);
-}
-
-.calendar-panel{
-  width:100%;
-}
-
-.calendar-grid div{
-  height:clamp(24px,2vw,34px);
-  font-size:clamp(11px,1vw,14px);
-}
-
-/* Smooth resizing */
-.box,
-.re-clock-card{
-  transition:
-  width .2s ease,
-  padding .2s ease;
 }
 </style>
 </head>
