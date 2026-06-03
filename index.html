@@ -523,13 +523,50 @@ function copyData() {
 
 /* ── reset ── */
 function resetForm() {
-  document.querySelectorAll('input:not([type=hidden])').forEach(el => el.value = '');
-  document.querySelectorAll('input[type=hidden]').forEach(el => el.value = '');
-  document.querySelectorAll('select').forEach(sel => sel.selectedIndex = 0);
-  document.querySelectorAll('select[id$="color"]').forEach(c => c.innerHTML = '<option>Select Color</option>');
-  const trig = document.getElementById('trig_model');
-  trig.textContent = 'Select Model';
-  trig.classList.remove('has-value');
+
+  const confirmReset = confirm(
+    '⚠️ Are you sure?\n\nAll entered data will be cleared.'
+  );
+
+  if (!confirmReset) return;
+
+  document
+  .querySelectorAll(
+    'input:not([type=hidden])'
+  )
+  .forEach(el => el.value = '');
+
+  document
+  .querySelectorAll(
+    'input[type=hidden]'
+  )
+  .forEach(el => el.value = '');
+
+  document
+  .querySelectorAll('select')
+  .forEach(sel => sel.selectedIndex = 0);
+
+  document
+  .querySelectorAll(
+    'select[id$="color"]'
+  )
+  .forEach(c =>
+    c.innerHTML =
+    '<option>Select Color</option>'
+  );
+
+  const trig =
+  document.getElementById(
+    'trig_model'
+  );
+
+  trig.textContent =
+  'Select Model';
+
+  trig.classList.remove(
+    'has-value'
+  );
+
   closeAllDropdowns();
 }
 </script>
