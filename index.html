@@ -273,6 +273,46 @@ button{
 .resetBtn{
   width:49%;
 }
+/* ===== PREMIUM FOOTER ===== */
+.re-footer{width:100%;margin-top:60px;background:rgba(10,10,10,0.97);border-top:1px solid rgba(255,215,0,0.2);box-sizing:border-box;}
+.re-footer-inner{max-width:1100px;margin:0 auto;padding:36px 28px 28px;display:grid;grid-template-columns:repeat(4,1fr);gap:28px;}
+.re-footer-col h3{color:#FFD700;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 14px;padding-bottom:9px;border-bottom:1px solid rgba(255,215,0,0.18);}
+.re-footer-col .brand-name{color:#fff;font-size:15px;font-weight:600;margin:0 0 12px;}
+.re-footer-col a{display:flex;align-items:center;gap:7px;color:rgba(255,255,255,0.45);text-decoration:none;font-size:12px;padding:4px 0;transition:color 0.2s,gap 0.2s;}
+.re-footer-col a:hover{color:#FFD700;gap:10px;}
+.re-footer-col a svg{width:13px;height:13px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.8;opacity:0.6;transition:opacity 0.2s;}
+.re-footer-col a:hover svg{opacity:1;}
+
+.clock-box{background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.12);border-radius:11px;padding:16px 14px;position:relative;}
+.clock-top{display:flex;align-items:center;justify-content:space-between;}
+.clock-time{display:flex;align-items:baseline;gap:2px;}
+.clock-num{font-size:22px;font-weight:300;color:#FFD700;letter-spacing:1px;font-variant-numeric:tabular-nums;line-height:1;}
+.clock-sep{font-size:18px;font-weight:200;color:rgba(255,215,0,0.25);padding:0 1px;}
+.clock-ampm{font-size:11px;font-weight:500;color:rgba(255,215,0,0.5);letter-spacing:1.5px;align-self:flex-end;padding-bottom:2px;}
+.clock-divider{border:none;border-top:1px solid rgba(255,215,0,0.08);margin:10px 0;}
+.clock-date-row{display:flex;align-items:center;justify-content:space-between;}
+.clock-date{font-size:11px;color:rgba(255,255,255,0.35);cursor:pointer;padding:2px 4px;border-radius:4px;transition:color 0.15s,background 0.15s;user-select:none;}
+.clock-date:hover{color:#FFD700;background:rgba(255,215,0,0.08);}
+.clock-day{font-size:10px;color:rgba(255,215,0,0.35);letter-spacing:1px;text-transform:uppercase;}
+
+.cal-popup{display:none;position:absolute;bottom:calc(100% + 8px);right:0;width:210px;background:#1a1a1a;border:1px solid rgba(255,215,0,0.2);border-radius:10px;padding:12px;z-index:9999;box-shadow:0 8px 28px rgba(0,0,0,0.7);animation:fadeUp 0.15s ease;}
+.cal-popup.open{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.cal-month-label{font-size:12px;font-weight:600;color:#FFD700;}
+.cal-nav{background:none;border:none;color:rgba(255,215,0,0.5);cursor:pointer;font-size:16px;padding:2px 6px;border-radius:4px;transition:color 0.15s,background 0.15s;line-height:1;}
+.cal-nav:hover{color:#FFD700;background:rgba(255,215,0,0.08);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.cal-dname{font-size:9px;color:rgba(255,215,0,0.3);text-align:center;padding:2px 0;}
+.cal-cell{font-size:11px;color:rgba(255,255,255,0.4);text-align:center;padding:4px 2px;border-radius:4px;}
+.cal-cell.today{background:rgba(255,215,0,0.15);color:#FFD700;font-weight:600;}
+.cal-cell.empty{opacity:0;}
+
+.re-footer-bar{border-top:1px solid rgba(255,255,255,0.06);text-align:center;padding:12px;color:rgba(255,255,255,0.22);font-size:11px;letter-spacing:0.4px;}
+.re-footer-bar span{color:rgba(255,215,0,0.4);}
+
+@media(max-width:780px){.re-footer-inner{grid-template-columns:repeat(2,1fr);padding:28px 16px;}}
+@media(max-width:480px){.re-footer-inner{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -617,6 +657,145 @@ function resetForm() {
 
   closeAllDropdowns();
 }
+/* ===== FOOTER CLOCK + CALENDAR ===== */
+(function(){
+  const monthsShort=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const monthsFull=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const daysShort=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const dnames=['S','M','T','W','T','F','S'];
+  function pad(n){return String(n).padStart(2,'0');}
+
+  let calY=new Date().getFullYear(), calM=new Date().getMonth();
+  const popup=document.getElementById('re-cal-popup');
+
+  function tick(){
+    const n=new Date();
+    let h=n.getHours();
+    const ampm=h>=12?'PM':'AM';
+    h=h%12||12;
+    document.getElementById('re-hh').textContent=pad(h);
+    document.getElementById('re-mm').textContent=pad(n.getMinutes());
+    document.getElementById('re-ss').textContent=pad(n.getSeconds());
+    document.getElementById('re-ampm').textContent=ampm;
+    document.getElementById('re-date').textContent=n.getDate()+' '+monthsShort[n.getMonth()]+' '+n.getFullYear();
+    document.getElementById('re-day').textContent=daysShort[n.getDay()];
+  }
+  tick(); setInterval(tick,1000);
+
+  function buildCalendar(){
+    const grid=document.getElementById('re-cal-grid');
+    document.getElementById('re-cal-month').textContent=monthsFull[calM]+' '+calY;
+    grid.innerHTML='';
+    dnames.forEach(d=>{const el=document.createElement('div');el.className='cal-dname';el.textContent=d;grid.appendChild(el);});
+    const firstDay=new Date(calY,calM,1).getDay();
+    const total=new Date(calY,calM+1,0).getDate();
+    const today=new Date();
+    for(let i=0;i<firstDay;i++){const el=document.createElement('div');el.className='cal-cell empty';el.textContent='0';grid.appendChild(el);}
+    for(let d=1;d<=total;d++){
+      const el=document.createElement('div');el.className='cal-cell';el.textContent=d;
+      if(d===today.getDate()&&calM===today.getMonth()&&calY===today.getFullYear())el.classList.add('today');
+      grid.appendChild(el);
+    }
+  }
+
+  document.getElementById('re-date').addEventListener('click',function(e){
+    e.stopPropagation();
+    const isOpen=popup.classList.contains('open');
+    popup.classList.toggle('open',!isOpen);
+    if(!isOpen){calY=new Date().getFullYear();calM=new Date().getMonth();buildCalendar();}
+  });
+  document.getElementById('re-cal-prev').addEventListener('click',function(e){
+    e.stopPropagation();calM--;if(calM<0){calM=11;calY--;}buildCalendar();
+  });
+  document.getElementById('re-cal-next').addEventListener('click',function(e){
+    e.stopPropagation();calM++;if(calM>11){calM=0;calY++;}buildCalendar();
+  });
+  document.addEventListener('click',function(){popup.classList.remove('open');});
+  document.getElementById('re-clock-box').addEventListener('click',function(e){e.stopPropagation();});
+})();
 </script>
+<!-- ===== PREMIUM FOOTER ===== -->
+<footer class="re-footer">
+  <div class="re-footer-inner">
+
+    <!-- Col 1: Made By -->
+    <div class="re-footer-col">
+      <h3>Made By</h3>
+      <p class="brand-name">Priyansh Sharma</p>
+      <a href="https://your-portfolio-link.com" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Portfolio
+      </a>
+      <a href="https://github.com/your-username" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub
+      </a>
+      <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn
+      </a>
+    </div>
+
+    <!-- Col 2: Royal Enfield Links -->
+    <div class="re-footer-col">
+      <h3>Royal Enfield</h3>
+      <a href="https://www.royalenfield.com/in/en/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Official Website
+      </a>
+      <a href="https://www.royalenfield.com/in/en/dealer-locator/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Dealer Locator
+      </a>
+      <a href="https://www.royalenfield.com/in/en/finance/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>RE Finance
+      </a>
+    </div>
+
+    <!-- Col 3: Resources -->
+    <div class="re-footer-col">
+      <h3>Resources</h3>
+      <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_1" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Google Sheet 1
+      </a>
+      <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_2" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Google Sheet 2
+      </a>
+      <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_3" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Google Sheet 3
+      </a>
+      <a href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Additional Link
+      </a>
+    </div>
+
+    <!-- Col 4: Date & Time -->
+    <div class="re-footer-col">
+      <h3>Date &amp; Time</h3>
+      <div class="clock-box" id="re-clock-box">
+        <div class="clock-top">
+          <div class="clock-time">
+            <span class="clock-num" id="re-hh">--</span>
+            <span class="clock-sep">:</span>
+            <span class="clock-num" id="re-mm">--</span>
+            <span class="clock-sep">:</span>
+            <span class="clock-num" id="re-ss">--</span>
+          </div>
+          <span class="clock-ampm" id="re-ampm">--</span>
+        </div>
+        <hr class="clock-divider">
+        <div class="clock-date-row">
+          <div class="clock-date" id="re-date">-- --- ----</div>
+          <div class="clock-day" id="re-day">---</div>
+        </div>
+        <div class="cal-popup" id="re-cal-popup">
+          <div class="cal-header">
+            <button class="cal-nav" id="re-cal-prev">&#8249;</button>
+            <div class="cal-month-label" id="re-cal-month"></div>
+            <button class="cal-nav" id="re-cal-next">&#8250;</button>
+          </div>
+          <div class="cal-grid" id="re-cal-grid"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="re-footer-bar">© 2026 <span>Priyansh Sharma</span>. All Rights Reserved. &nbsp;·&nbsp; Royal Enfield CRM</div>
+</footer>
 </body>
 </html>
