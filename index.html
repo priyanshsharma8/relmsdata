@@ -15,7 +15,6 @@ body {
 
 * {
   position: relative;
-  z-index: 1;
 }
 
 /* ── HERO SECTION ── */
@@ -94,16 +93,16 @@ button {
   font-weight: 500;
 }
 
-.topBtn  { width: 32%; background: #222; color: white; font-size: clamp(10px, 1vw, 14px); white-space: nowrap; }
-.copyBtn { width: 49%; background: #51d789; color: white; }
-.resetBtn{ width: 49%; background: #FF7F7F; color: white; }
+.topBtn  { width: 32%; background: #222; color: white; font-size: clamp(10px, 1vw, 14px); white-space: nowrap; z-index: 1; }
+.copyBtn { width: 49%; background: #51d789; color: white; z-index: 1; }
+.resetBtn{ width: 49%; background: #FF7F7F; color: white; z-index: 1; }
 .hide    { display: none; }
 
 /* ── CUSTOM DROPDOWN ── */
 .csw {
   position: relative;
   margin: 8px 0;
-  z-index: 200;
+  z-index: 10000;
 }
 
 .cst {
@@ -155,12 +154,15 @@ button {
   background: #1c1c1c;
   border: 1px solid rgba(255,255,255,0.13);
   border-radius: 10px;
-  max-height: 260px;
+  /* FIX: enough height to show all 15 bikes without clipping */
+  max-height: 300px;
   overflow-y: auto;
-  z-index: 9999;
+  z-index: 99999;
   box-shadow: 0 8px 28px rgba(0,0,0,0.7);
   scrollbar-width: thin;
   scrollbar-color: #444 transparent;
+  /* ensure last item border-radius is visible */
+  padding-bottom: 2px;
 }
 
 .cdrop::-webkit-scrollbar { width: 5px; }
@@ -191,6 +193,13 @@ button {
 
 .di:last-child { border-bottom: none; }
 .di:hover { background: rgba(255,215,0,0.07); color: #FFD700; }
+
+/* keyboard-focused item inside dropdown */
+.di.kb-focus {
+  background: rgba(255,215,0,0.13);
+  color: #FFD700;
+  outline: none;
+}
 
 /* ── TOOLTIP ── */
 #crm-tooltip {
@@ -532,7 +541,7 @@ button {
       <input id="altNumber"  placeholder="Alternate Number">
       <select id="paymentMode">
         <option value="">Select Payment Mode</option>
-        <option>Cash</option><option>Finance</option><option>Both</option><option>Will decide later</option>
+        <option>Cash</option><option>Finance</option><option>Both</option><option>Will decide later</option><option>NA</option>
       </select>
     </div>
 
@@ -546,10 +555,6 @@ button {
       <input id="b_BookingName"  placeholder="Booking Name">
       <input id="b_bookingnumber" placeholder="Booking Number">
       <input id="b_altNumber"    placeholder="Alternate Number">
-      <select id="b_paymentMode">
-        <option value="">Select Payment Mode</option>
-        <option>Cash</option><option>Finance</option><option>Both</option><option>Will decide later</option>
-      </select>
     </div>
 
     <!-- PURCHASED -->
@@ -565,13 +570,9 @@ button {
       <input id="p_Chassisnumber"       placeholder="Chassis number">
       <input id="p_Enginenumber"        placeholder="Engine number">
       <input id="p_altNumber"           placeholder="Alternate Number">
-      <select id="p_paymentMode">
-        <option value="">Select Payment Mode</option>
-        <option>Cash</option><option>Finance</option><option>Both</option><option>Will decide later</option>
-      </select>
     </div>
 
-    <div style="display:flex; justify-content:space-between;">
+    <div style="display:flex; justify-content:space-between; position:relative; z-index:1;">
       <button class="copyBtn"  onclick="copyData()">Copy</button>
       <button class="resetBtn" onclick="resetForm()">Reset</button>
     </div>
@@ -608,7 +609,6 @@ button {
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
         Official Website
       </a>
-      <a href="https://www.royalenfield.com/in/en/dealer-locator/" target="_blank" rel="noopener">
       <a href="https://www.royalenfield.com/in/en/locate-us/" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
         Dealer Locator
@@ -674,6 +674,7 @@ button {
 </footer>
 
 <script>
+// ─── BIKE DATA ────────────────────────────────────────────────────────────────
 const bikeData = {
   "Hunter 350":        {"Tokyo Black":169804,"London Red":169804,"Rebel Blue":169804,"Moonshot White":169804,"Mumbai Yellow":169804,"Dapper Grey":165133,"Rio White":165133,"Graphite Gray":165133,"Tarmac Black":149900,"Factory Black":137640},
   "Bullet 350":        {"Black Gold":208012,"Standard Black":190312,"Standard Maroon":190312,"Battalion Black":166650,"Military Black":164423},
@@ -688,27 +689,30 @@ const bikeData = {
   "Continental GT 650":{"Mr Clean":381885,"Slipstream Blue":375245,"Apex Grey":375245,"British Racing Green":353105,"Rocker Red":353105},
   "Classic 650":       {"Black Chrome":379252,"Teal":369655,"Bruntingthorpe Blue":364856,"Vallam Red":364856},
   "Bear 650":          {"Boardwalk White":375393,"Petrol Green":380933,"Wild Honey":380933,"Golden Shadow":388683,"White Two Four Nine":397538},
-  "Super Meteor 650":  {"Celestial Red":436685,"Celestial Blue":436685,"Interstellar Green":419824,"Interstellar Grey":419824,"Astral Black":402965,"Astral Green":402965}
+  "Super Meteor 650":  {"Celestial Red":436685,"Celestial Blue":436685,"Interstellar Green":419824,"Interstellar Grey":419824,"Astral Black":402965,"Astral Green":402965},
+  "Bullet 650":        {"Cannon Black":364856,"Battleship Blue":364856}
 };
 
 const bikeInfo = {
-  "Hunter 350":        { usp:"349cc, single-cylinder, air cooled engine", mileage:"36.2 KM/L" },
-  "Bullet 350":        { usp:"349cc, single-cylinder, air cooled engine", mileage:"37 KM/L" },
-  "Classic 350":       { usp:"349cc, single-cylinder, air cooled engine", mileage:"41.5 KM/L" },
-  "Meteor 350":        { usp:"349cc, single-cylinder, air cooled engine", mileage:"41.9 KM/L" },
-  "Goan Classic 350":  { usp:"349cc, single-cylinder, air cooled engine", mileage:"36.2 KM/L" },
-  "Scram 440":         { usp:"452cc Single Cylinder / Air oiled cooled engine", mileage:"29.5 KM/L" },
-  "Himalayan 450":     { usp:"452cc Single Cylinder / Air oil cooled engine", mileage:"30 KM/L" },
-  "Guerrilla 450":     { usp:"452cc Single Cylinder / Air oil cooled engine", mileage:"29.5 KM/L" },
-  "Interceptor 650":   { usp:"648cc Inline Twin / Air Oil Cooled Engine", mileage:"25 KM/L" },
-  "Continental GT 650":{ usp:"648cc Inline Twin / Air Oil Cooled Engine", mileage:"27 KM/L" },
-  "Super Meteor 650":  { usp:"648cc parallel Twin / Air Oil Cooled Engine", mileage:"25 KM/L" },
-  "Shotgun 650":       { usp:"648cc parallel Twin / Air Oil Cooled Engine", mileage:"22 KM/L" },
-  "Bear 650":          { usp:"648cc Inline Twin / Air Oil Cooled Engine", mileage:"22 KM/L" },
-  "Classic 650":       { usp:"648cc Inline Twin / Air Oil Cooled Engine", mileage:"21.45 KM/L" }
+  "Hunter 350":        { usp:"349cc, single-cylinder, air cooled engine",          mileage:"36.2 KM/L" },
+  "Bullet 350":        { usp:"349cc, single-cylinder, air cooled engine",          mileage:"37 KM/L"   },
+  "Classic 350":       { usp:"349cc, single-cylinder, air cooled engine",          mileage:"41.5 KM/L" },
+  "Meteor 350":        { usp:"349cc, single-cylinder, air cooled engine",          mileage:"41.9 KM/L" },
+  "Goan Classic 350":  { usp:"349cc, single-cylinder, air cooled engine",          mileage:"36.2 KM/L" },
+  "Scram 440":         { usp:"452cc Single Cylinder / Air oiled cooled engine",    mileage:"29.5 KM/L" },
+  "Himalayan 450":     { usp:"452cc Single Cylinder / Air oil cooled engine",      mileage:"30 KM/L"   },
+  "Guerrilla 450":     { usp:"452cc Single Cylinder / Air oil cooled engine",      mileage:"29.5 KM/L" },
+  "Interceptor 650":   { usp:"648cc Inline Twin / Air Oil Cooled Engine",          mileage:"25 KM/L"   },
+  "Continental GT 650":{ usp:"648cc Inline Twin / Air Oil Cooled Engine",          mileage:"27 KM/L"   },
+  "Super Meteor 650":  { usp:"648cc parallel Twin / Air Oil Cooled Engine",        mileage:"25 KM/L"   },
+  "Shotgun 650":       { usp:"648cc parallel Twin / Air Oil Cooled Engine",        mileage:"22 KM/L"   },
+  "Bear 650":          { usp:"648cc Inline Twin / Air Oil Cooled Engine",          mileage:"22 KM/L"   },
+  "Classic 650":       { usp:"648cc Inline Twin / Air Oil Cooled Engine",          mileage:"21.45 KM/L"},
+  // ── FIX 1: Bullet 650 tooltip ──
+  "Bullet 650":        { usp:"648cc parallel Twin / Air Oil Cooled Engine",        mileage:"NA"        }
 };
 
-/* tooltip */
+// ─── TOOLTIP ──────────────────────────────────────────────────────────────────
 const tooltip   = document.getElementById('crm-tooltip');
 const ttName    = document.getElementById('tt-name');
 const ttUsp     = document.getElementById('tt-usp');
@@ -739,7 +743,7 @@ function positionTooltip(e) {
 
 function hideTooltip() { tooltip.style.display = 'none'; }
 
-/* custom dropdown */
+// ─── CUSTOM DROPDOWN (model picker) ──────────────────────────────────────────
 function buildCustomDropdown() {
   const wrapper  = document.getElementById('wrap_model');
   const trigger  = document.getElementById('trig_model');
@@ -747,34 +751,91 @@ function buildCustomDropdown() {
   const hidden   = document.getElementById('model');
   const colorSel = document.getElementById('color');
 
+  const items = [];
+
   Object.keys(bikeData).forEach(name => {
     const item = document.createElement('div');
     item.className = 'di';
     item.textContent = name;
     item.dataset.model = name;
+    // tooltip on hover
     item.addEventListener('mouseenter', e => showTooltip(e, name));
     item.addEventListener('mousemove',  e => positionTooltip(e));
     item.addEventListener('mouseleave', hideTooltip);
-    item.addEventListener('click', () => {
-      hidden.value = name;
-      trigger.textContent = name;
-      trigger.classList.add('has-value');
-      wrapper.classList.remove('open');
-      hideTooltip();
-      populateColor(colorSel, name);
-    });
+    // click to select
+    item.addEventListener('click', () => selectModel(name));
     drop.appendChild(item);
+    items.push(item);
   });
+
+  function selectModel(name) {
+    hidden.value = name;
+    trigger.textContent = name;
+    trigger.classList.add('has-value');
+    wrapper.classList.remove('open');
+    hideTooltip();
+    clearKbFocus();
+    populateColor(colorSel, name);
+    // auto-advance focus to color select and open it
+    colorSel.focus();
+    try { colorSel.showPicker(); } catch(e) { /* fallback: browser will open on interaction */ }
+  }
+
+  // ── FIX 2: keyboard navigation inside custom dropdown ──
+  let kbIdx = -1;
+
+  function clearKbFocus() {
+    items.forEach(i => i.classList.remove('kb-focus'));
+    kbIdx = -1;
+  }
+
+  function setKbFocus(idx) {
+    items.forEach(i => i.classList.remove('kb-focus'));
+    kbIdx = idx;
+    if (idx >= 0 && idx < items.length) {
+      items[idx].classList.add('kb-focus');
+      items[idx].scrollIntoView({ block: 'nearest' });
+    }
+  }
 
   trigger.addEventListener('click', e => {
     e.stopPropagation();
     const wasOpen = wrapper.classList.contains('open');
     closeAllDropdowns();
-    if (!wasOpen) wrapper.classList.add('open');
+    if (!wasOpen) {
+      wrapper.classList.add('open');
+      clearKbFocus();
+    }
   });
 
   trigger.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trigger.click(); }
+    const isOpen = wrapper.classList.contains('open');
+
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (!isOpen) {
+        // open dropdown
+        closeAllDropdowns();
+        wrapper.classList.add('open');
+        setKbFocus(0);
+      } else {
+        // select focused item
+        if (kbIdx >= 0) selectModel(items[kbIdx].dataset.model);
+        else wrapper.classList.remove('open');
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (!isOpen) { closeAllDropdowns(); wrapper.classList.add('open'); }
+      setKbFocus(Math.min(kbIdx + 1, items.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!isOpen) { closeAllDropdowns(); wrapper.classList.add('open'); }
+      setKbFocus(Math.max(kbIdx - 1, 0));
+    } else if (e.key === 'Escape') {
+      wrapper.classList.remove('open');
+      clearKbFocus();
+      hideTooltip();
+    }
   });
 }
 
@@ -785,6 +846,7 @@ function closeAllDropdowns() {
 
 document.addEventListener('click', closeAllDropdowns);
 
+// ─── NORMAL SELECT HELPERS ────────────────────────────────────────────────────
 function fillNormalSelect(modelSelId, colorSelId) {
   const modelSel = document.getElementById(modelSelId);
   const colorSel = document.getElementById(colorSelId);
@@ -794,37 +856,87 @@ function fillNormalSelect(modelSelId, colorSelId) {
     o.value = o.text = name;
     modelSel.appendChild(o);
   });
-  modelSel.addEventListener('change', () => populateColor(colorSel, modelSel.value));
+  // When model changes, populate colors AND move focus to color select
+  modelSel.addEventListener('change', () => {
+    populateColor(colorSel, modelSel.value);
+    if (modelSel.value) {
+      colorSel.focus();
+      try { colorSel.showPicker(); } catch(e) {}
+    }
+  });
 }
 
 function populateColor(colorSel, modelName) {
   colorSel.innerHTML = '<option>Select Color</option>';
   if (!bikeData[modelName]) return;
-  Object.keys(bikeData[modelName]).forEach(c => {
+  Object.entries(bikeData[modelName]).forEach(([c, price]) => {
     const o = document.createElement('option');
     o.value = c;
-    o.text  = `${c} - ₹${bikeData[modelName][c]}`;
+    // show NA price if null/undefined
+    o.text  = price != null ? `${c} - ₹${price}` : `${c} - Price TBA`;
     colorSel.appendChild(o);
   });
 }
 
+// ─── INIT ────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   buildCustomDropdown();
   fillNormalSelect('b_model', 'b_color');
   fillNormalSelect('p_model', 'p_color');
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      const active  = document.activeElement;
-      const section = active.closest('div');
-      if (!section) return;
-      const fields = section.querySelectorAll('input:not([type=hidden]), select, .cst');
-      const idx    = Array.from(fields).indexOf(active);
-      if (idx > -1 && idx < fields.length - 1) { e.preventDefault(); fields[idx+1].focus(); }
+  // Color selects: the moment any color is picked (mouse OR keyboard),
+  // auto-advance to the next field -- same behaviour as the custom model dropdown
+  function advanceToNext(el) {
+    const section = el.closest('[id$="Section"]') || el.closest('.box');
+    if (!section) return;
+    const fields = Array.from(
+      section.querySelectorAll('input:not([type=hidden]), select, .cst')
+    );
+    const idx = fields.indexOf(el);
+    if (idx > -1 && idx < fields.length - 1) {
+      fields[idx + 1].focus();
     }
+  }
+
+  ['color', 'b_color', 'p_color'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    sel.addEventListener('change', () => {
+      if (sel.selectedIndex === 0) return;
+      setTimeout(() => advanceToNext(sel), 0);
+    });
+  });
+
+  // Enter key logic:
+  // - .cst custom dropdown: handled inside buildCustomDropdown
+  // - native <select> (model, payment mode): Enter on placeholder = browser handles natively;
+  //   Enter after picking a value = advance to next field
+  // - inputs: advance immediately
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+
+    const active = document.activeElement;
+
+    // Custom dropdown trigger handles its own Enter
+    if (active.classList.contains('cst')) return;
+
+    if (active.tagName === 'SELECT') {
+      // Color selects already advance via 'change' event above -- skip them here
+      if (active.id === 'color' || active.id === 'b_color' || active.id === 'p_color') return;
+      setTimeout(() => {
+        if (active.selectedIndex === 0) return;
+        advanceToNext(active);
+      }, 0);
+      return;
+    }
+
+    // Inputs: advance immediately
+    e.preventDefault();
+    advanceToNext(active);
   });
 });
 
+// ─── MODE SWITCHER ───────────────────────────────────────────────────────────
 let currentMode = 'default';
 function setMode(m) {
   currentMode = m;
@@ -834,6 +946,7 @@ function setMode(m) {
   closeAllDropdowns();
 }
 
+// ─── COPY ────────────────────────────────────────────────────────────────────
 function copyData() {
   let text = '';
   if (currentMode === 'default') {
@@ -855,8 +968,7 @@ function copyData() {
       b_dealership.value    && `Dealership: ${b_dealership.value}`,
       b_BookingName.value   && `Booking name: ${b_BookingName.value}`,
       b_bookingnumber.value && `Booking number: ${b_bookingnumber.value}`,
-      b_altNumber.value     && `Alternate number: ${b_altNumber.value}`,
-      b_paymentMode.value   && `Payment mode: ${b_paymentMode.value}`
+      b_altNumber.value     && `Alternate number: ${b_altNumber.value}`
     ].filter(Boolean).join('\n');
   }
   if (currentMode === 'purchased') {
@@ -870,14 +982,14 @@ function copyData() {
       p_bookingnumber.value      && `Booking number: ${p_bookingnumber.value}`,
       p_Chassisnumber.value      && `Chassis number: ${p_Chassisnumber.value}`,
       p_Enginenumber.value       && `Engine number: ${p_Enginenumber.value}`,
-      p_altNumber.value          && `Alternate number: ${p_altNumber.value}`,
-      p_paymentMode.value        && `Payment mode: ${p_paymentMode.value}`
+      p_altNumber.value          && `Alternate number: ${p_altNumber.value}`
     ].filter(Boolean).join('\n');
   }
   navigator.clipboard.writeText(text);
   alert('Copied ✅');
 }
 
+// ─── RESET ───────────────────────────────────────────────────────────────────
 function resetForm() {
   const confirmReset = confirm('⚠️ Are you sure?\n\nAll entered data will be cleared.');
   if (!confirmReset) return;
@@ -891,7 +1003,7 @@ function resetForm() {
   closeAllDropdowns();
 }
 
-/* ===== FOOTER CLOCK + CALENDAR ===== */
+// ─── FOOTER CLOCK + CALENDAR ─────────────────────────────────────────────────
 (function(){
   const monthsShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const monthsFull  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -965,11 +1077,10 @@ function resetForm() {
   });
 
   document.addEventListener('click', function(){ popup.classList.remove('open'); });
-
   document.getElementById('re-clock-box').addEventListener('click', function(e){ e.stopPropagation(); });
 })();
 
-/* ===== FOOTER SCROLL REVEAL ===== */
+// ─── FOOTER SCROLL REVEAL ────────────────────────────────────────────────────
 const _footer = document.querySelector('.re-footer');
 const _footerObs = new IntersectionObserver(([entry]) => {
   if (entry.isIntersecting) {
