@@ -102,12 +102,17 @@ button {
 .csw {
   position: relative;
   margin: 8px 0;
+  z-index: 1;
+}
+
+.csw.open {
   z-index: 10000;
 }
 
 .cst {
   width: 100%;
-  height: 40px;
+  /* FIX 1: match input height exactly */
+  height: clamp(38px, 4vw, 42px);
   padding: 0 36px 0 10px;
   background: rgba(255,255,255,0.1);
   border-radius: 8px;
@@ -154,15 +159,20 @@ button {
   background: #1c1c1c;
   border: 1px solid rgba(255,255,255,0.13);
   border-radius: 10px;
-  /* FIX: enough height to show all 15 bikes without clipping */
   max-height: 300px;
   overflow-y: auto;
   z-index: 99999;
   box-shadow: 0 8px 28px rgba(0,0,0,0.7);
   scrollbar-width: thin;
   scrollbar-color: #444 transparent;
-  /* ensure last item border-radius is visible */
   padding-bottom: 2px;
+}
+
+/* FIX 2: drop-up variant */
+.cdrop.drop-up {
+  top: auto;
+  bottom: calc(100% + 4px);
+  animation-name: fadeUp !important;
 }
 
 .cdrop::-webkit-scrollbar { width: 5px; }
@@ -175,6 +185,11 @@ button {
 
 @keyframes fadeDown {
   from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -194,7 +209,6 @@ button {
 .di:last-child { border-bottom: none; }
 .di:hover { background: rgba(255,215,0,0.07); color: #FFD700; }
 
-/* keyboard-focused item inside dropdown */
 .di.kb-focus {
   background: rgba(255,215,0,0.13);
   color: #FFD700;
@@ -209,8 +223,8 @@ button {
   border: 1px solid rgba(255,215,0,0.35);
   border-radius: 9px;
   padding: 11px 14px;
-  min-width: 215px;
-  max-width: 240px;
+  min-width: 230px;
+  max-width: 260px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.75);
   z-index: 99999;
   pointer-events: none;
@@ -238,6 +252,7 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 #crm-tooltip .tt-val {
@@ -245,6 +260,17 @@ button {
   color: #eee;
   text-align: right;
   line-height: 1.4;
+}
+
+/* About tags inside tooltip */
+.tt-tags{
+  display:inline;
+}
+#tt-about{
+  text-align:right;
+  color:#eee;
+  font-size:12px;
+  line-height:1.4;
 }
 
 /* ===== PREMIUM FOOTER ===== */
@@ -420,11 +446,6 @@ button {
 
 .cal-popup.open { display: block; }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
 .cal-header {
   display: flex;
   align-items: center;
@@ -512,9 +533,13 @@ button {
 <!-- ===== HERO SECTION ===== -->
 <div class="hero-section">
 
-  <!-- tooltip -->
+  <!-- tooltip: About → Engine → Mileage -->
   <div id="crm-tooltip">
     <div class="tt-head" id="tt-name"></div>
+    <div class="tt-row">
+      <span class="tt-lbl">About</span>
+      <span class="tt-val" id="tt-about"><span class="tt-tags" id="tt-tags"></span></span>
+    </div>
     <div class="tt-row"><span class="tt-lbl">Engine</span><span class="tt-val" id="tt-usp"></span></div>
     <div class="tt-row"><span class="tt-lbl">Mileage</span><span class="tt-val" id="tt-mileage"></span></div>
   </div>
@@ -536,20 +561,33 @@ button {
         <div class="cdrop" id="drop_model"></div>
       </div>
       <input type="hidden" id="model">
-      <select id="color"><option>Select Color</option></select>
+      <input type="hidden" id="color">
+      <div class="csw" id="wrap_color">
+        <div class="cst" id="trig_color" tabindex="0">Select Color</div>
+        <div class="cdrop" id="drop_color"></div>
+      </div>
       <input id="dealership" placeholder="Dealership">
       <input id="altNumber"  placeholder="Alternate Number">
-      <select id="paymentMode">
-        <option value="">Select Payment Mode</option>
-        <option>Cash</option><option>Finance</option><option>Both</option><option>Will decide later</option><option>NA</option>
-      </select>
+      <input type="hidden" id="paymentMode">
+      <div class="csw" id="wrap_payment">
+        <div class="cst" id="trig_payment" tabindex="0">Select Payment Mode</div>
+        <div class="cdrop" id="drop_payment"></div>
+      </div>
     </div>
 
     <!-- BOOKED -->
     <div id="bookedSection" class="hide">
       <input id="b_keyEnquiry"   placeholder="Key enquiry">
-      <select id="b_model"><option value="">Select Model</option></select>
-      <select id="b_color"><option>Select Color</option></select>
+      <input type="hidden" id="b_model">
+      <div class="csw" id="wrap_b_model">
+        <div class="cst" id="trig_b_model" tabindex="0">Select Model</div>
+        <div class="cdrop" id="drop_b_model"></div>
+      </div>
+      <input type="hidden" id="b_color">
+      <div class="csw" id="wrap_b_color">
+        <div class="cst" id="trig_b_color" tabindex="0">Select Color</div>
+        <div class="cdrop" id="drop_b_color"></div>
+      </div>
       <input id="b_bookingtime"  placeholder="Booking date">
       <input id="b_dealership"   placeholder="Dealership">
       <input id="b_BookingName"  placeholder="Booking Name">
@@ -560,8 +598,16 @@ button {
     <!-- PURCHASED -->
     <div id="purchasedSection" class="hide">
       <input id="p_keyEnquiry"         placeholder="Key enquiry">
-      <select id="p_model"><option value="">Select Model</option></select>
-      <select id="p_color"><option>Select Color</option></select>
+      <input type="hidden" id="p_model">
+      <div class="csw" id="wrap_p_model">
+        <div class="cst" id="trig_p_model" tabindex="0">Select Model</div>
+        <div class="cdrop" id="drop_p_model"></div>
+      </div>
+      <input type="hidden" id="p_color">
+      <div class="csw" id="wrap_p_color">
+        <div class="cst" id="trig_p_color" tabindex="0">Select Color</div>
+        <div class="cdrop" id="drop_p_color"></div>
+      </div>
       <input id="p_Purchasedate"        placeholder="Purchased date">
       <input id="p_Registrationnumber"  placeholder="Registration number">
       <input id="p_dealership"          placeholder="Dealership">
@@ -634,6 +680,10 @@ button {
         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         South sheet
       </a>
+      <a href="https://docs.google.com/spreadsheets/d/1boh9Np5bjjyzQezwYoLuALH48FCY9EB3DEkbUScom0g/edit?gid=1141389118#gid=1141389118" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Advait Note
+      </a>
     </div>
 
     <!-- Col 4: Date & Time -->
@@ -694,33 +744,37 @@ const bikeData = {
 };
 
 const bikeInfo = {
-  "Hunter 350":        { usp:"349cc, single-cylinder, air cooled engine",          mileage:"36.2 KM/L" },
-  "Bullet 350":        { usp:"349cc, single-cylinder, air cooled engine",          mileage:"37 KM/L"   },
-  "Classic 350":       { usp:"349cc, single-cylinder, air cooled engine",          mileage:"41.5 KM/L" },
-  "Meteor 350":        { usp:"349cc, single-cylinder, air cooled engine",          mileage:"41.9 KM/L" },
-  "Goan Classic 350":  { usp:"349cc, single-cylinder, air cooled engine",          mileage:"36.2 KM/L" },
-  "Scram 440":         { usp:"452cc Single Cylinder / Air oiled cooled engine",    mileage:"29.5 KM/L" },
-  "Himalayan 450":     { usp:"452cc Single Cylinder / Air oil cooled engine",      mileage:"30 KM/L"   },
-  "Guerrilla 450":     { usp:"452cc Single Cylinder / Air oil cooled engine",      mileage:"29.5 KM/L" },
-  "Interceptor 650":   { usp:"648cc Inline Twin / Air Oil Cooled Engine",          mileage:"25 KM/L"   },
-  "Continental GT 650":{ usp:"648cc Inline Twin / Air Oil Cooled Engine",          mileage:"27 KM/L"   },
-  "Super Meteor 650":  { usp:"648cc parallel Twin / Air Oil Cooled Engine",        mileage:"25 KM/L"   },
-  "Shotgun 650":       { usp:"648cc parallel Twin / Air Oil Cooled Engine",        mileage:"22 KM/L"   },
-  "Bear 650":          { usp:"648cc Inline Twin / Air Oil Cooled Engine",          mileage:"22 KM/L"   },
-  "Classic 650":       { usp:"648cc Inline Twin / Air Oil Cooled Engine",          mileage:"21.45 KM/L"},
-  // ── FIX 1: Bullet 650 tooltip ──
-  "Bullet 650":        { usp:"648cc parallel Twin / Air Oil Cooled Engine",        mileage:"NA"        }
+  "Hunter 350":         { about: ["Roadster","Daily Riding","City Riding"],           usp:"349cc, single-cylinder, air cooled engine",       mileage:"36.2 KM/L" },
+  "Bullet 350":         { about: ["Heritage","Daily Riding","City Commute"],          usp:"349cc, single-cylinder, air cooled engine",       mileage:"37 KM/L"   },
+  "Classic 350":        { about: ["Vintage","Daily Riding","City Commute"],           usp:"349cc, single-cylinder, air cooled engine",       mileage:"41.5 KM/L" },
+  "Meteor 350":         { about: ["Cruise","Long Distance","Highway Cruising"],       usp:"349cc, single-cylinder, air cooled engine",       mileage:"41.9 KM/L" },
+  "Goan Classic 350":   { about: ["Bobber","City Riding","Casual Commuting"],         usp:"349cc, single-cylinder, air cooled engine",       mileage:"36.2 KM/L" },
+  "Scram 440":          { about: ["Adventure","Casual","Urban Commuting"],            usp:"452cc Single Cylinder / Air oiled cooled engine", mileage:"29.5 KM/L" },
+  "Himalayan 450":      { about: ["Adventure","Adventure","Touring"],                 usp:"452cc Single Cylinder / Air oil cooled engine",   mileage:"30 KM/L"   },
+  "Guerrilla 450":      { about: ["Premium Roadster","Daily Riding","City Riding"],   usp:"452cc Single Cylinder / Air oil cooled engine",   mileage:"29.5 KM/L" },
+  "Interceptor 650":    { about: ["Premium Roadster","Daily Riding","City Riding"],   usp:"648cc Inline Twin / Air Oil Cooled Engine",       mileage:"25 KM/L"   },
+  "Continental GT 650": { about: ["Cafe Racer","Short Distance","City Commuting"],    usp:"648cc Inline Twin / Air Oil Cooled Engine",       mileage:"27 KM/L"   },
+  "Super Meteor 650":   { about: ["Cruise","Long Distance","Highway Cruising"],       usp:"648cc parallel Twin / Air Oil Cooled Engine",     mileage:"25 KM/L"   },
+  "Shotgun 650":        { about: ["Premium Roadster","Daily Riding","City Commuting"],usp:"648cc parallel Twin / Air Oil Cooled Engine",     mileage:"22 KM/L"   },
+  "Bear 650":           { about: ["Premium Roadster","Daily Riding","City Commuting"],usp:"648cc Inline Twin / Air Oil Cooled Engine",       mileage:"22 KM/L"   },
+  "Classic 650":        { about: ["Premium Tourer","Daily Riding","City Commuting"],  usp:"648cc Inline Twin / Air Oil Cooled Engine",       mileage:"21.45 KM/L"},
+  "Bullet 650":         { about: ["Premium Heritage","Daily Riding","City Commuting"],usp:"648cc parallel Twin / Air Oil Cooled Engine",     mileage:"NA"        }
 };
 
 // ─── TOOLTIP ──────────────────────────────────────────────────────────────────
 const tooltip   = document.getElementById('crm-tooltip');
 const ttName    = document.getElementById('tt-name');
+const ttTags    = document.getElementById('tt-tags');
 const ttUsp     = document.getElementById('tt-usp');
 const ttMileage = document.getElementById('tt-mileage');
 
 function showTooltip(e, modelName) {
   const info = bikeInfo[modelName] || {};
-  ttName.textContent    = modelName;
+  ttName.textContent = modelName;
+
+  // Build about tags
+ ttTags.textContent = (info.about || []).join(', ');
+
   ttUsp.textContent     = info.usp     || '—';
   ttMileage.textContent = info.mileage || '—';
   positionTooltip(e);
@@ -728,8 +782,8 @@ function showTooltip(e, modelName) {
 }
 
 function positionTooltip(e) {
-  const TW = tooltip.offsetWidth  || 230;
-  const TH = tooltip.offsetHeight || 80;
+  const TW = tooltip.offsetWidth  || 250;
+  const TH = tooltip.offsetHeight || 100;
   const vw = window.innerWidth;
   const vh = window.innerHeight;
   let x = e.clientX + 14;
@@ -743,100 +797,153 @@ function positionTooltip(e) {
 
 function hideTooltip() { tooltip.style.display = 'none'; }
 
-// ─── CUSTOM DROPDOWN (model picker) ──────────────────────────────────────────
-function buildCustomDropdown() {
-  const wrapper  = document.getElementById('wrap_model');
-  const trigger  = document.getElementById('trig_model');
-  const drop     = document.getElementById('drop_model');
-  const hidden   = document.getElementById('model');
-  const colorSel = document.getElementById('color');
+// ─── GENERIC CUSTOM DROPDOWN BUILDER ─────────────────────────────────────────
+function buildCustomDrop(wrapperId, triggerId, dropId, items, onSelect, placeholder) {
+  const wrapper = document.getElementById(wrapperId);
+  const trigger = document.getElementById(triggerId);
+  const drop    = document.getElementById(dropId);
+  const els     = [];
+  let kbIdx     = -1;
 
-  const items = [];
-
-  Object.keys(bikeData).forEach(name => {
+  drop.innerHTML = '';
+  items.forEach(({ label, value }) => {
     const item = document.createElement('div');
     item.className = 'di';
-    item.textContent = name;
-    item.dataset.model = name;
-    // tooltip on hover
-    item.addEventListener('mouseenter', e => showTooltip(e, name));
-    item.addEventListener('mousemove',  e => positionTooltip(e));
-    item.addEventListener('mouseleave', hideTooltip);
-    // click to select
-    item.addEventListener('click', () => selectModel(name));
+    item.textContent = label;
+    item.dataset.val = value;
+    item.addEventListener('click', () => pick(label, value));
     drop.appendChild(item);
-    items.push(item);
+    els.push(item);
   });
 
-  function selectModel(name) {
-    hidden.value = name;
-    trigger.textContent = name;
-    trigger.classList.add('has-value');
-    wrapper.classList.remove('open');
-    hideTooltip();
-    clearKbFocus();
-    populateColor(colorSel, name);
-    // auto-advance focus to color select and open it
-    colorSel.focus();
-    try { colorSel.showPicker(); } catch(e) { /* fallback: browser will open on interaction */ }
-  }
-
-  // ── FIX 2: keyboard navigation inside custom dropdown ──
-  let kbIdx = -1;
-
-  function clearKbFocus() {
-    items.forEach(i => i.classList.remove('kb-focus'));
+  function clearKb() {
+    els.forEach(i => i.classList.remove('kb-focus'));
     kbIdx = -1;
   }
 
-  function setKbFocus(idx) {
-    items.forEach(i => i.classList.remove('kb-focus'));
-    kbIdx = idx;
-    if (idx >= 0 && idx < items.length) {
-      items[idx].classList.add('kb-focus');
-      items[idx].scrollIntoView({ block: 'nearest' });
+  function setKb(idx) {
+    els.forEach(i => i.classList.remove('kb-focus'));
+    kbIdx = Math.max(0, Math.min(idx, els.length - 1));
+    els[kbIdx].classList.add('kb-focus');
+    els[kbIdx].scrollIntoView({ block: 'nearest' });
+  }
+
+  function open() {
+    closeAllDropdowns();
+    wrapper.classList.add('open');
+
+    // FIX 2: smart direction — open upward if not enough space below
+    const rect       = wrapper.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const dropHeight = 300;
+    if (spaceBelow < dropHeight && rect.top > spaceBelow) {
+      drop.classList.add('drop-up');
+    } else {
+      drop.classList.remove('drop-up');
     }
+
+    setKb(0);
+  }
+
+  function close() {
+    wrapper.classList.remove('open');
+    clearKb();
+  }
+
+  function pick(label, value) {
+    trigger.textContent = label;
+    trigger.classList.add('has-value');
+    close();
+    onSelect(value);
+    setTimeout(() => advanceToNext(trigger), 0);
   }
 
   trigger.addEventListener('click', e => {
     e.stopPropagation();
-    const wasOpen = wrapper.classList.contains('open');
-    closeAllDropdowns();
-    if (!wasOpen) {
-      wrapper.classList.add('open');
-      clearKbFocus();
-    }
+    wrapper.classList.contains('open') ? close() : open();
   });
 
   trigger.addEventListener('keydown', e => {
     const isOpen = wrapper.classList.contains('open');
-
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      if (!isOpen) {
-        // open dropdown
-        closeAllDropdowns();
-        wrapper.classList.add('open');
-        setKbFocus(0);
-      } else {
-        // select focused item
-        if (kbIdx >= 0) selectModel(items[kbIdx].dataset.model);
-        else wrapper.classList.remove('open');
-      }
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      if (!isOpen) { closeAllDropdowns(); wrapper.classList.add('open'); }
-      setKbFocus(Math.min(kbIdx + 1, items.length - 1));
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (!isOpen) { closeAllDropdowns(); wrapper.classList.add('open'); }
-      setKbFocus(Math.max(kbIdx - 1, 0));
-    } else if (e.key === 'Escape') {
-      wrapper.classList.remove('open');
-      clearKbFocus();
-      hideTooltip();
-    }
+      if (!isOpen) open();
+      else if (kbIdx >= 0) pick(els[kbIdx].textContent, els[kbIdx].dataset.val);
+      else close();
+    } else if (e.key === 'ArrowDown') { e.preventDefault(); isOpen ? setKb(kbIdx + 1) : open(); }
+    else if (e.key === 'ArrowUp')   { e.preventDefault(); isOpen ? setKb(kbIdx - 1) : open(); }
+    else if (e.key === 'Escape')    { close(); }
   });
+
+  wrapper._reset = () => {
+    trigger.textContent = placeholder || 'Select';
+    trigger.classList.remove('has-value');
+    close();
+  };
+}
+
+// ─── MODEL DROPDOWN (with tooltip) ───────────────────────────────────────────
+function buildModelDropdown() {
+  const hidden    = document.getElementById('model');
+  const colorTrig = document.getElementById('trig_color');
+  const drop      = document.getElementById('drop_model');
+
+  const items = Object.keys(bikeData).map(name => ({ label: name, value: name }));
+
+  buildCustomDrop('wrap_model', 'trig_model', 'drop_model', items, (name) => {
+    hidden.value = name;
+    buildColorDrop('wrap_color', 'trig_color', 'drop_color', 'color', name);
+    setTimeout(() => {
+      colorTrig.focus();
+      document.getElementById('wrap_color').querySelector('.cst').click();
+    }, 50);
+  }, 'Select Model');
+
+  // attach tooltips to model items
+  drop.querySelectorAll('.di').forEach(item => {
+    const name = item.textContent;
+    item.addEventListener('mouseenter', e => showTooltip(e, name));
+    item.addEventListener('mousemove',  e => positionTooltip(e));
+    item.addEventListener('mouseleave', hideTooltip);
+  });
+}
+
+function buildColorDrop(wrapperId, triggerId, dropId, hiddenId, modelName) {
+  const hidden = document.getElementById(hiddenId);
+  const colors = bikeData[modelName] || {};
+  const items  = Object.entries(colors).map(([c, price]) => ({
+    label: price != null ? `${c} — ₹${price}` : `${c} — Price TBA`,
+    value: c
+  }));
+  buildCustomDrop(wrapperId, triggerId, dropId, items, (val) => {
+    hidden.value = val;
+  }, 'Select Color');
+}
+
+function buildPaymentDrop() {
+  const hidden  = document.getElementById('paymentMode');
+  const options = ['Cash','Finance','Both','Will decide later','NA'];
+  const items   = options.map(o => ({ label: o, value: o }));
+  buildCustomDrop('wrap_payment', 'trig_payment', 'drop_payment', items, (val) => {
+    hidden.value = val;
+  }, 'Select Payment Mode');
+}
+
+function buildSectionDrops(section) {
+  const modelHidden = document.getElementById(`${section}_model`);
+  const colorTrigId = `trig_${section}_color`;
+  const modelItems  = Object.keys(bikeData).map(n => ({ label: n, value: n }));
+
+  buildCustomDrop(`wrap_${section}_model`, `trig_${section}_model`, `drop_${section}_model`,
+    modelItems, (name) => {
+      modelHidden.value = name;
+      buildColorDrop(`wrap_${section}_color`, `trig_${section}_color`, `drop_${section}_color`,
+        `${section}_color`, name);
+      setTimeout(() => {
+        document.getElementById(colorTrigId).focus();
+        document.getElementById(`wrap_${section}_color`).querySelector('.cst').click();
+      }, 50);
+    }, 'Select Model');
 }
 
 function closeAllDropdowns() {
@@ -846,93 +953,30 @@ function closeAllDropdowns() {
 
 document.addEventListener('click', closeAllDropdowns);
 
-// ─── NORMAL SELECT HELPERS ────────────────────────────────────────────────────
-function fillNormalSelect(modelSelId, colorSelId) {
-  const modelSel = document.getElementById(modelSelId);
-  const colorSel = document.getElementById(colorSelId);
-  modelSel.innerHTML = '<option value="">Select Model</option>';
-  Object.keys(bikeData).forEach(name => {
-    const o = document.createElement('option');
-    o.value = o.text = name;
-    modelSel.appendChild(o);
-  });
-  // When model changes, populate colors AND move focus to color select
-  modelSel.addEventListener('change', () => {
-    populateColor(colorSel, modelSel.value);
-    if (modelSel.value) {
-      colorSel.focus();
-      try { colorSel.showPicker(); } catch(e) {}
-    }
-  });
-}
-
-function populateColor(colorSel, modelName) {
-  colorSel.innerHTML = '<option>Select Color</option>';
-  if (!bikeData[modelName]) return;
-  Object.entries(bikeData[modelName]).forEach(([c, price]) => {
-    const o = document.createElement('option');
-    o.value = c;
-    // show NA price if null/undefined
-    o.text  = price != null ? `${c} - ₹${price}` : `${c} - Price TBA`;
-    colorSel.appendChild(o);
-  });
+// ─── ADVANCE TO NEXT FIELD ───────────────────────────────────────────────────
+function advanceToNext(el) {
+  const section = el.closest('[id$="Section"]') || el.closest('.box');
+  if (!section) return;
+  const fields = Array.from(section.querySelectorAll('input:not([type=hidden]), .cst'));
+  const idx    = fields.indexOf(el);
+  if (idx > -1 && idx < fields.length - 1) fields[idx + 1].focus();
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  buildCustomDropdown();
-  fillNormalSelect('b_model', 'b_color');
-  fillNormalSelect('p_model', 'p_color');
+  buildModelDropdown();
+  buildPaymentDrop();
+  buildSectionDrops('b');
+  buildSectionDrops('p');
 
-  // Color selects: the moment any color is picked (mouse OR keyboard),
-  // auto-advance to the next field -- same behaviour as the custom model dropdown
-  function advanceToNext(el) {
-    const section = el.closest('[id$="Section"]') || el.closest('.box');
-    if (!section) return;
-    const fields = Array.from(
-      section.querySelectorAll('input:not([type=hidden]), select, .cst')
-    );
-    const idx = fields.indexOf(el);
-    if (idx > -1 && idx < fields.length - 1) {
-      fields[idx + 1].focus();
-    }
-  }
-
-  ['color', 'b_color', 'p_color'].forEach(id => {
-    const sel = document.getElementById(id);
-    if (!sel) return;
-    sel.addEventListener('change', () => {
-      if (sel.selectedIndex === 0) return;
-      setTimeout(() => advanceToNext(sel), 0);
-    });
-  });
-
-  // Enter key logic:
-  // - .cst custom dropdown: handled inside buildCustomDropdown
-  // - native <select> (model, payment mode): Enter on placeholder = browser handles natively;
-  //   Enter after picking a value = advance to next field
-  // - inputs: advance immediately
   document.addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
-
     const active = document.activeElement;
-
-    // Custom dropdown trigger handles its own Enter
     if (active.classList.contains('cst')) return;
-
-    if (active.tagName === 'SELECT') {
-      // Color selects already advance via 'change' event above -- skip them here
-      if (active.id === 'color' || active.id === 'b_color' || active.id === 'p_color') return;
-      setTimeout(() => {
-        if (active.selectedIndex === 0) return;
-        advanceToNext(active);
-      }, 0);
-      return;
+    if (active.tagName === 'INPUT' && active.type !== 'hidden') {
+      e.preventDefault();
+      advanceToNext(active);
     }
-
-    // Inputs: advance immediately
-    e.preventDefault();
-    advanceToNext(active);
   });
 });
 
@@ -993,13 +1037,26 @@ function copyData() {
 function resetForm() {
   const confirmReset = confirm('⚠️ Are you sure?\n\nAll entered data will be cleared.');
   if (!confirmReset) return;
-  document.querySelectorAll('input:not([type=hidden])').forEach(el => el.value = '');
-  document.querySelectorAll('input[type=hidden]').forEach(el => el.value = '');
-  document.querySelectorAll('select').forEach(sel => sel.selectedIndex = 0);
-  document.querySelectorAll('select[id$="color"]').forEach(c => c.innerHTML = '<option>Select Color</option>');
-  const trig = document.getElementById('trig_model');
-  trig.textContent = 'Select Model';
-  trig.classList.remove('has-value');
+  document.querySelectorAll('input').forEach(el => el.value = '');
+  const resets = [
+    ['trig_model',    'Select Model'],
+    ['trig_color',    'Select Color'],
+    ['trig_payment',  'Select Payment Mode'],
+    ['trig_b_model',  'Select Model'],
+    ['trig_b_color',  'Select Color'],
+    ['trig_p_model',  'Select Model'],
+    ['trig_p_color',  'Select Color'],
+  ];
+  resets.forEach(([id, placeholder]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = placeholder;
+    el.classList.remove('has-value');
+  });
+  ['drop_color','drop_b_color','drop_p_color'].forEach(id => {
+    const d = document.getElementById(id);
+    if (d) d.innerHTML = '';
+  });
   closeAllDropdowns();
 }
 
@@ -1007,8 +1064,8 @@ function resetForm() {
 (function(){
   const monthsShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const monthsFull  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const daysShort   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const dnames      = ['S','M','T','W','T','F','S'];
+  const daysShort   = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dnames      = ['M','T','W','T','F','S','S'];
   function pad(n){ return String(n).padStart(2,'0'); }
 
   let calY = new Date().getFullYear();
