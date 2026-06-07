@@ -1315,6 +1315,73 @@ button {
 }
 .entry-note strong { color: rgba(255,215,0,0.4); font-weight:600; }
 
+/* ── PASSWORD STEP ── */
+.entry-password-wrap {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: max-height 0.38s cubic-bezier(.22,1,.36,1),
+              opacity    0.3s ease,
+              transform  0.3s ease;
+  pointer-events: none;
+}
+.entry-password-wrap.visible {
+  max-height: 120px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+/* Role badge that appears under username */
+.entry-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin: 6px 0 2px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.entry-role-badge.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.entry-role-badge.admin {
+  background: rgba(255,215,0,0.1);
+  border: 1px solid rgba(255,215,0,0.3);
+  color: #FFD700;
+}
+.entry-role-badge.premium {
+  background: rgba(100,200,255,0.08);
+  border: 1px solid rgba(100,200,255,0.25);
+  color: #7dd3fc;
+}
+
+/* Back link */
+.entry-back-link {
+  font-size: 11px;
+  color: rgba(255,255,255,0.28);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  transition: color 0.18s;
+  user-select: none;
+  background: none;
+  border: none;
+  padding: 0;
+  letter-spacing: 0.3px;
+}
+.entry-back-link:hover { color: rgba(255,215,0,0.7); }
+
 #app-root {
   opacity: 0;
   transition: opacity 0.5s ease 0.1s;
@@ -1349,22 +1416,42 @@ button {
       <div class="entry-brand-line right"></div>
     </div>
     <h1 class="entry-heading" id="entry-title">Welcome, <strong>Rider</strong></h1>
-    <p class="entry-sub">Enter your name to access the CRM dashboard</p>
+    <p class="entry-sub" id="entrySub">Enter your name to access the CRM dashboard</p>
+
+    <!-- STEP 1: Username / Name -->
     <div class="entry-field-wrap">
-      <label class="entry-field-label" for="entryName">Full Name</label>
-      <input id="entryName" class="entry-input" type="text" placeholder="e.g. Advait" autocomplete="name" spellcheck="false" maxlength="60">
-      <span class="entry-error" id="entryError" role="alert">Please enter your full name to continue.</span>
+      <label class="entry-field-label" for="entryName">Username / Name</label>
+      <input id="entryName" class="entry-input" type="text" placeholder="e.g. Advait" autocomplete="off" spellcheck="false" maxlength="60">
+      <span class="entry-error" id="entryError" role="alert"></span>
     </div>
+
+    <!-- Role badge (shown for admin/premium after name match) -->
+    <div id="entryRoleBadge" class="entry-role-badge"></div>
+
+    <!-- STEP 2: Password (slides in for admin/premium only) -->
+    <div class="entry-password-wrap" id="entryPasswordWrap">
+      <div class="entry-field-wrap" style="margin-top:10px;">
+        <label class="entry-field-label" for="entryPassword">Password</label>
+        <input id="entryPassword" class="entry-input" type="password" placeholder="Enter password" autocomplete="current-password" maxlength="80">
+      </div>
+    </div>
+
     <button class="entry-btn" id="entryBtn" type="button">
       Continue
       <span class="entry-btn-arrow">→</span>
     </button>
+
+    <!-- Back link (shown during password step) -->
+    <div style="text-align:center; margin-top:10px; min-height:18px;">
+      <button class="entry-back-link" id="entryBackBtn" style="display:none;">← Use a different name</button>
+    </div>
+
     <div class="entry-divider">
       <div class="entry-divider-line"></div>
       <div class="entry-divider-text">Secure &amp; Local</div>
       <div class="entry-divider-line"></div>
     </div>
-    <p class="entry-note">Your name is saved <strong>locally on this device</strong> only.<br>No data is sent anywhere.</p>
+    <p class="entry-note" id="entryNote">Your name is saved <strong>locally on this device</strong> only.<br>No data is sent anywhere.</p>
   </div>
 </div>
 
@@ -2234,8 +2321,8 @@ _footerObs.observe(_footer);
   });
 
   confirmBtn.addEventListener('click', function () {
-    localStorage.clear();
-    sessionStorage.clear();
+    localStorage.removeItem('crm_user_name');
+    localStorage.removeItem('crm_user_role');
     window.logoutModal.close();
 
     const appRoot    = document.getElementById('app-root');
@@ -2268,12 +2355,17 @@ _footerObs.observe(_footer);
 })();
 
 // ─── ENTRY GATE ──────────────────────────────────────────────────────────────
-function greetUser(name) {
+function greetUser(name, role) {
   const nameEl    = document.getElementById('hbgUserName');
   const logoText  = document.querySelector('.hbg-logo-text');
   const logoutBtn = document.getElementById('hbgLogoutBtn');
 
-  if (nameEl)   nameEl.textContent   = name;
+  if (nameEl) {
+    nameEl.textContent = name;
+    // Add role pip next to name in sidebar
+    if (role === 'admin')   nameEl.title = 'Admin';
+    if (role === 'premium') nameEl.title = 'Premium';
+  }
   if (logoText) logoText.textContent = name.split(' ')[0];
 
   if (logoutBtn) {
@@ -2287,50 +2379,142 @@ function greetUser(name) {
 }
 
 (function () {
-  const gate    = document.getElementById('entry-gate');
-  const appRoot = document.getElementById('app-root');
-  const input   = document.getElementById('entryName');
-  const btn     = document.getElementById('entryBtn');
-  const errMsg  = document.getElementById('entryError');
 
-  const saved = localStorage.getItem('crm_user_name');
+  // ── CREDENTIALS CONFIG ────────────────────────────────────────────────────
+  // Change passwords here. Usernames are case-insensitive.
+  const PRIVILEGED_USERS = {
+    'advaitbuild': { role: 'admin',   displayName: 'Advait',  password: 'Isha99' },
+    // Add premium user here when ready:
+    'pri08': { role: 'premium', displayName: 'pri08', password: 'Merc$7878' },
+  };
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const gate         = document.getElementById('entry-gate');
+  const appRoot      = document.getElementById('app-root');
+  const nameInput    = document.getElementById('entryName');
+  const passInput    = document.getElementById('entryPassword');
+  const passWrap     = document.getElementById('entryPasswordWrap');
+  const btn          = document.getElementById('entryBtn');
+  const errMsg       = document.getElementById('entryError');
+  const roleBadge    = document.getElementById('entryRoleBadge');
+  const backBtn      = document.getElementById('entryBackBtn');
+  const entrySub     = document.getElementById('entrySub');
+  const entryNote    = document.getElementById('entryNote');
+
+  let step = 'name';   // 'name' | 'password'
+  let detectedUser = null;
+
+  // ── Restore session ───────────────────────────────────────────────────────
+  const saved     = localStorage.getItem('crm_user_name');
+  const savedRole = localStorage.getItem('crm_user_role');
   if (saved && saved.trim().length > 0) {
     gate.classList.add('gate-hidden');
     appRoot.classList.add('app-visible');
-    greetUser(saved.trim());
+    greetUser(saved.trim(), savedRole || 'user');
     return;
   }
 
+  // ── Helpers ───────────────────────────────────────────────────────────────
   function showError(msg) {
-    errMsg.textContent = msg || 'Please enter your full name to continue.';
+    errMsg.textContent = msg;
     errMsg.classList.add('visible');
-    input.classList.add('has-error');
-    input.focus();
-    input.style.animation = 'none';
-    requestAnimationFrame(() => { input.style.animation = 'entry-shake 0.38s ease'; });
+    const target = step === 'password' ? passInput : nameInput;
+    target.classList.add('has-error');
+    target.style.animation = 'none';
+    requestAnimationFrame(() => { target.style.animation = 'entry-shake 0.38s ease'; });
+    target.focus();
   }
 
   function clearError() {
     errMsg.classList.remove('visible');
-    input.classList.remove('has-error');
+    nameInput.classList.remove('has-error');
+    passInput.classList.remove('has-error');
   }
 
-  function proceed() {
-    const name = input.value.trim().replace(/\s+/g, ' ');
-    if (!name)           { showError('Please enter your full name to continue.'); return; }
-    if (name.length < 2) { showError('Name must be at least 2 characters.'); return; }
-
-    localStorage.setItem('crm_user_name', name);
+  function enterApp(displayName, role) {
+    localStorage.setItem('crm_user_name', displayName);
+    localStorage.setItem('crm_user_role', role);
     clearError();
     gate.classList.add('gate-hidden');
     appRoot.classList.add('app-visible');
-    greetUser(name);
+    greetUser(displayName, role);
   }
 
-  btn.addEventListener('click', proceed);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') proceed(); });
-  input.addEventListener('input',   () => { if (input.value.trim()) clearError(); });
-  window.addEventListener('load',   () => { input.focus(); });
+  // ── Step 1: name submitted ────────────────────────────────────────────────
+  function submitName() {
+    const val = nameInput.value.trim().replace(/\s+/g, ' ');
+    if (!val)           { showError('Please enter your name to continue.'); return; }
+    if (val.length < 2) { showError('Name must be at least 2 characters.'); return; }
+
+    clearError();
+    const match = PRIVILEGED_USERS[val.toLowerCase()];
+
+    if (match) {
+      // Privileged user — slide in password step
+      detectedUser = { ...match, username: val };
+      step = 'password';
+      nameInput.readOnly = true;
+
+      // Show role badge
+      roleBadge.textContent = match.role === 'admin' ? '⚡ Admin' : '★ Premium';
+      roleBadge.className   = 'entry-role-badge ' + match.role + ' visible';
+
+      passWrap.classList.add('visible');
+      backBtn.style.display = 'inline-flex';
+      entrySub.textContent  = 'Enter your password to continue';
+      entryNote.style.display = 'none';
+      btn.querySelector('.entry-btn-arrow').parentNode.childNodes[0].textContent = 'Unlock ';
+
+      setTimeout(() => { passInput.focus(); }, 320);
+    } else {
+      // Regular user — enter directly
+      enterApp(val, 'user');
+    }
+  }
+
+  // ── Step 2: password submitted ────────────────────────────────────────────
+  function submitPassword() {
+    const pw = passInput.value;
+    if (!pw) { showError('Please enter your password.'); return; }
+
+    if (pw === detectedUser.password) {
+      enterApp(detectedUser.displayName, detectedUser.role);
+    } else {
+      passInput.value = '';
+      showError('Incorrect password. Please try again.');
+    }
+  }
+
+  // ── Back to name step ─────────────────────────────────────────────────────
+  function goBack() {
+    step = 'name';
+    detectedUser = null;
+    nameInput.readOnly = false;
+    passInput.value = '';
+    passWrap.classList.remove('visible');
+    backBtn.style.display = 'none';
+    roleBadge.className = 'entry-role-badge';
+    entrySub.textContent = 'Enter your name to access the CRM dashboard';
+    entryNote.style.display = '';
+    clearError();
+    setTimeout(() => { nameInput.focus(); nameInput.select(); }, 50);
+  }
+
+  // ── Event listeners ───────────────────────────────────────────────────────
+  btn.addEventListener('click', () => {
+    if (step === 'name') submitName();
+    else submitPassword();
+  });
+
+  nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
+  passInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitPassword(); });
+
+  nameInput.addEventListener('input', () => { if (nameInput.value.trim()) clearError(); });
+  passInput.addEventListener('input', () => { if (passInput.value) clearError(); });
+
+  backBtn.addEventListener('click', goBack);
+
+  window.addEventListener('load', () => { nameInput.focus(); });
 })();
 </script>
 
