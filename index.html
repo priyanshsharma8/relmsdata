@@ -1601,6 +1601,7 @@ button {
         <div class="cdrop" id="drop_payment"></div>
       </div>
       <input id="lostReason" placeholder="Reason for lost case (if applicable)">
+      <input id="CustomerName" placeholder="Customer Name (if applicable)">
     </div>
 
     <!-- BOOKED -->
@@ -2029,6 +2030,7 @@ function copyData() {
       altNumber.value   && `, Alternate number / ${altNumber.value}`,
       paymentMode.value && `, Payment mode / ${paymentMode.value}`,
       lostReason.value  && `, Reason / ${lostReason.value}`
+      CustomerName.value  && `, Reason / ${CustomerName.value}`
     ].filter(Boolean).join('');
   }
   if (currentMode === 'booked') {
