@@ -1505,7 +1505,7 @@ button {
     <div class="re-footer-col">
       <h3>Made By</h3>
       <p class="brand-name">Advait</p>
-      <a href="https:/" rel="noopener">
+      <a href="#" rel="noopener">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
         Portfolio
       </a>
@@ -1548,6 +1548,10 @@ button {
       <a href="https://docs.google.com/spreadsheets/d/1BRWO_962v-PzjjZXUViroecsbYzS6mxuxkHfDji4G50/edit?gid=1012588109#gid=1012588109" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         South sheet
+      </a>
+      <a href="#" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Advait Note
       </a>
     </div>
 
@@ -1866,11 +1870,10 @@ function copyData() {
       testRide.value    && `, Test ride date and time / ${testRide.value}`,
       model.value       && `, Model / ${model.value}`,
       color.value && color.value !== 'Select Color' && `, Color / ${color.value}`,
-      altNumber.value   && `, Alternate number / ${altNumber.value}`,
-      paymentMode.value && `, Payment mode / ${paymentMode.value}`,
-      CustomerName.value && `, Customer name / ${CustomerName.value}`
-      lostReason.value  && `, Reason / ${lostReason.value}`
-      
+      altNumber.value    && `, Alternate number / ${altNumber.value}`,
+      paymentMode.value  && `, Payment mode / ${paymentMode.value}`,
+      CustomerName.value && `, Customer name / ${CustomerName.value}`,
+      lostReason.value   && `, Reason / ${lostReason.value}`
     ].filter(Boolean).join('');
   }
   if (currentMode === 'booked') {
