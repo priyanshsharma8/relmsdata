@@ -17,10 +17,180 @@ body {
   position: relative;
 }
 
+/* ═══════════════════════════════════════════
+   FIXED GLOBAL HEADER
+═══════════════════════════════════════════ */
+#global-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 58px;
+  z-index: 150000;
+  background: rgba(8, 3, 3, 0.90);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(229, 53, 23, 0.2);
+  box-shadow: 0 2px 28px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(229,53,23,0.08);
+  display: flex;
+  align-items: center;
+  padding: 0 18px 0 16px;
+  box-sizing: border-box;
+  gap: 0;
+}
+
+/* ── Logo ── */
+.gh-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex-shrink: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.gh-logo-svg {
+  height: 28px;
+  width: auto;
+  filter: drop-shadow(0 0 6px rgba(229, 53, 23, 0.35));
+}
+
+.gh-logo-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.gh-logo-sub {
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.28);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── Nav — left aligned after logo ── */
+.gh-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 20px;
+}
+
+.gh-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 9px;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  transition: color 0.18s, background 0.18s, border-color 0.18s;
+  white-space: nowrap;
+  height: 36px;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.gh-nav-item .gh-nav-icon {
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.gh-nav-item:hover {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.gh-nav-item.active {
+  color: #FFD700;
+  background: rgba(255, 215, 0, 0.08);
+  border-color: rgba(255, 215, 0, 0.2);
+  font-weight: 600;
+}
+
+.gh-nav-item.coming-soon {
+  opacity: 1;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.gh-nav-item.coming-soon:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ── Right side — hamburger pushed far right ── */
+.gh-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* ── Hamburger button ── */
+.hbg-btn {
+  position: relative;
+  top: auto;
+  right: auto;
+  z-index: auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0;
+  transition: background 0.18s, border-color 0.18s, transform 0.14s;
+  box-shadow: none;
+  flex-shrink: 0;
+}
+
+.hbg-btn:hover {
+  background: rgba(229, 53, 23, 0.12);
+  border-color: rgba(229, 53, 23, 0.38);
+  transform: scale(1.05);
+}
+
+.hbg-btn:active { transform: scale(0.95); }
+
+.hbg-bar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #FFD700;
+  border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(.77,0,.18,1),
+              opacity   0.2s ease,
+              width     0.25s ease;
+  transform-origin: center;
+}
+
+.hbg-btn.is-open .hbg-bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hbg-btn.is-open .hbg-bar:nth-child(2) { opacity: 0; width: 0; }
+.hbg-btn.is-open .hbg-bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
 /* ── HERO SECTION ── */
 .hero-section {
   min-height: 100vh;
   padding: clamp(10px, 2vw, 20px);
+  padding-top: calc(58px + clamp(10px, 2vw, 20px));
   background: linear-gradient(135deg, rgba(15,15,15,0.35), rgba(28,28,28,0.35), rgba(43,43,43,0.35)),
               var(--bg-image, url('himalayan-bg.jpg')) center/cover no-repeat;
   background-size: cover;
@@ -100,14 +270,8 @@ button {
 .hide    { display: none; }
 
 /* ── CUSTOM DROPDOWN ── */
-.csw {
-  margin: 8px 0;
-  z-index: 1;
-}
-
-.csw.open {
-  z-index: 10000;
-}
+.csw { margin: 8px 0; z-index: 1; }
+.csw.open { z-index: 10000; }
 
 .cst {
   width: 100%;
@@ -142,9 +306,7 @@ button {
 }
 
 .csw.open .cst::after { transform: translateY(-50%) rotate(180deg); }
-
-.csw.open .cst,
-.cst:focus {
+.csw.open .cst, .cst:focus {
   outline: none;
   box-shadow: 0 0 10px #34a552, 0 0 5px #FFD700 inset;
 }
@@ -167,29 +329,16 @@ button {
   padding-bottom: 2px;
 }
 
-.cdrop.drop-up {
-  top: auto;
-  bottom: calc(100% + 4px);
-  animation-name: fadeUp !important;
-}
-
+.cdrop.drop-up { top: auto; bottom: calc(100% + 4px); animation-name: fadeUp !important; }
 .cdrop::-webkit-scrollbar { width: 5px; }
 .cdrop::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
-
-.csw.open .cdrop {
-  display: block;
-  animation: fadeDown 0.15s ease;
-}
-
-.csw.open .cdrop.drop-up {
-  animation: fadeUp 0.15s ease;
-}
+.csw.open .cdrop { display: block; animation: fadeDown 0.15s ease; }
+.csw.open .cdrop.drop-up { animation: fadeUp 0.15s ease; }
 
 @keyframes fadeDown {
   from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -207,15 +356,9 @@ button {
   border-bottom: 1px solid rgba(255,255,255,0.05);
   transition: background 0.12s;
 }
-
 .di:last-child { border-bottom: none; }
 .di:hover { background: rgba(255,215,0,0.07); color: #FFD700; }
-
-.di.kb-focus {
-  background: rgba(255,215,0,0.13);
-  color: #FFD700;
-  outline: none;
-}
+.di.kb-focus { background: rgba(255,215,0,0.13); color: #FFD700; outline: none; }
 
 /* ── TOOLTIP ── */
 #crm-tooltip {
@@ -231,39 +374,10 @@ button {
   z-index: 99999;
   pointer-events: none;
 }
-
-#crm-tooltip .tt-head {
-  font-size: 13px;
-  font-weight: 700;
-  color: #FFD700;
-  margin-bottom: 7px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid rgba(255,215,0,0.2);
-}
-
-#crm-tooltip .tt-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin: 4px 0;
-}
-
-#crm-tooltip .tt-lbl {
-  font-size: 11px;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-#crm-tooltip .tt-val {
-  font-size: 12px;
-  color: #eee;
-  text-align: right;
-  line-height: 1.4;
-}
-
+#crm-tooltip .tt-head { font-size: 13px; font-weight: 700; color: #FFD700; margin-bottom: 7px; padding-bottom: 6px; border-bottom: 1px solid rgba(255,215,0,0.2); }
+#crm-tooltip .tt-row { display: flex; justify-content: space-between; gap: 8px; margin: 4px 0; }
+#crm-tooltip .tt-lbl { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; flex-shrink: 0; }
+#crm-tooltip .tt-val { font-size: 12px; color: #eee; text-align: right; line-height: 1.4; }
 .tt-tags { display: inline; }
 #tt-about { text-align: right; color: #eee; font-size: 12px; line-height: 1.4; }
 
@@ -280,11 +394,7 @@ button {
   transform: translateY(40px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
-
-.re-footer.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.re-footer.visible { opacity: 1; transform: translateY(0); }
 
 .re-footer-inner {
   max-width: 1100px;
@@ -295,997 +405,172 @@ button {
   gap: 36px;
 }
 
-.re-footer-col h3 {
-  color: #FFD700;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin: 0 0 16px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255,215,0,0.18);
-}
-
-.re-footer-col .brand-name {
-  color: #fff;
-  font-size: 15px;
-  font-weight: 600;
-  margin: 0 0 14px;
-  letter-spacing: 0.3px;
-}
-
-.re-footer-col a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: rgba(255,255,255,0.45);
-  text-decoration: none;
-  font-size: 12.5px;
-  padding: 5px 0;
-  transition: color 0.2s, gap 0.2s;
-  border: none;
-  background: none;
-}
-
+.re-footer-col h3 { color: #FFD700; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,215,0,0.18); }
+.re-footer-col .brand-name { color: #fff; font-size: 15px; font-weight: 600; margin: 0 0 14px; letter-spacing: 0.3px; }
+.re-footer-col a { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.45); text-decoration: none; font-size: 12.5px; padding: 5px 0; transition: color 0.2s, gap 0.2s; border: none; background: none; }
 .re-footer-col a:hover { color: #FFD700; gap: 11px; }
-
-.re-footer-col a svg {
-  width: 13px;
-  height: 13px;
-  flex-shrink: 0;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.8;
-  opacity: 0.6;
-  transition: opacity 0.2s;
-}
-
+.re-footer-col a svg { width: 13px; height: 13px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.8; opacity: 0.6; transition: opacity 0.2s; }
 .re-footer-col a:hover svg { opacity: 1; }
 
-/* clock */
-.clock-box {
-  background: rgba(255,215,0,0.04);
-  border: 1px solid rgba(255,215,0,0.12);
-  border-radius: 11px;
-  padding: 16px 14px;
-  position: relative;
-}
+.clock-box { background: rgba(255,215,0,0.04); border: 1px solid rgba(255,215,0,0.12); border-radius: 11px; padding: 16px 14px; position: relative; }
+.clock-top { display: flex; align-items: center; justify-content: space-between; }
+.clock-time { display: flex; align-items: baseline; gap: 2px; }
+.clock-num { font-size: 22px; font-weight: 300; color: #FFD700; letter-spacing: 1px; font-variant-numeric: tabular-nums; line-height: 1; }
+.clock-sep { font-size: 18px; font-weight: 200; color: rgba(255,215,0,0.25); padding: 0 1px; }
+.clock-ampm { font-size: 11px; font-weight: 500; color: rgba(255,215,0,0.5); letter-spacing: 1.5px; align-self: flex-end; padding-bottom: 2px; }
+.clock-divider { border: none; border-top: 1px solid rgba(255,215,0,0.08); margin: 10px 0; }
+.clock-date-row { display: flex; align-items: center; justify-content: space-between; }
+.clock-date { font-size: 11px; color: rgba(255,255,255,0.35); cursor: pointer; padding: 2px 5px; border-radius: 4px; transition: color 0.15s, background 0.15s; user-select: none; }
+.clock-date:hover { color: #FFD700; background: rgba(255,215,0,0.08); }
+.clock-day { font-size: 10px; color: rgba(255,215,0,0.35); letter-spacing: 1px; text-transform: uppercase; }
 
-.clock-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.clock-time {
-  display: flex;
-  align-items: baseline;
-  gap: 2px;
-}
-
-.clock-num {
-  font-size: 22px;
-  font-weight: 300;
-  color: #FFD700;
-  letter-spacing: 1px;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-
-.clock-sep {
-  font-size: 18px;
-  font-weight: 200;
-  color: rgba(255,215,0,0.25);
-  padding: 0 1px;
-}
-
-.clock-ampm {
-  font-size: 11px;
-  font-weight: 500;
-  color: rgba(255,215,0,0.5);
-  letter-spacing: 1.5px;
-  align-self: flex-end;
-  padding-bottom: 2px;
-}
-
-.clock-divider {
-  border: none;
-  border-top: 1px solid rgba(255,215,0,0.08);
-  margin: 10px 0;
-}
-
-.clock-date-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.clock-date {
-  font-size: 11px;
-  color: rgba(255,255,255,0.35);
-  cursor: pointer;
-  padding: 2px 5px;
-  border-radius: 4px;
-  transition: color 0.15s, background 0.15s;
-  user-select: none;
-}
-
-.clock-date:hover {
-  color: #FFD700;
-  background: rgba(255,215,0,0.08);
-}
-
-.clock-day {
-  font-size: 10px;
-  color: rgba(255,215,0,0.35);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-/* calendar popup */
-.cal-popup {
-  display: none;
-  position: absolute;
-  bottom: calc(100% + 8px);
-  right: 0;
-  width: 216px;
-  background: #1a1a1a;
-  border: 1px solid rgba(255,215,0,0.2);
-  border-radius: 10px;
-  padding: 13px;
-  z-index: 99999;
-  box-shadow: 0 8px 28px rgba(0,0,0,0.8);
-  animation: fadeUp 0.15s ease;
-}
-
+.cal-popup { display: none; position: absolute; bottom: calc(100% + 8px); right: 0; width: 216px; background: #1a1a1a; border: 1px solid rgba(255,215,0,0.2); border-radius: 10px; padding: 13px; z-index: 99999; box-shadow: 0 8px 28px rgba(0,0,0,0.8); animation: fadeUp 0.15s ease; }
 .cal-popup.open { display: block; }
-
-.cal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.cal-month-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #FFD700;
-  letter-spacing: 0.4px;
-}
-
-.cal-nav {
-  background: none;
-  border: none;
-  color: rgba(255,215,0,0.5);
-  cursor: pointer;
-  font-size: 18px;
-  padding: 0 5px;
-  border-radius: 4px;
-  line-height: 1;
-  transition: color 0.15s, background 0.15s;
-}
-
-.cal-nav:hover {
-  color: #FFD700;
-  background: rgba(255,215,0,0.08);
-}
-
-.cal-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-}
-
-.cal-dname {
-  font-size: 9px;
-  color: rgba(255,215,0,0.3);
-  text-align: center;
-  padding: 3px 0;
-  letter-spacing: 0.3px;
-}
-
-.cal-cell {
-  font-size: 11px;
-  color: rgba(255,255,255,0.38);
-  text-align: center;
-  padding: 5px 2px;
-  border-radius: 4px;
-  cursor: default;
-}
-
-.cal-cell.today {
-  background: rgba(255,215,0,0.15);
-  color: #FFD700;
-  font-weight: 600;
-}
-
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.cal-month-label { font-size: 12px; font-weight: 600; color: #FFD700; letter-spacing: 0.4px; }
+.cal-nav { background: none; border: none; color: rgba(255,215,0,0.5); cursor: pointer; font-size: 18px; padding: 0 5px; border-radius: 4px; line-height: 1; transition: color 0.15s, background 0.15s; }
+.cal-nav:hover { color: #FFD700; background: rgba(255,215,0,0.08); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-dname { font-size: 9px; color: rgba(255,215,0,0.3); text-align: center; padding: 3px 0; letter-spacing: 0.3px; }
+.cal-cell { font-size: 11px; color: rgba(255,255,255,0.38); text-align: center; padding: 5px 2px; border-radius: 4px; cursor: default; }
+.cal-cell.today { background: rgba(255,215,0,0.15); color: #FFD700; font-weight: 600; }
 .cal-cell.empty { opacity: 0; pointer-events: none; }
 
-/* copyright bar */
-.re-footer-bar {
-  border-top: 1px solid rgba(255,255,255,0.06);
-  text-align: center;
-  padding: 14px 16px;
-  color: rgba(255,255,255,0.22);
-  font-size: 11px;
-  letter-spacing: 0.4px;
-}
-
+.re-footer-bar { border-top: 1px solid rgba(255,255,255,0.06); text-align: center; padding: 14px 16px; color: rgba(255,255,255,0.22); font-size: 11px; letter-spacing: 0.4px; }
 .re-footer-bar span { color: rgba(255,215,0,0.4); }
 
-@media (max-width: 860px) {
-  .re-footer-inner { grid-template-columns: repeat(2,1fr); padding: 32px 24px 24px; }
+@media (max-width: 860px) { .re-footer-inner { grid-template-columns: repeat(2,1fr); padding: 32px 24px 24px; } }
+@media (max-width: 480px) { .re-footer-inner { grid-template-columns: 1fr; } }
+
+/* ── Responsive header ── */
+@media (max-width: 600px) {
+  .gh-nav-item span.gh-nav-label { display: none; }
+  .gh-nav-item { padding: 7px 9px; gap: 0; }
+  .gh-logo-sub { display: none; }
+  .gh-logo-divider { display: none; }
+  .gh-logo-svg { height: 24px; }
 }
-@media (max-width: 480px) {
-  .re-footer-inner { grid-template-columns: 1fr; }
+@media (max-width: 400px) {
+  .gh-nav { gap: 0; margin-left: 8px; }
+  .gh-nav-item { padding: 7px 7px; }
 }
 
 /* ═══════════════════════════════════════════
-   HAMBURGER MENU
+   SIDE PANEL
 ═══════════════════════════════════════════ */
+.hbg-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0); z-index: 100000; pointer-events: none; transition: background 0.35s ease; }
+.hbg-overlay.is-open { background: rgba(0,0,0,0.55); pointer-events: all; }
 
-.hbg-btn {
-  position: fixed;
-  top: 18px;
-  right: 20px;
-  z-index: 100001;
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  background: rgba(20, 20, 20, 0.72);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 215, 0, 0.18);
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 0;
-  transition: background 0.22s, border-color 0.22s, transform 0.15s, box-shadow 0.22s;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.45);
-}
+.hbg-panel { position: fixed; top: 0; right: 0; height: 100%; width: min(480px, 92vw); z-index: 200001; background: rgba(12,12,12,0.97); backdrop-filter: blur(20px); border-left: 1px solid rgba(255,215,0,0.12); display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.38s cubic-bezier(.77,0,.18,1); box-shadow: -8px 0 40px rgba(0,0,0,0.6); overflow: hidden; }
+.hbg-panel.is-open { transform: translateX(0); }
 
-.hbg-btn:hover {
-  background: rgba(35, 35, 35, 0.92);
-  border-color: rgba(255, 215, 0, 0.45);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,215,0,0.12);
-  transform: scale(1.06);
-}
+.hbg-header { display: flex; align-items: center; justify-content: space-between; padding: 26px 28px 22px; border-bottom: 1px solid rgba(255,215,0,0.1); flex-shrink: 0; }
+.hbg-logo { display: flex; align-items: center; gap: 10px; }
+.hbg-logo-dot { width: 10px; height: 10px; border-radius: 50%; background: #FFD700; box-shadow: 0 0 10px rgba(255,215,0,0.6); animation: hbg-pulse 2.2s ease-in-out infinite; }
+@keyframes hbg-pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(0.75); } }
+.hbg-greeting-line { font-size: 14px; font-weight: 700; letter-spacing: 0.4px; color: rgba(255,255,255,0.8); }
+.hbg-close { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); font-size: 20px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.18s, color 0.18s, border-color 0.18s; }
+.hbg-close:hover { background: rgba(255,215,0,0.1); border-color: rgba(255,215,0,0.3); color: #FFD700; }
 
-.hbg-btn:active { transform: scale(0.96); }
-
-.hbg-bar {
-  display: block;
-  width: 24px;
-  height: 2.5px;
-  background: #FFD700;
-  border-radius: 2px;
-  transition: transform 0.32s cubic-bezier(.77,0,.18,1),
-              opacity   0.22s ease,
-              width     0.28s ease;
-  transform-origin: center;
-}
-
-.hbg-btn.is-open .hbg-bar:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-.hbg-btn.is-open .hbg-bar:nth-child(2) {
-  opacity: 0;
-  width: 0;
-}
-.hbg-btn.is-open .hbg-bar:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
-}
-
-.hbg-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0);
-  z-index: 100000;
-  pointer-events: none;
-  transition: background 0.35s ease;
-}
-
-.hbg-overlay.is-open {
-  background: rgba(0, 0, 0, 0.55);
-  pointer-events: all;
-}
-
-.hbg-panel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: min(480px, 92vw);
-  z-index: 100001;
-  background: rgba(12, 12, 12, 0.97);
-  backdrop-filter: blur(20px);
-  border-left: 1px solid rgba(255, 215, 0, 0.12);
-  display: flex;
-  flex-direction: column;
-  transform: translateX(100%);
-  transition: transform 0.38s cubic-bezier(.77,0,.18,1);
-  box-shadow: -8px 0 40px rgba(0,0,0,0.6);
-  overflow: hidden;
-}
-
-.hbg-panel.is-open {
-  transform: translateX(0);
-}
-
-.hbg-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 26px 28px 22px;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
-  flex-shrink: 0;
-}
-
-.hbg-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.hbg-logo-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #FFD700;
-  box-shadow: 0 0 10px rgba(255,215,0,0.6);
-  animation: hbg-pulse 2.2s ease-in-out infinite;
-}
-
-@keyframes hbg-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.5; transform: scale(0.75); }
-}
-
-.hbg-greeting-line {
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.hbg-close {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.5);
-  font-size: 20px;
-  line-height: 1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.18s, color 0.18s, border-color 0.18s;
-}
-
-.hbg-close:hover {
-  background: rgba(255,215,0,0.1);
-  border-color: rgba(255,215,0,0.3);
-  color: #FFD700;
-}
-
-.hbg-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 28px 28px 16px;
-  scrollbar-width: thin;
-  scrollbar-color: #333 transparent;
-}
-
+.hbg-body { flex: 1; overflow-y: auto; padding: 28px 28px 16px; scrollbar-width: thin; scrollbar-color: #333 transparent; }
 .hbg-body::-webkit-scrollbar { width: 4px; }
 .hbg-body::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
 
-/* ── Future nav slots ── */
-.hbg-section-label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: rgba(255, 215, 0, 0.35);
-  margin-bottom: 12px;
-  padding-left: 2px;
-}
-
-.hbg-nav-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 28px;
-}
-
-.hbg-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 18px;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  color: rgba(255,255,255,0.3);
-  font-size: 15px;
-  cursor: default;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
-  margin-bottom: 6px;
-  user-select: none;
-}
-
-.hbg-nav-item.coming {
-  opacity: 0.45;
-}
-
-.hbg-nav-item.coming::after {
-  content: 'Soon';
-  margin-left: auto;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  background: rgba(255,215,0,0.1);
-  border: 1px solid rgba(255,215,0,0.2);
-  color: rgba(255,215,0,0.6);
-  padding: 2px 7px;
-  border-radius: 20px;
-}
-
-.hbg-nav-icon {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  opacity: 0.5;
-}
-
-/* ─────────────────────────────────────────
-   BACKGROUND CHANGER (in side panel)
-───────────────────────────────────────── */
-.bg-changer-section {
-  margin-bottom: 28px;
-}
-
-.bg-toggle-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background: rgba(255,215,0,0.04);
-  border: 1px solid rgba(255,215,0,0.14);
-  border-radius: 12px;
-  color: rgba(255,255,255,0.65);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  cursor: pointer;
-  height: auto;
-  margin: 0;
-  transition: background 0.18s, border-color 0.18s, color 0.18s;
-}
-
-.bg-toggle-btn:hover {
-  background: rgba(255,215,0,0.08);
-  border-color: rgba(255,215,0,0.3);
-  color: #FFD700;
-}
-
-.bg-toggle-left {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-
+/* BACKGROUND CHANGER */
+.bg-changer-section { margin-bottom: 28px; }
+.bg-toggle-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,215,0,0.04); border: 1px solid rgba(255,215,0,0.14); border-radius: 12px; color: rgba(255,255,255,0.65); font-size: 13px; font-weight: 600; letter-spacing: 0.4px; cursor: pointer; height: auto; margin: 0; transition: background 0.18s, border-color 0.18s, color 0.18s; }
+.bg-toggle-btn:hover { background: rgba(255,215,0,0.08); border-color: rgba(255,215,0,0.3); color: #FFD700; }
+.bg-toggle-left { display: flex; align-items: center; gap: 9px; }
 .bg-toggle-left svg { flex-shrink: 0; opacity: 0.7; }
 .bg-toggle-btn:hover .bg-toggle-left svg { opacity: 1; }
+.bg-toggle-arrow { font-size: 18px; line-height: 1; color: rgba(255,215,0,0.4); transition: transform 0.25s ease, color 0.18s; display: inline-block; }
+.bg-toggle-btn[aria-expanded="true"] .bg-toggle-arrow { transform: rotate(90deg); color: #FFD700; }
+.bg-changer-card { margin-top: 10px; background: rgba(255,215,0,0.03); border: 1px solid rgba(255,215,0,0.12); border-radius: 14px; padding: 18px 18px 14px; }
+.bg-upload-area { border: 1px dashed rgba(255,255,255,0.18); border-radius: 10px; padding: 13px 10px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; margin-bottom: 10px; }
+.bg-upload-area:hover { border-color: rgba(255,215,0,0.45); background: rgba(255,215,0,0.04); }
+.bg-upload-label { font-size: 12px; color: rgba(255,255,255,0.4); display: block; cursor: pointer; }
+.bg-upload-label span { color: rgba(255,215,0,0.65); }
+#bgFileInput { display: none; }
+.bg-reset-btn { width: 100%; height: 34px; border-radius: 8px; background: rgba(255,127,127,0.08); border: 1px solid rgba(255,127,127,0.22); color: rgba(255,127,127,0.7); font-size: 12px; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: background 0.18s, color 0.18s, border-color 0.18s; }
+.bg-reset-btn:hover { background: rgba(255,127,127,0.16); border-color: rgba(255,127,127,0.5); color: #FF7F7F; }
+.bg-current-label { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 9px; text-align: center; min-height: 15px; transition: color 0.2s; }
 
-.bg-toggle-arrow {
-  font-size: 18px;
-  line-height: 1;
-  color: rgba(255,215,0,0.4);
-  transition: transform 0.25s ease, color 0.18s;
-  display: inline-block;
-}
-
-.bg-toggle-btn[aria-expanded="true"] .bg-toggle-arrow {
-  transform: rotate(90deg);
-  color: #FFD700;
-}
-
-.bg-changer-card {
-  margin-top: 10px;
-  background: rgba(255,215,0,0.03);
-  border: 1px solid rgba(255,215,0,0.12);
-  border-radius: 14px;
-  padding: 18px 18px 14px;
-}
-
-.bg-changer-title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255,215,0,0.6);
-  margin-bottom: 14px;
-}
-
-.bg-upload-area {
-  border: 1px dashed rgba(255,255,255,0.18);
-  border-radius: 10px;
-  padding: 13px 10px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
-  margin-bottom: 10px;
-}
-
-.bg-upload-area:hover {
-  border-color: rgba(255,215,0,0.45);
-  background: rgba(255,215,0,0.04);
-}
-
-.bg-upload-label {
-  font-size: 12px;
-  color: rgba(255,255,255,0.4);
-  display: block;
-  cursor: pointer;
-}
-
-.bg-upload-label span {
-  color: rgba(255,215,0,0.65);
-}
-
-#bgFileInput {
-  display: none;
-}
-
-.bg-reset-btn {
-  width: 100%;
-  height: 34px;
-  border-radius: 8px;
-  background: rgba(255,127,127,0.08);
-  border: 1px solid rgba(255,127,127,0.22);
-  color: rgba(255,127,127,0.7);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s, border-color 0.18s;
-}
-
-.bg-reset-btn:hover {
-  background: rgba(255,127,127,0.16);
-  border-color: rgba(255,127,127,0.5);
-  color: #FF7F7F;
-}
-
-.bg-current-label {
-  font-size: 11px;
-  color: rgba(255,255,255,0.25);
-  margin-top: 9px;
-  text-align: center;
-  min-height: 15px;
-  transition: color 0.2s;
-}
-
-/* ── Panel footer ── */
-.hbg-footer {
-  padding: 18px 28px;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  text-align: center;
-  font-size: 11px;
-  color: rgba(255,255,255,0.18);
-  letter-spacing: 0.5px;
-  flex-shrink: 0;
-}
-
-.hbg-footer span { color: rgba(255,215,0,0.3); }
-
-.hbg-user-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.hbg-user-info {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  min-width: 0;
-  flex: 1;
-}
-
-.hbg-user-icon {
-  display: flex;
-  align-items: center;
-  color: rgba(255,215,0,0.45);
-  flex-shrink: 0;
-}
-
-.hbg-user-label {
-  font-size: 10px;
-  color: rgba(255,255,255,0.28);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.hbg-user-name {
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255,215,0,0.7);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 130px;
-}
-
-.hbg-logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,127,127,0.22);
-  background: rgba(255,127,127,0.07);
-  color: rgba(255,127,127,0.7);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.14s;
-}
-
-.hbg-logout-btn:hover {
-  background: rgba(255,127,127,0.16);
-  border-color: rgba(255,127,127,0.5);
-  color: #FF7F7F;
-  transform: translateY(-1px);
-}
-
+/* Panel footer */
+.hbg-footer { padding: 18px 28px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; font-size: 11px; color: rgba(255,255,255,0.18); letter-spacing: 0.5px; flex-shrink: 0; }
+.hbg-user-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.hbg-user-info { display: flex; align-items: center; gap: 7px; min-width: 0; flex: 1; }
+.hbg-user-icon { display: flex; align-items: center; color: rgba(255,215,0,0.45); flex-shrink: 0; }
+.hbg-user-label { font-size: 10px; color: rgba(255,255,255,0.28); white-space: nowrap; flex-shrink: 0; }
+.hbg-user-name { font-size: 12px; font-weight: 600; color: rgba(255,215,0,0.7); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
+.hbg-logout-btn { display: flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,127,127,0.22); background: rgba(255,127,127,0.07); color: rgba(255,127,127,0.7); font-size: 11px; font-weight: 600; letter-spacing: 0.4px; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.14s; }
+.hbg-logout-btn:hover { background: rgba(255,127,127,0.16); border-color: rgba(255,127,127,0.5); color: #FF7F7F; transform: translateY(-1px); }
 .hbg-logout-btn:active { transform: scale(0.96); }
 
 /* ═══════════════════════════════════════════
-   LOGOUT CONFIRMATION MODAL
+   LOGOUT MODAL
 ═══════════════════════════════════════════ */
-
-#logout-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 300000;
-  background: rgba(0,0,0,0);
-  backdrop-filter: blur(0px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  box-sizing: border-box;
-  pointer-events: none;
-  transition: background 0.3s ease, backdrop-filter 0.3s ease;
-}
-
-#logout-modal-backdrop.lm-open {
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(6px);
-  pointer-events: all;
-}
-
-.logout-modal {
-  width: min(100%, 380px);
-  background: #111;
-  border: 1px solid rgba(255,215,0,0.15);
-  border-radius: 20px;
-  padding: 36px 32px 28px;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,215,0,0.06);
-  text-align: center;
-  opacity: 0;
-  transform: scale(0.88) translateY(16px);
-  transition: opacity 0.28s cubic-bezier(.22,1,.36,1), transform 0.28s cubic-bezier(.22,1,.36,1);
-}
-
-#logout-modal-backdrop.lm-open .logout-modal {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-}
-
-.lm-icon-ring {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: rgba(255,127,127,0.08);
-  border: 1.5px solid rgba(255,127,127,0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 20px;
-}
-
-.lm-icon-ring svg {
-  width: 28px;
-  height: 28px;
-  stroke: #FF7F7F;
-  fill: none;
-  stroke-width: 1.8;
-}
-
-.lm-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #fff;
-  margin: 0 0 10px;
-  letter-spacing: 0.2px;
-}
-
-.lm-msg {
-  font-size: 13.5px;
-  color: rgba(255,255,255,0.42);
-  line-height: 1.65;
-  margin: 0 0 28px;
-}
-
-.lm-msg strong {
-  color: rgba(255,215,0,0.7);
-  font-weight: 600;
-}
-
-.lm-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.lm-btn {
-  flex: 1;
-  height: 46px;
-  border-radius: 11px;
-  border: none;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  cursor: pointer;
-  transition: transform 0.14s, box-shadow 0.18s, filter 0.16s, background 0.16s;
-}
-
-.lm-btn-cancel {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.6);
-}
-
-.lm-btn-cancel:hover {
-  background: rgba(255,255,255,0.11);
-  color: #fff;
-  transform: translateY(-1px);
-}
-
+#logout-modal-backdrop { position: fixed; inset: 0; z-index: 300000; background: rgba(0,0,0,0); backdrop-filter: blur(0px); display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; pointer-events: none; transition: background 0.3s ease, backdrop-filter 0.3s ease; }
+#logout-modal-backdrop.lm-open { background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); pointer-events: all; }
+.logout-modal { width: min(100%, 380px); background: #111; border: 1px solid rgba(255,215,0,0.15); border-radius: 20px; padding: 36px 32px 28px; box-shadow: 0 24px 64px rgba(0,0,0,0.75); text-align: center; opacity: 0; transform: scale(0.88) translateY(16px); transition: opacity 0.28s cubic-bezier(.22,1,.36,1), transform 0.28s cubic-bezier(.22,1,.36,1); }
+#logout-modal-backdrop.lm-open .logout-modal { opacity: 1; transform: scale(1) translateY(0); }
+.lm-icon-ring { width: 64px; height: 64px; border-radius: 50%; background: rgba(255,127,127,0.08); border: 1.5px solid rgba(255,127,127,0.25); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+.lm-icon-ring svg { width: 28px; height: 28px; stroke: #FF7F7F; fill: none; stroke-width: 1.8; }
+.lm-title { font-size: 18px; font-weight: 700; color: #fff; margin: 0 0 10px; }
+.lm-msg { font-size: 13.5px; color: rgba(255,255,255,0.42); line-height: 1.65; margin: 0 0 28px; }
+.lm-msg strong { color: rgba(255,215,0,0.7); font-weight: 600; }
+.lm-actions { display: flex; gap: 12px; }
+.lm-btn { flex: 1; height: 46px; border-radius: 11px; border: none; font-size: 14px; font-weight: 600; letter-spacing: 0.4px; cursor: pointer; transition: transform 0.14s, box-shadow 0.18s, filter 0.16s, background 0.16s; }
+.lm-btn-cancel { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
+.lm-btn-cancel:hover { background: rgba(255,255,255,0.11); color: #fff; transform: translateY(-1px); }
 .lm-btn-cancel:active { transform: scale(0.97); }
-
-.lm-btn-confirm {
-  background: linear-gradient(135deg, #FF6B6B, #e04040);
-  color: #fff;
-  box-shadow: 0 5px 18px rgba(255,80,80,0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.lm-btn-confirm::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.2) 50%, transparent 65%);
-  transform: translateX(-100%);
-  transition: transform 0.45s ease;
-}
-
+.lm-btn-confirm { background: linear-gradient(135deg, #FF6B6B, #e04040); color: #fff; box-shadow: 0 5px 18px rgba(255,80,80,0.3); position: relative; overflow: hidden; }
+.lm-btn-confirm::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.2) 50%, transparent 65%); transform: translateX(-100%); transition: transform 0.45s ease; }
 .lm-btn-confirm:hover::after { transform: translateX(100%); }
-
-.lm-btn-confirm:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(255,80,80,0.4);
-}
-
+.lm-btn-confirm:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,80,80,0.4); }
 .lm-btn-confirm:active { transform: scale(0.97); }
 
 /* ── ENTRY GATE ── */
-#entry-gate {
-  position: fixed;
-  inset: 0;
-  z-index: 200000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    linear-gradient(135deg, rgba(8,8,8,0.82), rgba(18,18,18,0.78)),
-    url('himalayan-bg.jpg') center / cover no-repeat;
-  transition: opacity 0.55s ease, visibility 0.55s ease;
-  opacity: 1;
-  visibility: visible;
-  padding: 20px;
-  box-sizing: border-box;
-}
-#entry-gate.gate-hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-.entry-card {
-  width: min(100%, 440px);
-  background: rgba(255,255,255,0.035);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,215,0,0.13);
-  border-radius: 20px;
-  padding: clamp(28px,5vw,44px) clamp(24px,5vw,40px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,215,0,0.06);
-  animation: entry-rise 0.65s cubic-bezier(.22,1,.36,1) both;
-}
-@keyframes entry-rise {
-  from { opacity:0; transform:translateY(28px) scale(0.97); }
-  to   { opacity:1; transform:translateY(0) scale(1); }
-}
-.entry-brand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 32px;
-}
-.entry-brand-line {
-  height: 1px;
-  flex: 1;
-  background: linear-gradient(to right, transparent, rgba(255,215,0,0.25));
-}
-.entry-brand-line.right {
-  background: linear-gradient(to left, transparent, rgba(255,215,0,0.25));
-}
-.entry-brand-badge {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(255,215,0,0.6);
-  white-space: nowrap;
-}
-.entry-heading {
-  text-align: center;
-  color: #fff;
-  font-size: clamp(22px,4vw,30px);
-  font-weight: 300;
-  letter-spacing: 0.5px;
-  margin: 0 0 6px;
-  line-height: 1.25;
-}
+#entry-gate { position: fixed; inset: 0; z-index: 200000; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(8,8,8,0.82), rgba(18,18,18,0.78)), url('himalayan-bg.jpg') center/cover no-repeat; transition: opacity 0.55s ease, visibility 0.55s ease; opacity: 1; visibility: visible; padding: 20px; box-sizing: border-box; }
+#entry-gate.gate-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.entry-card { width: min(100%, 440px); background: rgba(255,255,255,0.035); backdrop-filter: blur(16px); border: 1px solid rgba(255,215,0,0.13); border-radius: 20px; padding: clamp(28px,5vw,44px) clamp(24px,5vw,40px); box-shadow: 0 20px 60px rgba(0,0,0,0.55); animation: entry-rise 0.65s cubic-bezier(.22,1,.36,1) both; }
+@keyframes entry-rise { from { opacity:0; transform:translateY(28px) scale(0.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+.entry-brand { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 32px; }
+.entry-brand-line { height: 1px; flex: 1; background: linear-gradient(to right, transparent, rgba(255,215,0,0.25)); }
+.entry-brand-line.right { background: linear-gradient(to left, transparent, rgba(255,215,0,0.25)); }
+.entry-brand-badge { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,215,0,0.6); white-space: nowrap; }
+.entry-heading { text-align: center; color: #fff; font-size: clamp(22px,4vw,30px); font-weight: 300; letter-spacing: 0.5px; margin: 0 0 6px; line-height: 1.25; }
 .entry-heading strong { color: #FFD700; font-weight: 700; }
-.entry-sub {
-  text-align: center;
-  font-size: 13px;
-  color: rgba(255,255,255,0.38);
-  margin: 0 0 32px;
-  letter-spacing: 0.3px;
-}
+.entry-sub { text-align: center; font-size: 13px; color: rgba(255,255,255,0.38); margin: 0 0 32px; }
 .entry-field-wrap { position: relative; margin-bottom: 4px; }
-.entry-field-label {
-  display: block;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255,215,0,0.5);
-  margin-bottom: 8px;
-  padding-left: 2px;
-}
-.entry-input {
-  width: 100%;
-  height: 48px;
-  padding: 0 16px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  color: #fff;
-  font-size: 15px;
-  font-family: 'Segoe UI', sans-serif;
-  letter-spacing: 0.3px;
-  box-sizing: border-box;
-  outline: none;
-  margin: 0 !important;
-  transition: border-color 0.22s, box-shadow 0.22s, background 0.22s !important;
-  transform: none !important;
-}
+.entry-field-label { display: block; font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,215,0,0.5); margin-bottom: 8px; padding-left: 2px; }
+.entry-input { width: 100%; height: 48px; padding: 0 16px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 15px; font-family: 'Segoe UI', sans-serif; box-sizing: border-box; outline: none; margin: 0 !important; transition: border-color 0.22s, box-shadow 0.22s, background 0.22s !important; transform: none !important; }
 .entry-input::placeholder { color: rgba(255,255,255,0.28); }
-.entry-input:focus {
-  border-color: rgba(255,215,0,0.5) !important;
-  background: rgba(255,255,255,0.1) !important;
-  box-shadow: 0 0 0 3px rgba(255,215,0,0.1), 0 0 14px rgba(52,165,82,0.18) !important;
-  transform: none !important;
-}
+.entry-input:focus { border-color: rgba(255,215,0,0.5) !important; background: rgba(255,255,255,0.1) !important; box-shadow: 0 0 0 3px rgba(255,215,0,0.1) !important; transform: none !important; }
 .entry-input.has-error { border-color: rgba(255,127,127,0.6) !important; }
-.entry-error {
-  font-size: 12px;
-  color: #FF7F7F;
-  margin: 7px 0 0 2px;
-  min-height: 18px;
-  display: block;
-  opacity: 0;
-  transform: translateY(-4px);
-  transition: opacity 0.2s, transform 0.2s;
-}
+.entry-error { font-size: 12px; color: #FF7F7F; margin: 7px 0 0 2px; min-height: 18px; display: block; opacity: 0; transform: translateY(-4px); transition: opacity 0.2s, transform 0.2s; }
 .entry-error.visible { opacity: 1; transform: translateY(0); }
-.entry-btn {
-  width: 100%;
-  height: 50px;
-  margin-top: 22px;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #FFD700 0%, #e6b800 100%);
-  color: #111;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  overflow: hidden;
-  transition: transform 0.16s, box-shadow 0.22s, filter 0.18s;
-  box-shadow: 0 6px 24px rgba(255,215,0,0.25);
-}
-.entry-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.3) 50%, transparent 65%);
-  transform: translateX(-100%);
-  transition: transform 0.55s ease;
-}
+.entry-btn { width: 100%; height: 50px; margin-top: 22px; border: none; border-radius: 12px; background: linear-gradient(135deg, #FFD700 0%, #e6b800 100%); color: #111; font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; transition: transform 0.16s, box-shadow 0.22s, filter 0.18s; box-shadow: 0 6px 24px rgba(255,215,0,0.25); }
+.entry-btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.3) 50%, transparent 65%); transform: translateX(-100%); transition: transform 0.55s ease; }
 .entry-btn:hover::after { transform: translateX(100%); }
-.entry-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 32px rgba(255,215,0,0.35);
-  filter: brightness(1.05);
-}
+.entry-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(255,215,0,0.35); filter: brightness(1.05); }
 .entry-btn:active { transform: translateY(0) scale(0.98); }
 .entry-btn-arrow { font-size: 17px; line-height: 1; transition: transform 0.22s; }
 .entry-btn:hover .entry-btn-arrow { transform: translateX(4px); }
-.entry-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 26px 0 18px;
-}
+.entry-divider { display: flex; align-items: center; gap: 12px; margin: 26px 0 18px; }
 .entry-divider-line { flex:1; height:1px; background:rgba(255,255,255,0.07); }
-.entry-divider-text {
-  font-size: 10px;
-  color: rgba(255,255,255,0.2);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.entry-note {
-  text-align: center;
-  font-size: 11.5px;
-  color: rgba(255,255,255,0.22);
-  line-height: 1.6;
-}
+.entry-divider-text { font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+.entry-note { text-align: center; font-size: 11.5px; color: rgba(255,255,255,0.22); line-height: 1.6; }
 .entry-note strong { color: rgba(255,215,0,0.4); font-weight:600; }
 
-#app-root {
-  opacity: 0;
-  transition: opacity 0.5s ease 0.1s;
-}
+#app-root { opacity: 0; transition: opacity 0.5s ease 0.1s; }
 #app-root.app-visible { opacity: 1; }
 </style>
 </head>
 <body>
 
-<!-- ===== LOGOUT CONFIRMATION MODAL ===== -->
+<!-- ===== LOGOUT MODAL ===== -->
 <div id="logout-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="lm-title" aria-hidden="true">
-  <div class="logout-modal" id="logoutModal">
+  <div class="logout-modal">
     <div class="lm-icon-ring">
       <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
     </div>
@@ -1308,18 +593,14 @@ button {
     </div>
     <h1 class="entry-heading" id="entry-title">Welcome, <strong>Rider</strong></h1>
     <p class="entry-sub">Enter your name to access the CRM dashboard</p>
-
     <div class="entry-field-wrap">
       <label class="entry-field-label" for="entryName">Your Name</label>
       <input id="entryName" class="entry-input" type="text" placeholder="e.g. Advait" autocomplete="off" spellcheck="false" maxlength="60">
       <span class="entry-error" id="entryError" role="alert"></span>
     </div>
-
     <button class="entry-btn" id="entryBtn" type="button">
-      Continue
-      <span class="entry-btn-arrow">→</span>
+      Continue <span class="entry-btn-arrow">→</span>
     </button>
-
     <div class="entry-divider">
       <div class="entry-divider-line"></div>
       <div class="entry-divider-text">Secure &amp; Local</div>
@@ -1332,19 +613,61 @@ button {
 <!-- ===== APP ROOT ===== -->
 <div id="app-root">
 
-<!-- ===== HAMBURGER BUTTON ===== -->
-<button class="hbg-btn" id="hbgBtn" aria-label="Open menu" aria-expanded="false" aria-controls="hbgPanel">
-  <span class="hbg-bar"></span>
-  <span class="hbg-bar"></span>
-  <span class="hbg-bar"></span>
-</button>
+<!-- ===== GLOBAL FIXED HEADER ===== -->
+<header id="global-header" role="banner">
+
+  <!-- Logo: inline SVG Royal Enfield wordmark (red, scaled to header) -->
+  <div class="gh-logo" id="ghLogo" title="Royal Enfield CRM">
+    <svg class="gh-logo-svg" viewBox="0 0 1500 312" xmlns="http://www.w3.org/2000/svg" aria-label="Royal Enfield">
+      <g>
+        <path fill="#E53517" d="M439.999,170.106l12.661-38.285h0.213l13.299,38.285H439.999z M479.667,88.341h-45.484v0.621c1.639,2.841,2.443,6.085,2.323,9.363c0,5.55-3.334,15.232-4.593,19.399l-28.763,83.167c-3.759,10.639-4.344,13.653-11.508,23.975v0.62h37.948v-0.603c-1.797-2.957-2.754-6.348-2.767-9.807c0-5.32,2.376-12.697,3.83-16.881l2.021-5.888h41.211c0,0,2.624,7.519,4.149,11.935c1.149,3.369,1.749,6.901,1.773,10.461c-0.117,3.492-0.843,6.938-2.146,10.18v0.62h54.971v-0.62c-5.958-7.484-8.618-15.854-13.618-29.188L479.667,88.341z"/>
+        <path fill="#E53517" d="M368.324,195.074c0,12.094,0.869,23.336,4.859,29.809v0.62H319.63v-0.62c5.409-9.08,4.451-18.549,4.451-29.401v-22.538v-5.32l-7.537-14.186l-25.73-48.41c-3.546-6.667-6.188-11.065-11.704-15.959v-0.727h46.938v0.621l27.84,56.638l7.696-15.658c2.837-5.781,6.348-12.945,7.643-15.551c2.323-4.628,4.806-10.746,4.806-15.853c0.2-3.299-0.823-6.557-2.873-9.15v-1.046h37.238v0.621l-37.238,74.478l-2.82,5.639L368.324,195.074z"/>
+        <path fill="#E53517" d="M639.526,225.521h-96.643v-0.638c4.043-8.867,4.45-15.96,4.45-29.188v-77.722c0-15.959-1.524-22.467-4.45-28.975v-0.656h52.452v0.621c-3.352,9.398-3.724,14.931-3.724,29.383v78.821c6.723,1.172,13.533,1.766,20.357,1.773c15.87,0,24.134-1.348,30.039-4.078h1.276L639.526,225.521z"/>
+        <path fill="#E53517" d="M50.077,144.926V82.294h15.002c17.644,0,25.039,10.303,25.039,26.865c0,20.073-11.846,35.749-30.695,35.749L50.077,144.926z M214.99,85.008c-42.789,0-72.295,26.351-72.295,63.837c0,54.563,57.95,62.384,77.899,44.704l-3.387-7.094c-17.555,3.547-33.479-9.859-33.479-39.703c0-24.276,12.732-39.419,30.588-39.419c20.393,0,33.32,20.676,33.32,50.378c0,33.816-19.399,59.457-56.018,59.457c-41.636,0-73.289-32.822-92.475-65.61c21.438-8.441,34.135-24.578,34.135-46.655c0-28.585-21.403-48.48-60.291-48.48H0v0.621c2.926,6.472,4.451,18.229,4.451,34.224v104.445c0,13.211-0.408,20.393-4.451,29.171v0.62h54.616v-0.62c-3.546-8.494-4.54-19.4-4.54-29.171c0-16.226,0-28.886,0-28.886h6.667c37.895,55.449,80.896,78.431,126.965,78.431c66.604,0,106.041-41.973,106.041-88.982c0.018-39.313-30.181-71.267-74.832-71.267H214.99z"/>
+        <path fill="#E53517" d="M964.653,88.979c-2.926,6.508-4.362,12.98-4.362,28.975v85.293c0.248,8.707,1.17,14.684,4.362,21.635v0.62h-31.919c-6.721-2.872-14.187-11.261-23.727-21.599c-7.767-8.458-44.828-50.804-44.828-50.804h-0.603c0,0,0,40.04,0,40.785c-11.227,1.218-22.33,3.378-33.195,6.454v-82.385c0-15.959-1.525-22.449-4.451-28.957v-0.656h38.692l62.437,74.903v-0.213v-45.077c0-15.959-1.507-22.467-4.433-28.975v-0.638h42.026V88.979z"/>
+        <path fill="#E53517" d="M900.815,225.539c-54.314,0.496-67.224,30.038-136.222,30.038c-21.238-0.245-42.362-3.146-62.88-8.636v-0.639c4.043-8.865,4.451-15.959,4.451-29.081V91.32c0-15.959-1.525-27.716-4.451-34.206v-0.691h111.449l3.671,30.908h-0.62c-8.246-3.228-18.619-4.345-33.195-4.345h-29.525v53.553h14.328c21.864,0,34.986-1.578,38.355-2.412h1.046v32.238h-1.046c-4.558-1.632-19.647-3.121-37.788-3.121h-14.576v53.41c10.775,2.464,21.772,3.83,32.823,4.078c40.998,0,58.624-14.664,99.657-14.664c1.33,0,2.287,0,3.671,0c5.419,6.932,11.347,13.451,17.732,19.506L900.815,225.539z"/>
+        <path fill="#E53517" d="M1137.511,117.955v77.74c0,13.229,0.39,20.321,4.468,29.188v0.62h-53.197v-0.62c4.043-8.867,4.433-15.96,4.433-29.188v-77.74c0-15.959-1.507-22.467-4.433-28.975v-0.638h53.197v0.638C1139.018,95.435,1137.511,101.96,1137.511,117.955z"/>
+        <path fill="#E53517" d="M1031.114,148.189h3.707c19.506,0,25.907-1.419,28.939-2.164h0.939v28.372h-0.939c-4.061-1.454-12.183-2.784-28.372-2.784h-4.221v23.461c0,13.689,0.727,23.052,4.858,29.809v0.62h-53.641v-0.62c4.043-8.867,4.451-15.96,4.451-29.188v-77.74c0-15.959-1.525-22.467-4.451-28.975v-0.638h91.429l3.37,27.716h-0.621c-6.33-2.819-14.718-4.451-27.733-4.451h-17.733v36.583H1031.114z"/>
+        <path fill="#E53517" d="M1257.666,197.024l-3.546,28.479h-93.983v-0.62c4.044-8.867,4.451-15.96,4.451-29.188v-77.74c0-15.959-1.524-22.485-4.451-28.975v-0.638h91.43l3.387,27.716h-0.639c-6.33-2.819-14.7-4.451-27.716-4.451h-17.732v32.309h3.741c19.506,0,25.925-1.418,28.94-2.163h0.939v28.372h-0.939c-4.079-1.454-12.183-2.784-28.373-2.784h-4.237v32.273c6.002,1.033,12.085,1.52,18.176,1.454c16.579,0,22.751-1.063,29.596-3.972L1257.666,197.024z"/>
+        <path fill="#E53517" d="M1500,161.169c0,46.832-34.454,84.034-92.067,84.034c-44.633,0-58.748-19.506-114.181-19.664h-22.945v-0.656c4.043-8.867,4.433-15.96,4.433-29.188v-77.757c0-15.959-1.525-22.467-4.433-28.975v-0.621h53.197v0.621c-3.139,6.561-4.451,16.668-4.451,29.401v83.591c33.125,0,47.347,10.001,76.445,10.001c40.253,0,59.6-22.166,59.6-53.481c0-26.847-13.85-46.885-37.966-46.885h-15.516v84.921c-14.789,0.728-31.635-1.276-44.332-5.674v-72.899c0-15.959-1.524-22.467-4.45-28.975v-0.621h62.063C1467.337,88.341,1500,119.923,1500,161.169z"/>
+      </g>
+    </svg>
+    <div class="gh-logo-divider"></div>
+    <span class="gh-logo-sub">CRM Dashboard</span>
+  </div>
+
+  <!-- Nav — left aligned, no Dashboard, no Soon badges -->
+  <nav class="gh-nav" aria-label="Main navigation">
+    <button class="gh-nav-item coming-soon" data-tab="emi">
+      <span class="gh-nav-icon">💰</span>
+      <span class="gh-nav-label">EMI</span>
+    </button>
+    <button class="gh-nav-item coming-soon" data-tab="compare">
+      <span class="gh-nav-icon">⚖️</span>
+      <span class="gh-nav-label">Compare</span>
+    </button>
+    <button class="gh-nav-item coming-soon" data-tab="notes">
+      <span class="gh-nav-icon">📝</span>
+      <span class="gh-nav-label">Notes</span>
+    </button>
+  </nav>
+
+  <!-- Hamburger — far right -->
+  <div class="gh-right">
+    <button class="hbg-btn" id="hbgBtn" aria-label="Open menu" aria-expanded="false" aria-controls="hbgPanel">
+      <span class="hbg-bar"></span>
+      <span class="hbg-bar"></span>
+      <span class="hbg-bar"></span>
+    </button>
+  </div>
+
+</header>
 
 <!-- ===== BACKDROP ===== -->
 <div class="hbg-overlay" id="hbgOverlay" aria-hidden="true"></div>
 
 <!-- ===== SIDE PANEL ===== -->
-<nav class="hbg-panel" id="hbgPanel" aria-label="Main navigation" aria-hidden="true">
-
+<nav class="hbg-panel" id="hbgPanel" aria-label="Settings panel" aria-hidden="true">
   <div class="hbg-header">
     <div class="hbg-logo">
       <span class="hbg-logo-dot"></span>
@@ -1354,34 +677,25 @@ button {
   </div>
 
   <div class="hbg-body">
-
-    <!-- ── BACKGROUND CHANGER ── -->
     <div class="bg-changer-section">
       <button class="bg-toggle-btn" id="bgToggleBtn" aria-expanded="false">
         <span class="bg-toggle-left">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           Change Background
         </span>
-        <span class="bg-toggle-arrow" id="bgToggleArrow">›</span>
+        <span class="bg-toggle-arrow">›</span>
       </button>
-
       <div class="bg-changer-card" id="bgChangerCard" style="display:none;">
         <div class="bg-upload-area" id="bgUploadArea">
-          <label class="bg-upload-label" for="bgFileInput">
-            📷 <span>Upload your own image</span>
-          </label>
+          <label class="bg-upload-label" for="bgFileInput">📷 <span>Upload your own image</span></label>
           <input type="file" id="bgFileInput" accept="image/*">
         </div>
         <button class="bg-reset-btn" id="bgResetBtn">↩ Reset to Default</button>
         <div class="bg-current-label" id="bgCurrentLabel"></div>
       </div>
     </div>
-
-
-
   </div>
 
-  <!-- Panel footer -->
   <div class="hbg-footer" id="hbgFooter">
     <div class="hbg-user-row">
       <div class="hbg-user-info">
@@ -1397,19 +711,14 @@ button {
       </button>
     </div>
   </div>
-
 </nav>
 
 <!-- ===== HERO SECTION ===== -->
 <div class="hero-section" id="heroSection">
 
-  <!-- tooltip -->
   <div id="crm-tooltip">
     <div class="tt-head" id="tt-name"></div>
-    <div class="tt-row">
-      <span class="tt-lbl">About</span>
-      <span class="tt-val" id="tt-about"><span class="tt-tags" id="tt-tags"></span></span>
-    </div>
+    <div class="tt-row"><span class="tt-lbl">About</span><span class="tt-val" id="tt-about"><span class="tt-tags" id="tt-tags"></span></span></div>
     <div class="tt-row"><span class="tt-lbl">Engine</span><span class="tt-val" id="tt-usp"></span></div>
     <div class="tt-row"><span class="tt-lbl">Mileage</span><span class="tt-val" id="tt-mileage"></span></div>
   </div>
@@ -1426,60 +735,39 @@ button {
       <input id="keyEnquiry" placeholder="Key enquiry">
       <input id="buyingTime" placeholder="Buying time">
       <input id="testRide"   placeholder="Test ride date and time / NA / Already taken">
-      <div class="csw" id="wrap_model">
-        <div class="cst" id="trig_model" tabindex="0">Select Model</div>
-        <div class="cdrop" id="drop_model"></div>
-      </div>
+      <div class="csw" id="wrap_model"><div class="cst" id="trig_model" tabindex="0">Select Model</div><div class="cdrop" id="drop_model"></div></div>
       <input type="hidden" id="model">
       <input type="hidden" id="color">
-      <div class="csw" id="wrap_color">
-        <div class="cst" id="trig_color" tabindex="0">Select Color</div>
-        <div class="cdrop" id="drop_color"></div>
-      </div>
+      <div class="csw" id="wrap_color"><div class="cst" id="trig_color" tabindex="0">Select Color</div><div class="cdrop" id="drop_color"></div></div>
       <input id="dealership" placeholder="Dealership">
       <input id="altNumber"  placeholder="Alternate Number">
       <input type="hidden" id="paymentMode">
-      <div class="csw" id="wrap_payment">
-        <div class="cst" id="trig_payment" tabindex="0">Select Payment Mode</div>
-        <div class="cdrop" id="drop_payment"></div>
-      </div>
+      <div class="csw" id="wrap_payment"><div class="cst" id="trig_payment" tabindex="0">Select Payment Mode</div><div class="cdrop" id="drop_payment"></div></div>
       <input id="CustomerName" placeholder="Customer Name (if applicable)">
       <input id="lostReason" placeholder="Reason for lost case (if applicable)">
     </div>
 
     <!-- BOOKED -->
     <div id="bookedSection" class="hide">
-      <input id="b_keyEnquiry"   placeholder="Key enquiry">
+      <input id="b_keyEnquiry" placeholder="Key enquiry">
       <input type="hidden" id="b_model">
-      <div class="csw" id="wrap_b_model">
-        <div class="cst" id="trig_b_model" tabindex="0">Select Model</div>
-        <div class="cdrop" id="drop_b_model"></div>
-      </div>
+      <div class="csw" id="wrap_b_model"><div class="cst" id="trig_b_model" tabindex="0">Select Model</div><div class="cdrop" id="drop_b_model"></div></div>
       <input type="hidden" id="b_color">
-      <div class="csw" id="wrap_b_color">
-        <div class="cst" id="trig_b_color" tabindex="0">Select Color</div>
-        <div class="cdrop" id="drop_b_color"></div>
-      </div>
-      <input id="b_bookingtime"  placeholder="Booking date">
-      <input id="b_dealership"   placeholder="Dealership">
-      <input id="b_BookingName"  placeholder="Booking Name">
+      <div class="csw" id="wrap_b_color"><div class="cst" id="trig_b_color" tabindex="0">Select Color</div><div class="cdrop" id="drop_b_color"></div></div>
+      <input id="b_bookingtime"   placeholder="Booking date">
+      <input id="b_dealership"    placeholder="Dealership">
+      <input id="b_BookingName"   placeholder="Booking Name">
       <input id="b_bookingnumber" placeholder="Booking Number">
-      <input id="b_altNumber"    placeholder="Alternate Number">
+      <input id="b_altNumber"     placeholder="Alternate Number">
     </div>
 
     <!-- PURCHASED -->
     <div id="purchasedSection" class="hide">
       <input id="p_keyEnquiry"         placeholder="Key enquiry">
       <input type="hidden" id="p_model">
-      <div class="csw" id="wrap_p_model">
-        <div class="cst" id="trig_p_model" tabindex="0">Select Model</div>
-        <div class="cdrop" id="drop_p_model"></div>
-      </div>
+      <div class="csw" id="wrap_p_model"><div class="cst" id="trig_p_model" tabindex="0">Select Model</div><div class="cdrop" id="drop_p_model"></div></div>
       <input type="hidden" id="p_color">
-      <div class="csw" id="wrap_p_color">
-        <div class="cst" id="trig_p_color" tabindex="0">Select Color</div>
-        <div class="cdrop" id="drop_p_color"></div>
-      </div>
+      <div class="csw" id="wrap_p_color"><div class="cst" id="trig_p_color" tabindex="0">Select Color</div><div class="cdrop" id="drop_p_color"></div></div>
       <input id="p_Purchasedate"        placeholder="Purchased date">
       <input id="p_Registrationnumber"  placeholder="Registration number">
       <input id="p_dealership"          placeholder="Dealership">
@@ -1490,7 +778,7 @@ button {
       <input id="p_altNumber"           placeholder="Alternate Number">
     </div>
 
-    <div style="display:flex; justify-content:space-between; position:relative; z-index:1;">
+    <div style="display:flex;justify-content:space-between;position:relative;z-index:1;">
       <button class="copyBtn"  onclick="copyData()">Copy</button>
       <button class="resetBtn" onclick="resetForm()">Reset</button>
     </div>
@@ -1498,72 +786,36 @@ button {
 
 </div><!-- end .hero-section -->
 
-<!-- ===== PREMIUM FOOTER ===== -->
+<!-- ===== FOOTER ===== -->
 <footer class="re-footer">
   <div class="re-footer-inner">
-
     <div class="re-footer-col">
       <h3>Made By</h3>
       <p class="brand-name">Advait</p>
-      <a href="#" rel="noopener">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
-        Portfolio
-      </a>
-      <a href="https://github.com/your-username" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-        GitHub
-      </a>
-      <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-        LinkedIn
-      </a>
+      <a href="#" rel="noopener"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Portfolio</a>
+      <a href="https://github.com/advaitbuild" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub</a>
+      <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
     </div>
-
     <div class="re-footer-col">
       <h3>Royal Enfield</h3>
-      <a href="https://www.royalenfield.com/in/en/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
-        Official Website
-      </a>
-      <a href="https://www.royalenfield.com/in/en/locate-us/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        Dealer Locator
-      </a>
-      <a href="https://www.royalenfield.com/in/en/finance/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-        RE Finance
-      </a>
+      <a href="https://www.royalenfield.com/in/en/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Official Website</a>
+      <a href="https://www.royalenfield.com/in/en/locate-us/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Dealer Locator</a>
+      <a href="https://www.royalenfield.com/in/en/finance/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>RE Finance</a>
     </div>
-
     <div class="re-footer-col">
       <h3>Resources</h3>
-      <a href="https://docs.google.com/spreadsheets/d/1_BkMNSiLcSZzHqpGc4RG1_CUgeBug-FtSaPCg2X2vAs/edit?gid=1115009747#gid=1115009747" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        Team Trikz
-      </a>
-      <a href="https://docs.google.com/spreadsheets/d/1GPre_5Lng_yFSV4M0a_kyq7td_YPsCb4z5EvPiqN8IY/edit?pli=1&gid=1012588109#gid=1012588109" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        UP Bihar sheet
-      </a>
-      <a href="https://docs.google.com/spreadsheets/d/1BRWO_962v-PzjjZXUViroecsbYzS6mxuxkHfDji4G50/edit?gid=1012588109#gid=1012588109" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        South sheet
-      </a>
-      <a href="#" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        Advait Note
-      </a>
+      <a href="https://docs.google.com/spreadsheets/d/1_BkMNSiLcSZzHqpGc4RG1_CUgeBug-FtSaPCg2X2vAs/edit?gid=1115009747#gid=1115009747" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Team Trikz</a>
+      <a href="https://docs.google.com/spreadsheets/d/1GPre_5Lng_yFSV4M0a_kyq7td_YPsCb4z5EvPiqN8IY/edit?pli=1&gid=1012588109#gid=1012588109" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>UP Bihar sheet</a>
+      <a href="https://docs.google.com/spreadsheets/d/1BRWO_962v-PzjjZXUViroecsbYzS6mxuxkHfDji4G50/edit?gid=1012588109#gid=1012588109" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>South sheet</a>
+      <a href="#" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Advait Note</a>
     </div>
-
     <div class="re-footer-col">
       <h3>Date &amp; Time</h3>
       <div class="clock-box" id="re-clock-box">
         <div class="clock-top">
           <div class="clock-time">
-            <span class="clock-num" id="re-hh">--</span>
-            <span class="clock-sep">:</span>
-            <span class="clock-num" id="re-mm">--</span>
-            <span class="clock-sep">:</span>
+            <span class="clock-num" id="re-hh">--</span><span class="clock-sep">:</span>
+            <span class="clock-num" id="re-mm">--</span><span class="clock-sep">:</span>
             <span class="clock-num" id="re-ss">--</span>
           </div>
           <span class="clock-ampm" id="re-ampm">--</span>
@@ -1583,11 +835,8 @@ button {
         </div>
       </div>
     </div>
-
   </div>
-  <div class="re-footer-bar">
-    © 2026 <span>Advait</span>. All Rights Reserved. &nbsp;·&nbsp; Royal Enfield CRM
-  </div>
+  <div class="re-footer-bar">© 2026 <span>Advait</span>. All Rights Reserved. &nbsp;·&nbsp; Royal Enfield CRM</div>
 </footer>
 
 </div><!-- end #app-root -->
@@ -1613,21 +862,21 @@ const bikeData = {
 };
 
 const bikeInfo = {
-  "Hunter 350":         { about: ["Roadster","Daily Riding","City Riding"],           usp:"349cc, single-cylinder, air cooled engine",       mileage:"36.2 KM/L" },
-  "Bullet 350":         { about: ["Heritage","Daily Riding","City Commute"],          usp:"349cc, single-cylinder, air cooled engine",       mileage:"37 KM/L"   },
-  "Classic 350":        { about: ["Vintage","Daily Riding","City Commute"],           usp:"349cc, single-cylinder, air cooled engine",       mileage:"41.5 KM/L" },
-  "Meteor 350":         { about: ["Cruise","Long Distance","Highway Cruising"],       usp:"349cc, single-cylinder, air cooled engine",       mileage:"41.9 KM/L" },
-  "Goan Classic 350":   { about: ["Bobber","City Riding","Casual Commuting"],         usp:"349cc, single-cylinder, air cooled engine",       mileage:"36.2 KM/L" },
-  "Scram 440":          { about: ["Adventure","Casual","Urban Commuting"],            usp:"452cc Single Cylinder / Air oiled cooled engine", mileage:"29.5 KM/L" },
-  "Himalayan 450":      { about: ["Adventure","Adventure","Touring"],                 usp:"452cc Single Cylinder / Air oil cooled engine",   mileage:"30 KM/L"   },
-  "Guerrilla 450":      { about: ["Premium Roadster","Daily Riding","City Riding"],   usp:"452cc Single Cylinder / Air oil cooled engine",   mileage:"29.5 KM/L" },
-  "Interceptor 650":    { about: ["Premium Roadster","Daily Riding","City Riding"],   usp:"648cc Inline Twin / Air Oil Cooled Engine",       mileage:"25 KM/L"   },
-  "Continental GT 650": { about: ["Cafe Racer","Short Distance","City Commuting"],    usp:"648cc Inline Twin / Air Oil Cooled Engine",       mileage:"27 KM/L"   },
-  "Super Meteor 650":   { about: ["Cruise","Long Distance","Highway Cruising"],       usp:"648cc parallel Twin / Air Oil Cooled Engine",     mileage:"25 KM/L"   },
-  "Shotgun 650":        { about: ["Premium Roadster","Daily Riding","City Commuting"],usp:"648cc parallel Twin / Air Oil Cooled Engine",     mileage:"22 KM/L"   },
-  "Bear 650":           { about: ["Premium Roadster","Daily Riding","City Commuting"],usp:"648cc Inline Twin / Air Oil Cooled Engine",       mileage:"22 KM/L"   },
-  "Classic 650":        { about: ["Premium Tourer","Daily Riding","City Commuting"],  usp:"648cc Inline Twin / Air Oil Cooled Engine",       mileage:"21.45 KM/L"},
-  "Bullet 650":         { about: ["Premium Heritage","Daily Riding","City Commuting"],usp:"648cc parallel Twin / Air Oil Cooled Engine",     mileage:"NA"        }
+  "Hunter 350":         { about:["Roadster","Daily Riding","City Riding"],            usp:"349cc, single-cylinder, air cooled engine",       mileage:"36.2 KM/L" },
+  "Bullet 350":         { about:["Heritage","Daily Riding","City Commute"],           usp:"349cc, single-cylinder, air cooled engine",       mileage:"37 KM/L"   },
+  "Classic 350":        { about:["Vintage","Daily Riding","City Commute"],            usp:"349cc, single-cylinder, air cooled engine",       mileage:"41.5 KM/L" },
+  "Meteor 350":         { about:["Cruise","Long Distance","Highway Cruising"],        usp:"349cc, single-cylinder, air cooled engine",       mileage:"41.9 KM/L" },
+  "Goan Classic 350":   { about:["Bobber","City Riding","Casual Commuting"],          usp:"349cc, single-cylinder, air cooled engine",       mileage:"36.2 KM/L" },
+  "Scram 440":          { about:["Adventure","Casual","Urban Commuting"],             usp:"452cc Single Cylinder / Air oiled cooled engine", mileage:"29.5 KM/L" },
+  "Himalayan 450":      { about:["Adventure","Adventure","Touring"],                  usp:"452cc Single Cylinder / Air oil cooled engine",   mileage:"30 KM/L"   },
+  "Guerrilla 450":      { about:["Premium Roadster","Daily Riding","City Riding"],    usp:"452cc Single Cylinder / Air oil cooled engine",   mileage:"29.5 KM/L" },
+  "Interceptor 650":    { about:["Premium Roadster","Daily Riding","City Riding"],    usp:"648cc Inline Twin / Air Oil Cooled Engine",       mileage:"25 KM/L"   },
+  "Continental GT 650": { about:["Cafe Racer","Short Distance","City Commuting"],     usp:"648cc Inline Twin / Air Oil Cooled Engine",       mileage:"27 KM/L"   },
+  "Super Meteor 650":   { about:["Cruise","Long Distance","Highway Cruising"],        usp:"648cc parallel Twin / Air Oil Cooled Engine",     mileage:"25 KM/L"   },
+  "Shotgun 650":        { about:["Premium Roadster","Daily Riding","City Commuting"], usp:"648cc parallel Twin / Air Oil Cooled Engine",     mileage:"22 KM/L"   },
+  "Bear 650":           { about:["Premium Roadster","Daily Riding","City Commuting"], usp:"648cc Inline Twin / Air Oil Cooled Engine",       mileage:"22 KM/L"   },
+  "Classic 650":        { about:["Premium Tourer","Daily Riding","City Commuting"],   usp:"648cc Inline Twin / Air Oil Cooled Engine",       mileage:"21.45 KM/L"},
+  "Bullet 650":         { about:["Premium Heritage","Daily Riding","City Commuting"], usp:"648cc parallel Twin / Air Oil Cooled Engine",     mileage:"NA"        }
 };
 
 // ─── TOOLTIP ──────────────────────────────────────────────────────────────────
@@ -1639,133 +888,82 @@ const ttMileage = document.getElementById('tt-mileage');
 
 function showTooltip(e, modelName) {
   const info = bikeInfo[modelName] || {};
-  ttName.textContent = modelName;
-  ttTags.textContent = (info.about || []).join(', ');
+  ttName.textContent    = modelName;
+  ttTags.textContent    = (info.about || []).join(', ');
   ttUsp.textContent     = info.usp     || '—';
   ttMileage.textContent = info.mileage || '—';
   positionTooltip(e);
   tooltip.style.display = 'block';
 }
-
 function positionTooltip(e) {
-  const TW = tooltip.offsetWidth  || 250;
-  const TH = tooltip.offsetHeight || 100;
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  let x = e.clientX + 14;
-  let y = e.clientY - TH / 2;
+  const TW = tooltip.offsetWidth || 250, TH = tooltip.offsetHeight || 100;
+  const vw = window.innerWidth,          vh = window.innerHeight;
+  let x = e.clientX + 14, y = e.clientY - TH / 2;
   if (x + TW > vw - 8) x = e.clientX - TW - 14;
-  if (y < 8)           y = 8;
+  if (y < 8) y = 8;
   if (y + TH > vh - 8) y = vh - TH - 8;
   tooltip.style.left = x + 'px';
   tooltip.style.top  = y + 'px';
 }
-
 function hideTooltip() { tooltip.style.display = 'none'; }
 
-// ─── GENERIC CUSTOM DROPDOWN BUILDER ─────────────────────────────────────────
+// ─── GENERIC CUSTOM DROPDOWN ──────────────────────────────────────────────────
 function buildCustomDrop(wrapperId, triggerId, dropId, items, onSelect, placeholder) {
   const wrapper = document.getElementById(wrapperId);
   const trigger = document.getElementById(triggerId);
   const drop    = document.getElementById(dropId);
-  const els     = [];
-  let kbIdx     = -1;
+  const els = []; let kbIdx = -1;
 
   drop.innerHTML = '';
   items.forEach(({ label, value }) => {
     const item = document.createElement('div');
-    item.className = 'di';
-    item.textContent = label;
-    item.dataset.val = value;
+    item.className = 'di'; item.textContent = label; item.dataset.val = value;
     item.addEventListener('click', () => pick(label, value));
-    drop.appendChild(item);
-    els.push(item);
+    drop.appendChild(item); els.push(item);
   });
 
-  function clearKb() {
-    els.forEach(i => i.classList.remove('kb-focus'));
-    kbIdx = -1;
-  }
-
+  function clearKb() { els.forEach(i => i.classList.remove('kb-focus')); kbIdx = -1; }
   function setKb(idx) {
     els.forEach(i => i.classList.remove('kb-focus'));
     kbIdx = Math.max(0, Math.min(idx, els.length - 1));
     els[kbIdx].classList.add('kb-focus');
     els[kbIdx].scrollIntoView({ block: 'nearest' });
   }
-
   function open() {
-    closeAllDropdowns();
-    wrapper.classList.add('open');
+    closeAllDropdowns(); wrapper.classList.add('open');
     requestAnimationFrame(() => {
-      const wrapRect   = wrapper.getBoundingClientRect();
-      const dropHeight = Math.min(drop.scrollHeight, 300);
-      const spaceBelow = window.innerHeight - wrapRect.bottom;
-      const spaceAbove = wrapRect.top;
-      if (spaceBelow < dropHeight + 8 && spaceAbove > spaceBelow) {
-        drop.classList.add('drop-up');
-      } else {
-        drop.classList.remove('drop-up');
-      }
+      const r = wrapper.getBoundingClientRect();
+      const dh = Math.min(drop.scrollHeight, 300);
+      drop.classList.toggle('drop-up', window.innerHeight - r.bottom < dh + 8 && r.top > window.innerHeight - r.bottom);
     });
     setKb(0);
   }
-
-  function close() {
-    wrapper.classList.remove('open');
-    drop.classList.remove('drop-up');
-    clearKb();
-  }
-
+  function close() { wrapper.classList.remove('open'); drop.classList.remove('drop-up'); clearKb(); }
   function pick(label, value) {
-    trigger.textContent = label;
-    trigger.classList.add('has-value');
-    close();
-    onSelect(value);
-    setTimeout(() => advanceToNext(trigger), 0);
+    trigger.textContent = label; trigger.classList.add('has-value');
+    close(); onSelect(value); setTimeout(() => advanceToNext(trigger), 0);
   }
 
-  trigger.addEventListener('click', e => {
-    e.stopPropagation();
-    wrapper.classList.contains('open') ? close() : open();
-  });
-
+  trigger.addEventListener('click', e => { e.stopPropagation(); wrapper.classList.contains('open') ? close() : open(); });
   trigger.addEventListener('keydown', e => {
     const isOpen = wrapper.classList.contains('open');
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      if (!isOpen) open();
-      else if (kbIdx >= 0) pick(els[kbIdx].textContent, els[kbIdx].dataset.val);
-      else close();
-    } else if (e.key === 'ArrowDown') { e.preventDefault(); isOpen ? setKb(kbIdx + 1) : open(); }
-    else if (e.key === 'ArrowUp')   { e.preventDefault(); isOpen ? setKb(kbIdx - 1) : open(); }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (!isOpen) open(); else if (kbIdx >= 0) pick(els[kbIdx].textContent, els[kbIdx].dataset.val); else close(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); isOpen ? setKb(kbIdx+1) : open(); }
+    else if (e.key === 'ArrowUp')   { e.preventDefault(); isOpen ? setKb(kbIdx-1) : open(); }
     else if (e.key === 'Escape')    { close(); }
   });
-
-  wrapper._reset = () => {
-    trigger.textContent = placeholder || 'Select';
-    trigger.classList.remove('has-value');
-    close();
-  };
+  wrapper._reset = () => { trigger.textContent = placeholder || 'Select'; trigger.classList.remove('has-value'); close(); };
 }
 
-// ─── MODEL DROPDOWN (with tooltip) ───────────────────────────────────────────
 function buildModelDropdown() {
-  const hidden    = document.getElementById('model');
-  const colorTrig = document.getElementById('trig_color');
-  const drop      = document.getElementById('drop_model');
-
-  const items = Object.keys(bikeData).map(name => ({ label: name, value: name }));
-
+  const hidden = document.getElementById('model');
+  const drop   = document.getElementById('drop_model');
+  const items  = Object.keys(bikeData).map(n => ({ label: n, value: n }));
   buildCustomDrop('wrap_model', 'trig_model', 'drop_model', items, (name) => {
     hidden.value = name;
     buildColorDrop('wrap_color', 'trig_color', 'drop_color', 'color', name);
-    setTimeout(() => {
-      colorTrig.focus();
-      document.getElementById('wrap_color').querySelector('.cst').click();
-    }, 50);
+    setTimeout(() => { document.getElementById('trig_color').focus(); document.getElementById('wrap_color').querySelector('.cst').click(); }, 50);
   }, 'Select Model');
-
   drop.querySelectorAll('.di').forEach(item => {
     const name = item.textContent;
     item.addEventListener('mouseenter', e => showTooltip(e, name));
@@ -1777,76 +975,48 @@ function buildModelDropdown() {
 function buildColorDrop(wrapperId, triggerId, dropId, hiddenId, modelName) {
   const hidden = document.getElementById(hiddenId);
   const colors = bikeData[modelName] || {};
-  const items  = Object.entries(colors).map(([c, price]) => ({
-    label: price != null ? `${c} — ₹${price}` : `${c} — Price TBA`,
-    value: c
-  }));
-  buildCustomDrop(wrapperId, triggerId, dropId, items, (val) => {
-    hidden.value = val;
-  }, 'Select Color');
+  const items  = Object.entries(colors).map(([c, price]) => ({ label: price != null ? `${c} — ₹${price}` : `${c} — Price TBA`, value: c }));
+  buildCustomDrop(wrapperId, triggerId, dropId, items, val => { hidden.value = val; }, 'Select Color');
 }
 
 function buildPaymentDrop() {
-  const hidden  = document.getElementById('paymentMode');
-  const options = ['Cash','Finance','Both','Will decide later','NA'];
-  const items   = options.map(o => ({ label: o, value: o }));
-  buildCustomDrop('wrap_payment', 'trig_payment', 'drop_payment', items, (val) => {
-    hidden.value = val;
-  }, 'Select Payment Mode');
+  const hidden = document.getElementById('paymentMode');
+  const items  = ['Cash','Finance','Both','Will decide later','NA'].map(o => ({ label: o, value: o }));
+  buildCustomDrop('wrap_payment', 'trig_payment', 'drop_payment', items, val => { hidden.value = val; }, 'Select Payment Mode');
 }
 
 function buildSectionDrops(section) {
   const modelHidden = document.getElementById(`${section}_model`);
   const colorTrigId = `trig_${section}_color`;
   const modelItems  = Object.keys(bikeData).map(n => ({ label: n, value: n }));
-
-  buildCustomDrop(`wrap_${section}_model`, `trig_${section}_model`, `drop_${section}_model`,
-    modelItems, (name) => {
-      modelHidden.value = name;
-      buildColorDrop(`wrap_${section}_color`, `trig_${section}_color`, `drop_${section}_color`,
-        `${section}_color`, name);
-      setTimeout(() => {
-        document.getElementById(colorTrigId).focus();
-        document.getElementById(`wrap_${section}_color`).querySelector('.cst').click();
-      }, 50);
-    }, 'Select Model');
+  buildCustomDrop(`wrap_${section}_model`, `trig_${section}_model`, `drop_${section}_model`, modelItems, name => {
+    modelHidden.value = name;
+    buildColorDrop(`wrap_${section}_color`, `trig_${section}_color`, `drop_${section}_color`, `${section}_color`, name);
+    setTimeout(() => { document.getElementById(colorTrigId).focus(); document.getElementById(`wrap_${section}_color`).querySelector('.cst').click(); }, 50);
+  }, 'Select Model');
 }
 
 function closeAllDropdowns() {
-  document.querySelectorAll('.csw.open').forEach(w => {
-    w.classList.remove('open');
-    const d = w.querySelector('.cdrop');
-    if (d) d.classList.remove('drop-up');
-  });
+  document.querySelectorAll('.csw.open').forEach(w => { w.classList.remove('open'); const d = w.querySelector('.cdrop'); if(d) d.classList.remove('drop-up'); });
   hideTooltip();
 }
-
 document.addEventListener('click', closeAllDropdowns);
 
-// ─── ADVANCE TO NEXT FIELD ───────────────────────────────────────────────────
 function advanceToNext(el) {
   const section = el.closest('[id$="Section"]') || el.closest('.box');
   if (!section) return;
   const fields = Array.from(section.querySelectorAll('input:not([type=hidden]), .cst'));
-  const idx    = fields.indexOf(el);
+  const idx = fields.indexOf(el);
   if (idx > -1 && idx < fields.length - 1) fields[idx + 1].focus();
 }
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  buildModelDropdown();
-  buildPaymentDrop();
-  buildSectionDrops('b');
-  buildSectionDrops('p');
-
+  buildModelDropdown(); buildPaymentDrop(); buildSectionDrops('b'); buildSectionDrops('p');
   document.addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
     const active = document.activeElement;
     if (active.classList.contains('cst')) return;
-    if (active.tagName === 'INPUT' && active.type !== 'hidden') {
-      e.preventDefault();
-      advanceToNext(active);
-    }
+    if (active.tagName === 'INPUT' && active.type !== 'hidden') { e.preventDefault(); advanceToNext(active); }
   });
 });
 
@@ -1854,8 +1024,7 @@ document.addEventListener('DOMContentLoaded', () => {
 let currentMode = 'default';
 function setMode(m) {
   currentMode = m;
-  ['default','booked','purchased'].forEach(s =>
-    document.getElementById(s+'Section').classList.add('hide'));
+  ['default','booked','purchased'].forEach(s => document.getElementById(s+'Section').classList.add('hide'));
   document.getElementById(m+'Section').classList.remove('hide');
   closeAllDropdowns();
 }
@@ -1865,10 +1034,10 @@ function copyData() {
   let text = '';
   if (currentMode === 'default') {
     text = [
-      keyEnquiry.value  && `Key enquiry / ${keyEnquiry.value}`,
-      buyingTime.value  && `, Buying time / ${buyingTime.value}`,
-      testRide.value    && `, Test ride date and time / ${testRide.value}`,
-      model.value       && `, Model / ${model.value}`,
+      keyEnquiry.value   && `Key enquiry / ${keyEnquiry.value}`,
+      buyingTime.value   && `, Buying time / ${buyingTime.value}`,
+      testRide.value     && `, Test ride date and time / ${testRide.value}`,
+      model.value        && `, Model / ${model.value}`,
       color.value && color.value !== 'Select Color' && `, Color / ${color.value}`,
       altNumber.value    && `, Alternate number / ${altNumber.value}`,
       paymentMode.value  && `, Payment mode / ${paymentMode.value}`,
@@ -1907,42 +1076,28 @@ function copyData() {
 
 // ─── RESET ───────────────────────────────────────────────────────────────────
 function resetForm() {
-  const confirmReset = confirm('⚠️ Are you sure?\n\nAll entered data will be cleared.');
-  if (!confirmReset) return;
+  if (!confirm('⚠️ Are you sure?\n\nAll entered data will be cleared.')) return;
   document.querySelectorAll('input').forEach(el => el.value = '');
-  const resets = [
-    ['trig_model',       'Select Model'],
-    ['trig_color',       'Select Color'],
-    ['trig_payment',     'Select Payment Mode'],
-    ['trig_b_model',     'Select Model'],
-    ['trig_b_color',     'Select Color'],
-    ['trig_p_model',     'Select Model'],
-    ['trig_p_color',     'Select Color'],
-  ];
-  resets.forEach(([id, placeholder]) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.textContent = placeholder;
-    el.classList.remove('has-value');
+  [['trig_model','Select Model'],['trig_color','Select Color'],['trig_payment','Select Payment Mode'],
+   ['trig_b_model','Select Model'],['trig_b_color','Select Color'],
+   ['trig_p_model','Select Model'],['trig_p_color','Select Color']].forEach(([id, ph]) => {
+    const el = document.getElementById(id); if (!el) return;
+    el.textContent = ph; el.classList.remove('has-value');
   });
-  ['drop_color','drop_b_color','drop_p_color'].forEach(id => {
-    const d = document.getElementById(id);
-    if (d) d.innerHTML = '';
-  });
+  ['drop_color','drop_b_color','drop_p_color'].forEach(id => { const d = document.getElementById(id); if(d) d.innerHTML=''; });
   closeAllDropdowns();
 }
 
 // ─── BACKGROUND CHANGER ───────────────────────────────────────────────────────
 (function () {
-  const hero       = document.getElementById('heroSection');
-  const fileInput  = document.getElementById('bgFileInput');
+  const hero = document.getElementById('heroSection');
+  const fileInput = document.getElementById('bgFileInput');
   const uploadArea = document.getElementById('bgUploadArea');
-  const resetBtn   = document.getElementById('bgResetBtn');
+  const resetBtn = document.getElementById('bgResetBtn');
   const currentLbl = document.getElementById('bgCurrentLabel');
-  const toggleBtn  = document.getElementById('bgToggleBtn');
-  const card       = document.getElementById('bgChangerCard');
-
-  const DEFAULT_BG  = "url('himalayan-bg.jpg')";
+  const toggleBtn = document.getElementById('bgToggleBtn');
+  const card = document.getElementById('bgChangerCard');
+  const DEFAULT_BG = "url('himalayan-bg.jpg')";
   const STORAGE_KEY = 'crm_bg_config';
 
   toggleBtn.addEventListener('click', function () {
@@ -1950,328 +1105,144 @@ function resetForm() {
     card.style.display = isOpen ? 'none' : 'block';
     toggleBtn.setAttribute('aria-expanded', String(!isOpen));
   });
-
-  function applyDefault() {
-    hero.style.backgroundImage = DEFAULT_BG;
-    hero.style.backgroundColor = '';
-    currentLbl.textContent = 'Default (Himalayan)';
-    localStorage.removeItem(STORAGE_KEY);
-  }
-
-  function applyImage(dataUrl, name) {
-    hero.style.backgroundImage = `url('${dataUrl}')`;
-    hero.style.backgroundColor = '';
-    currentLbl.textContent = name || 'Custom image';
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ type: 'image', value: dataUrl, name: name }));
-  }
+  function applyDefault() { hero.style.backgroundImage = DEFAULT_BG; currentLbl.textContent = 'Default (Himalayan)'; localStorage.removeItem(STORAGE_KEY); }
+  function applyImage(dataUrl, name) { hero.style.backgroundImage = `url('${dataUrl}')`; currentLbl.textContent = name || 'Custom image'; localStorage.setItem(STORAGE_KEY, JSON.stringify({ type:'image', value:dataUrl, name })); }
 
   fileInput.addEventListener('change', function () {
-    const file = this.files[0];
-    if (!file) return;
+    const file = this.files[0]; if (!file) return;
     const reader = new FileReader();
-    reader.onload = function (e) { applyImage(e.target.result, file.name); };
-    reader.readAsDataURL(file);
-    this.value = '';
+    reader.onload = e => applyImage(e.target.result, file.name);
+    reader.readAsDataURL(file); this.value = '';
   });
-
-  uploadArea.addEventListener('dragover', function (e) {
-    e.preventDefault();
-    this.style.borderColor = 'rgba(255,215,0,0.6)';
+  uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.style.borderColor='rgba(255,215,0,0.6)'; });
+  uploadArea.addEventListener('dragleave', () => { uploadArea.style.borderColor=''; });
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault(); uploadArea.style.borderColor='';
+    const file = e.dataTransfer.files[0]; if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader(); reader.onload = ev => applyImage(ev.target.result, file.name); reader.readAsDataURL(file);
   });
-  uploadArea.addEventListener('dragleave', function () { this.style.borderColor = ''; });
-  uploadArea.addEventListener('drop', function (e) {
-    e.preventDefault();
-    this.style.borderColor = '';
-    const file = e.dataTransfer.files[0];
-    if (!file || !file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = function (ev) { applyImage(ev.target.result, file.name); };
-    reader.readAsDataURL(file);
-  });
-
   resetBtn.addEventListener('click', applyDefault);
-
-  function restore() {
+  (function restore() {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const cfg = JSON.parse(saved);
-        if (cfg.type === 'image') { applyImage(cfg.value, cfg.name); return; }
-      } catch(e) {}
-    }
+    if (saved) { try { const cfg = JSON.parse(saved); if (cfg.type==='image') { applyImage(cfg.value, cfg.name); return; } } catch(e) {} }
     currentLbl.textContent = 'Default (Himalayan)';
-  }
-
-  restore();
+  })();
 })();
 
-// ─── FOOTER CLOCK + CALENDAR ─────────────────────────────────────────────────
+// ─── CLOCK ───────────────────────────────────────────────────────────────────
 (function(){
-  const monthsShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const monthsFull  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const daysShort   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const dnames      = ['Mo','Tu','We','Th','Fr','Sa','Su'];
-
+  const MS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const MF = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const DS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const DN = ['Mo','Tu','We','Th','Fr','Sa','Su'];
   function pad(n){ return String(n).padStart(2,'0'); }
-
-  let calY = new Date().getFullYear();
-  let calM = new Date().getMonth();
+  let calY = new Date().getFullYear(), calM = new Date().getMonth();
   const popup = document.getElementById('re-cal-popup');
 
   function tick(){
-    const n = new Date();
-    let h = n.getHours();
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12 || 12;
-    document.getElementById('re-hh').textContent   = pad(h);
-    document.getElementById('re-mm').textContent   = pad(n.getMinutes());
-    document.getElementById('re-ss').textContent   = pad(n.getSeconds());
+    const n = new Date(); let h = n.getHours(); const ampm = h>=12?'PM':'AM'; h = h%12||12;
+    document.getElementById('re-hh').textContent = pad(h);
+    document.getElementById('re-mm').textContent = pad(n.getMinutes());
+    document.getElementById('re-ss').textContent = pad(n.getSeconds());
     document.getElementById('re-ampm').textContent = ampm;
-    document.getElementById('re-date').textContent = n.getDate() + ' ' + monthsShort[n.getMonth()] + ' ' + n.getFullYear();
-    document.getElementById('re-day').textContent  = daysShort[n.getDay()];
+    document.getElementById('re-date').textContent = n.getDate()+' '+MS[n.getMonth()]+' '+n.getFullYear();
+    document.getElementById('re-day').textContent  = DS[n.getDay()];
   }
-  tick();
-  setInterval(tick, 1000);
+  tick(); setInterval(tick, 1000);
 
   function buildCalendar(){
     const grid = document.getElementById('re-cal-grid');
-    document.getElementById('re-cal-month').textContent = monthsFull[calM] + ' ' + calY;
+    document.getElementById('re-cal-month').textContent = MF[calM]+' '+calY;
     grid.innerHTML = '';
-    dnames.forEach(d => {
-      const el = document.createElement('div');
-      el.className = 'cal-dname';
-      el.textContent = d;
-      grid.appendChild(el);
-    });
-    const jsFirstDay    = new Date(calY, calM, 1).getDay();
-    const mondayOffset  = (jsFirstDay + 6) % 7;
-    const total         = new Date(calY, calM + 1, 0).getDate();
-    const today         = new Date();
-    for (let i = 0; i < mondayOffset; i++) {
-      const el = document.createElement('div');
-      el.className = 'cal-cell empty';
-      el.textContent = '0';
-      grid.appendChild(el);
-    }
-    for (let d = 1; d <= total; d++) {
-      const el = document.createElement('div');
-      el.className = 'cal-cell';
-      el.textContent = d;
-      if (d === today.getDate() && calM === today.getMonth() && calY === today.getFullYear())
-        el.classList.add('today');
+    DN.forEach(d => { const el=document.createElement('div'); el.className='cal-dname'; el.textContent=d; grid.appendChild(el); });
+    const off = (new Date(calY,calM,1).getDay()+6)%7;
+    const total = new Date(calY,calM+1,0).getDate();
+    const today = new Date();
+    for(let i=0;i<off;i++){const el=document.createElement('div');el.className='cal-cell empty';el.textContent='0';grid.appendChild(el);}
+    for(let d=1;d<=total;d++){
+      const el=document.createElement('div');el.className='cal-cell';el.textContent=d;
+      if(d===today.getDate()&&calM===today.getMonth()&&calY===today.getFullYear()) el.classList.add('today');
       grid.appendChild(el);
     }
   }
 
-  document.getElementById('re-date').addEventListener('click', function(e){
-    e.stopPropagation();
-    const isOpen = popup.classList.contains('open');
-    popup.classList.toggle('open', !isOpen);
-    if (!isOpen){ calY = new Date().getFullYear(); calM = new Date().getMonth(); buildCalendar(); }
-  });
-
-  document.getElementById('re-cal-prev').addEventListener('click', function(e){
-    e.stopPropagation();
-    calM--; if (calM < 0){ calM = 11; calY--; } buildCalendar();
-  });
-
-  document.getElementById('re-cal-next').addEventListener('click', function(e){
-    e.stopPropagation();
-    calM++; if (calM > 11){ calM = 0; calY++; } buildCalendar();
-  });
-
-  document.addEventListener('click', function(){ popup.classList.remove('open'); });
-  document.getElementById('re-clock-box').addEventListener('click', function(e){ e.stopPropagation(); });
+  document.getElementById('re-date').addEventListener('click', e => { e.stopPropagation(); const isOpen=popup.classList.contains('open'); popup.classList.toggle('open',!isOpen); if(!isOpen){calY=new Date().getFullYear();calM=new Date().getMonth();buildCalendar();} });
+  document.getElementById('re-cal-prev').addEventListener('click', e => { e.stopPropagation(); calM--;if(calM<0){calM=11;calY--;}buildCalendar(); });
+  document.getElementById('re-cal-next').addEventListener('click', e => { e.stopPropagation(); calM++;if(calM>11){calM=0;calY++;}buildCalendar(); });
+  document.addEventListener('click', () => popup.classList.remove('open'));
+  document.getElementById('re-clock-box').addEventListener('click', e => e.stopPropagation());
 })();
 
-// ─── FOOTER SCROLL REVEAL ────────────────────────────────────────────────────
+// ─── FOOTER REVEAL ───────────────────────────────────────────────────────────
 const _footer = document.querySelector('.re-footer');
-const _footerObs = new IntersectionObserver(([entry]) => {
-  if (entry.isIntersecting) {
-    _footer.classList.add('visible');
-    _footerObs.disconnect();
-  }
-}, { threshold: 0.08 });
-_footerObs.observe(_footer);
+new IntersectionObserver(([entry]) => { if(entry.isIntersecting){_footer.classList.add('visible');} }, {threshold:0.08}).observe(_footer);
 
-// ─── HAMBURGER MENU ──────────────────────────────────────────────────────────
-(function () {
-  const btn      = document.getElementById('hbgBtn');
-  const panel    = document.getElementById('hbgPanel');
-  const overlay  = document.getElementById('hbgOverlay');
-  const closeBtn = document.getElementById('hbgClose');
-
-  function openMenu() {
-    btn.classList.add('is-open');
-    panel.classList.add('is-open');
-    overlay.classList.add('is-open');
-    btn.setAttribute('aria-expanded', 'true');
-    panel.setAttribute('aria-hidden', 'false');
-    overlay.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeMenu() {
-    btn.classList.remove('is-open');
-    panel.classList.remove('is-open');
-    overlay.classList.remove('is-open');
-    btn.setAttribute('aria-expanded', 'false');
-    panel.setAttribute('aria-hidden', 'true');
-    overlay.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  function toggleMenu() {
-    btn.classList.contains('is-open') ? closeMenu() : openMenu();
-  }
-
-  btn.addEventListener('click', function (e) { e.stopPropagation(); toggleMenu(); });
+// ─── HAMBURGER ───────────────────────────────────────────────────────────────
+(function(){
+  const btn=document.getElementById('hbgBtn'), panel=document.getElementById('hbgPanel'), overlay=document.getElementById('hbgOverlay'), closeBtn=document.getElementById('hbgClose');
+  function openMenu(){ btn.classList.add('is-open'); panel.classList.add('is-open'); overlay.classList.add('is-open'); btn.setAttribute('aria-expanded','true'); panel.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+  function closeMenu(){ btn.classList.remove('is-open'); panel.classList.remove('is-open'); overlay.classList.remove('is-open'); btn.setAttribute('aria-expanded','false'); panel.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  btn.addEventListener('click', e => { e.stopPropagation(); btn.classList.contains('is-open')?closeMenu():openMenu(); });
   overlay.addEventListener('click', closeMenu);
-  closeBtn.addEventListener('click', function (e) { e.stopPropagation(); closeMenu(); });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && btn.classList.contains('is-open')) closeMenu();
-  });
-  panel.addEventListener('click', function (e) { e.stopPropagation(); });
+  closeBtn.addEventListener('click', e => { e.stopPropagation(); closeMenu(); });
+  document.addEventListener('keydown', e => { if(e.key==='Escape'&&btn.classList.contains('is-open')) closeMenu(); });
+  panel.addEventListener('click', e => e.stopPropagation());
 })();
 
 // ─── LOGOUT MODAL ────────────────────────────────────────────────────────────
-(function () {
-  const backdrop   = document.getElementById('logout-modal-backdrop');
-  const cancelBtn  = document.getElementById('lmCancel');
-  const confirmBtn = document.getElementById('lmConfirm');
-
+(function(){
+  const backdrop=document.getElementById('logout-modal-backdrop');
+  const cancelBtn=document.getElementById('lmCancel'), confirmBtn=document.getElementById('lmConfirm');
   window.logoutModal = {
-    open: function () {
-      backdrop.classList.add('lm-open');
-      backdrop.setAttribute('aria-hidden', 'false');
-      confirmBtn.focus();
-    },
-    close: function () {
-      backdrop.classList.remove('lm-open');
-      backdrop.setAttribute('aria-hidden', 'true');
-    }
+    open(){ backdrop.classList.add('lm-open'); backdrop.setAttribute('aria-hidden','false'); confirmBtn.focus(); },
+    close(){ backdrop.classList.remove('lm-open'); backdrop.setAttribute('aria-hidden','true'); }
   };
-
-  cancelBtn.addEventListener('click', function () { window.logoutModal.close(); });
-  backdrop.addEventListener('click', function (e) {
-    if (e.target === backdrop) window.logoutModal.close();
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && backdrop.classList.contains('lm-open')) window.logoutModal.close();
-  });
-
-  confirmBtn.addEventListener('click', function () {
+  cancelBtn.addEventListener('click', () => window.logoutModal.close());
+  backdrop.addEventListener('click', e => { if(e.target===backdrop) window.logoutModal.close(); });
+  document.addEventListener('keydown', e => { if(e.key==='Escape'&&backdrop.classList.contains('lm-open')) window.logoutModal.close(); });
+  confirmBtn.addEventListener('click', () => {
     localStorage.removeItem('crm_user_name');
     window.logoutModal.close();
-
-    const appRoot    = document.getElementById('app-root');
-    const gate       = document.getElementById('entry-gate');
-    const entryInput = document.getElementById('entryName');
-    const errMsg     = document.getElementById('entryError');
-    const nameEl     = document.getElementById('hbgUserName');
-
+    const appRoot=document.getElementById('app-root'), gate=document.getElementById('entry-gate');
+    const entryInput=document.getElementById('entryName'), errMsg=document.getElementById('entryError');
     appRoot.classList.remove('app-visible');
-
-    setTimeout(function () {
+    setTimeout(() => {
       gate.classList.remove('gate-hidden');
-      if (entryInput) { entryInput.value = ''; entryInput.classList.remove('has-error'); }
-      if (errMsg)     errMsg.classList.remove('visible');
-      if (nameEl)     nameEl.textContent = '—';
-
-      const hbgBtn     = document.getElementById('hbgBtn');
-      const hbgPanel   = document.getElementById('hbgPanel');
-      const hbgOverlay = document.getElementById('hbgOverlay');
-      if (hbgBtn)     hbgBtn.classList.remove('is-open');
-      if (hbgPanel)   hbgPanel.classList.remove('is-open');
-      if (hbgOverlay) hbgOverlay.classList.remove('is-open');
-      document.body.style.overflow = '';
-
-      setTimeout(function () { if (entryInput) entryInput.focus(); }, 100);
-    }, 280);
+      if(entryInput){entryInput.value='';entryInput.classList.remove('has-error');}
+      if(errMsg) errMsg.classList.remove('visible');
+      document.getElementById('hbgUserName').textContent='—';
+      ['hbgBtn','hbgPanel','hbgOverlay'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('is-open');});
+      document.body.style.overflow='';
+      setTimeout(()=>{if(entryInput)entryInput.focus();},100);
+    },280);
   });
 })();
 
 // ─── ENTRY GATE ──────────────────────────────────────────────────────────────
-function getGreeting() {
-  const h = new Date().getHours();
-  const m = new Date().getMinutes();
-  const totalMins = h * 60 + m;
-  if (totalMins < 720)        return 'Good Morning';   // before 12:00
-  if (totalMins < 990)        return 'Good Afternoon'; // 12:00 – 16:29
-  return 'Good Evening';                                // 16:30+
-}
+function getGreeting(){ const h=new Date().getHours(),m=new Date().getMinutes(),t=h*60+m; return t<720?'Good Morning':t<990?'Good Afternoon':'Good Evening'; }
 
 function greetUser(name) {
-  const nameEl    = document.getElementById('hbgUserName');
-  const greetTime = document.getElementById('hbgGreetingTime');
-  const greetName = document.getElementById('hbgGreetingName');
-  const logoutBtn = document.getElementById('hbgLogoutBtn');
-
-  if (nameEl)    nameEl.textContent    = name;
-  const greetLine = document.getElementById('hbgGreetingLine');
-  if (greetLine) greetLine.textContent = getGreeting() + ', ' + name;
-
-  if (logoutBtn) {
-    const fresh = logoutBtn.cloneNode(true);
-    logoutBtn.parentNode.replaceChild(fresh, logoutBtn);
-    fresh.addEventListener('click', function (e) {
-      e.stopPropagation();
-      window.logoutModal.open();
-    });
-  }
+  const nameEl=document.getElementById('hbgUserName'), greetLine=document.getElementById('hbgGreetingLine');
+  if(nameEl) nameEl.textContent=name;
+  if(greetLine) greetLine.textContent=getGreeting()+', '+name;
+  const logoutBtn=document.getElementById('hbgLogoutBtn');
+  if(logoutBtn){ const fresh=logoutBtn.cloneNode(true); logoutBtn.parentNode.replaceChild(fresh,logoutBtn); fresh.addEventListener('click',e=>{e.stopPropagation();window.logoutModal.open();}); }
 }
 
-(function () {
-  const gate      = document.getElementById('entry-gate');
-  const appRoot   = document.getElementById('app-root');
-  const nameInput = document.getElementById('entryName');
-  const btn       = document.getElementById('entryBtn');
-  const errMsg    = document.getElementById('entryError');
+(function(){
+  const gate=document.getElementById('entry-gate'), appRoot=document.getElementById('app-root');
+  const nameInput=document.getElementById('entryName'), btn=document.getElementById('entryBtn'), errMsg=document.getElementById('entryError');
+  const saved=localStorage.getItem('crm_user_name');
+  if(saved&&saved.trim().length>0){ gate.classList.add('gate-hidden'); appRoot.classList.add('app-visible'); greetUser(saved.trim()); return; }
 
-  // ── Restore session ───────────────────────────────────────────────────────
-  const saved = localStorage.getItem('crm_user_name');
-  if (saved && saved.trim().length > 0) {
-    gate.classList.add('gate-hidden');
-    appRoot.classList.add('app-visible');
-    greetUser(saved.trim());
-    return;
-  }
-
-  // ── Helpers ───────────────────────────────────────────────────────────────
-  function showError(msg) {
-    errMsg.textContent = msg;
-    errMsg.classList.add('visible');
-    nameInput.classList.add('has-error');
-    nameInput.style.animation = 'none';
-    requestAnimationFrame(() => { nameInput.style.animation = 'entry-shake 0.38s ease'; });
-    nameInput.focus();
-  }
-
-  function clearError() {
-    errMsg.classList.remove('visible');
-    nameInput.classList.remove('has-error');
-  }
-
-  function enterApp(name) {
-    localStorage.setItem('crm_user_name', name);
-    clearError();
-    gate.classList.add('gate-hidden');
-    appRoot.classList.add('app-visible');
-    greetUser(name);
-  }
-
-  function submit() {
-    const val = nameInput.value.trim().replace(/\s+/g, ' ');
-    if (!val)           { showError('Please enter your name to continue.'); return; }
-    if (val.length < 2) { showError('Name must be at least 2 characters.'); return; }
-    enterApp(val);
-  }
+  function showError(msg){ errMsg.textContent=msg; errMsg.classList.add('visible'); nameInput.classList.add('has-error'); nameInput.style.animation='none'; requestAnimationFrame(()=>{nameInput.style.animation='entry-shake 0.38s ease';}); nameInput.focus(); }
+  function clearError(){ errMsg.classList.remove('visible'); nameInput.classList.remove('has-error'); }
+  function submit(){ const val=nameInput.value.trim().replace(/\s+/g,' '); if(!val){showError('Please enter your name to continue.');return;} if(val.length<2){showError('Name must be at least 2 characters.');return;} localStorage.setItem('crm_user_name',val); clearError(); gate.classList.add('gate-hidden'); appRoot.classList.add('app-visible'); greetUser(val); }
 
   btn.addEventListener('click', submit);
-  nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
-  nameInput.addEventListener('input', () => { if (nameInput.value.trim()) clearError(); });
-
-  window.addEventListener('load', () => { nameInput.focus(); });
+  nameInput.addEventListener('keydown', e=>{if(e.key==='Enter')submit();});
+  nameInput.addEventListener('input', ()=>{if(nameInput.value.trim())clearError();});
+  window.addEventListener('load', ()=>nameInput.focus());
 })();
 </script>
 
