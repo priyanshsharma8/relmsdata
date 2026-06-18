@@ -43,15 +43,15 @@ html { scroll-behavior:smooth; }
 .gh-nav { display:flex; align-items:center; gap:2px; margin-left:20px; }
 .gh-nav-item {
   display:flex; align-items:center; gap:7px; padding:7px 15px; border-radius:9px;
-  color:rgba(255,255,255,0.35); font-size:14px; font-weight:500; letter-spacing:0.2px;
+  color:rgba(255,255,255,0.72); font-size:14px; font-weight:500; letter-spacing:0.2px;
   cursor:pointer; border:1px solid transparent; background:transparent;
   transition:color .18s,background .18s,border-color .18s; white-space:nowrap;
   height:40px; box-sizing:border-box; user-select:none;
 }
 .gh-nav-item .gh-nav-icon { font-size:17px; line-height:1; flex-shrink:0; }
-.gh-nav-item:hover { color:rgba(255,255,255,0.65); background:rgba(255,255,255,0.05); }
+.gh-nav-item:hover { color:#fff; background:rgba(255,255,255,0.07); border-color:rgba(255,255,255,0.12); }
 .gh-nav-item.active { color:#FFD700; background:rgba(255,215,0,0.08); border-color:rgba(255,215,0,0.2); font-weight:600; }
-.gh-nav-item.coming-soon { opacity:1; cursor:pointer; color:rgba(255,255,255,0.72); }
+.gh-nav-item.coming-soon { color:rgba(255,255,255,0.72); cursor:pointer; }
 .gh-nav-item.coming-soon:hover { color:#fff; background:rgba(255,255,255,0.07); border-color:rgba(255,255,255,0.12); }
 .gh-right { display:flex; align-items:center; gap:10px; flex-shrink:0; margin-left:auto; }
 .hbg-btn {
@@ -1371,7 +1371,7 @@ function resetForm() {
   closeAllDropdowns();
 }
 
-// ─── BACKGROUND CHANGER (CRM only) ─────────────────────────────────────────
+// ─── BACKGROUND CHANGER + AUTO THEME ────────────────────────────────────────
 (function(){
   const hero      = document.getElementById('heroSection');
   const fileInput = document.getElementById('bgFileInput');
@@ -1388,13 +1388,116 @@ function resetForm() {
     card.style.display = isOpen ? 'none' : 'block';
     toggleBtn.setAttribute('aria-expanded', String(!isOpen));
   });
-  function applyDefault() { hero.style.backgroundImage=DEFAULT_BG; currentLbl.textContent='Default (Himalayan)'; localStorage.removeItem(STORAGE_KEY); }
-  function applyImage(dataUrl,name) { hero.style.backgroundImage=`url('${dataUrl}')`; currentLbl.textContent=name||'Custom image'; localStorage.setItem(STORAGE_KEY,JSON.stringify({type:'image',value:dataUrl,name})); }
+
+  // ── Color extraction from image via canvas ──────────────────────────────
+  function extractColors(dataUrl, cb) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      // Sample small for speed
+      canvas.width = 80; canvas.height = 80;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, 80, 80);
+      const pixels = ctx.getImageData(0, 0, 80, 80).data;
+
+      // Bucket pixels into rough color groups and find dominant
+      let r=0, g=0, b=0, count=0;
+      // Also collect brightness samples
+      let brightSum=0;
+      for (let i=0; i<pixels.length; i+=16) { // sample every 4th pixel
+        const pr=pixels[i], pg=pixels[i+1], pb=pixels[i+2], pa=pixels[i+3];
+        if(pa<100) continue; // skip transparent
+        r+=pr; g+=pg; b+=pb; count++;
+        brightSum += (pr*299 + pg*587 + pb*114) / 1000;
+      }
+      if(!count){ cb(null); return; }
+      r=Math.round(r/count); g=Math.round(g/count); b=Math.round(b/count);
+      const avgBrightness = brightSum/count;
+      cb({ r, g, b, brightness: avgBrightness });
+    };
+    img.onerror = () => cb(null);
+    img.src = dataUrl;
+  }
+
+  function applyTheme(colors) {
+    const root = document.documentElement;
+    if (!colors) { resetTheme(); return; }
+
+    const { r, g, b, brightness } = colors;
+    const isDark = brightness < 128;
+
+    // Accent: boost saturation of dominant color
+    const accentR = Math.min(255, r + 40);
+    const accentG = Math.min(255, g + 20);
+    const accentB = Math.min(255, b + 20);
+    const accent = `rgb(${accentR},${accentG},${accentB})`;
+
+    // Text & UI colors based on image brightness
+    const textPrimary   = isDark ? 'rgba(255,255,255,0.88)' : 'rgba(10,10,10,0.88)';
+    const textMuted     = isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)';
+    const highlight     = isDark ? `rgb(${accentR},${accentG},${accentB})` : `rgb(${Math.max(0,r-40)},${Math.max(0,g-40)},${Math.max(0,b-40)})`;
+    const headerBg      = isDark
+      ? `rgba(${Math.max(0,r-80)},${Math.max(0,g-80)},${Math.max(0,b-80)},0.92)`
+      : `rgba(${Math.min(255,r+180)},${Math.min(255,g+180)},${Math.min(255,b+180)},0.92)`;
+
+    root.style.setProperty('--theme-accent',    highlight);
+    root.style.setProperty('--theme-text',       textPrimary);
+    root.style.setProperty('--theme-muted',      textMuted);
+    root.style.setProperty('--theme-header-bg',  headerBg);
+    root.style.setProperty('--theme-border',     `rgba(${accentR},${accentG},${accentB},0.25)`);
+    root.style.setProperty('--theme-card-bg',    isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)');
+
+    // Apply to key elements via dynamic style tag
+
+    // Nav active color
+    const styleId = 'crm-dynamic-theme';
+    let styleEl = document.getElementById(styleId);
+    if (!styleEl) { styleEl = document.createElement('style'); styleEl.id = styleId; document.head.appendChild(styleEl); }
+    styleEl.textContent = `
+      #global-header { background:${headerBg} !important; }
+      .gh-nav-item.active { color:var(--theme-accent) !important; background:rgba(${accentR},${accentG},${accentB},0.10) !important; border-color:rgba(${accentR},${accentG},${accentB},0.25) !important; }
+      .gh-nav-item:hover  { color:var(--theme-accent) !important; }
+      .section-title span { color:var(--theme-accent) !important; }
+      .section-eyebrow    { color:rgba(${accentR},${accentG},${accentB},0.8) !important; }
+      .section-eyebrow::before { background:rgba(${accentR},${accentG},${accentB},0.7) !important; }
+      h2                  { color:var(--theme-accent) !important; }
+      .sn-dot.active      { background:var(--theme-accent) !important; border-color:var(--theme-accent) !important; box-shadow:0 0 12px rgba(${accentR},${accentG},${accentB},0.65) !important; }
+      .edp-model-name     { color:var(--theme-accent) !important; }
+      .edp-emi-amount     { color:var(--theme-accent) !important; }
+      .emc-badge          { color:rgba(${accentR},${accentG},${accentB},0.8) !important; background:rgba(${accentR},${accentG},${accentB},0.09) !important; border-color:rgba(${accentR},${accentG},${accentB},0.18) !important; }
+      .single-note-btn.save { background:linear-gradient(135deg,var(--theme-accent),rgba(${accentR},${accentG},${accentB},0.8)) !important; }
+      .hbg-bar            { background:var(--theme-accent) !important; }
+      .add-note-btn       { background:linear-gradient(135deg,rgba(${accentR},${accentG},${accentB},1),rgba(${Math.max(0,accentR-30)},${Math.max(0,accentG-30)},${Math.max(0,accentB-30)},1)) !important; }
+      .efp.active         { color:var(--theme-accent) !important; border-color:rgba(${accentR},${accentG},${accentB},0.4) !important; }
+    `;
+  }
+
+  function resetTheme() {
+    const root = document.documentElement;
+    ['--theme-accent','--theme-text','--theme-muted','--theme-header-bg','--theme-border','--theme-card-bg']
+      .forEach(v => root.style.removeProperty(v));
+    const styleEl = document.getElementById('crm-dynamic-theme');
+    if (styleEl) styleEl.textContent = '';
+  }
+
+  function applyDefault() {
+    hero.style.backgroundImage = DEFAULT_BG;
+    currentLbl.textContent = 'Default (Himalayan)';
+    localStorage.removeItem(STORAGE_KEY);
+    resetTheme();
+  }
+
+  function applyImage(dataUrl, name) {
+    hero.style.backgroundImage = `url('${dataUrl}')`;
+    currentLbl.textContent = name || 'Custom image';
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({type:'image', value:dataUrl, name}));
+    extractColors(dataUrl, applyTheme);
+  }
 
   fileInput.addEventListener('change', function(){
     const file=this.files[0]; if(!file) return;
     const reader=new FileReader();
-    reader.onload=e=>applyImage(e.target.result,file.name);
+    reader.onload=e=>applyImage(e.target.result, file.name);
     reader.readAsDataURL(file); this.value='';
   });
   uploadArea.addEventListener('dragover', e=>{e.preventDefault();uploadArea.style.borderColor='rgba(255,215,0,0.6)';});
@@ -1405,6 +1508,8 @@ function resetForm() {
     const reader=new FileReader(); reader.onload=ev=>applyImage(ev.target.result,file.name); reader.readAsDataURL(file);
   });
   resetBtn.addEventListener('click', applyDefault);
+
+  // Restore on load
   (function restore(){
     const saved=localStorage.getItem(STORAGE_KEY);
     if(saved){ try{ const cfg=JSON.parse(saved); if(cfg.type==='image'){applyImage(cfg.value,cfg.name);return;} }catch(e){} }
