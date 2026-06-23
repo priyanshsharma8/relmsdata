@@ -2407,9 +2407,10 @@ function resetForm() {
   (function restore(){
     const saved=localStorage.getItem(STORAGE_KEY);
     if(saved){ try{ const cfg=JSON.parse(saved); if(cfg.type==='image'){applyImage(cfg.value,cfg.name);return;} }catch(e){} }
-    // Apply default himalayan bg — relative path works on GitHub Pages
+    // No saved bg — clear any inline style so CSS default (himalayan-bg.jpg) shows
+    hero.style.removeProperty('background-image');
+    document.documentElement.style.removeProperty('--bg-image');
     currentLbl.textContent = 'Default (Himalayan)';
-    // CSS already has url('himalayan-bg.jpg') as default — nothing to set
   })();
 })();
 
