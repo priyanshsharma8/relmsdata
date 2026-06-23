@@ -94,7 +94,13 @@ body.dark-mode .gh-nav-item { color:rgba(255,255,255,0.68) !important; border-co
 body.dark-mode .gh-nav-item:hover { color:#fff !important; background:rgba(255,255,255,0.07) !important; border-color:rgba(255,255,255,0.12) !important; }
 body.dark-mode .gh-nav-item.active { color:#FFD700 !important; background:rgba(255,215,0,0.09) !important; border-color:rgba(255,215,0,0.22) !important; }
 /* Sections */
-body.dark-mode .hero-section { background-color:#050505 !important; }
+body.dark-mode .hero-section {
+  background-color:#050505 !important;
+  background-image:
+    linear-gradient(135deg,rgba(0,0,0,0.45),rgba(5,5,5,0.45)),
+    var(--bg-image, url('himalayan-bg.jpg')) !important;
+  background-size:cover !important; background-position:center !important;
+}
 body.dark-mode .emi-section { background-color:#060606 !important; }
 body.dark-mode .notes-section { background-color:#060606 !important; }
 body.dark-mode .gallery-section { background-color:#070707 !important; }
@@ -255,8 +261,8 @@ body.dark-mode .sn-dot.active { background:#FFD700 !important; border-color:#FFD
   padding-top:calc(58px + clamp(10px,2vw,20px));
   background-color:#faf7f0;
   background-image:
-    linear-gradient(135deg,rgba(255,255,255,0.5),rgba(250,247,240,0.5)),
-    var(--bg-image, none);
+    linear-gradient(135deg,rgba(255,255,255,0.18),rgba(250,247,240,0.18)),
+    var(--bg-image, url('himalayan-bg.jpg'));
   background-size:cover; background-position:center; background-repeat:no-repeat;
   display:flex; flex-direction:column; justify-content:center; box-sizing:border-box;
   transition:background-color .4s ease; overflow:hidden;
@@ -2245,7 +2251,7 @@ function resetForm() {
   const currentLbl= document.getElementById('bgCurrentLabel');
   const toggleBtn = document.getElementById('bgToggleBtn');
   const card      = document.getElementById('bgChangerCard');
-  const DEFAULT_BG= "url('https://raw.githubusercontent.com/advaitbuild/recrm/main/himalayan-bg.jpg')";
+  const DEFAULT_BG= "url('himalayan-bg.jpg')";
   const STORAGE_KEY='crm_bg_config';
 
   toggleBtn.addEventListener('click', function(){
@@ -2367,7 +2373,8 @@ function resetForm() {
   }
 
   function applyDefault() {
-    hero.style.backgroundImage = DEFAULT_BG;
+    hero.style.removeProperty('background-image');
+    document.documentElement.style.removeProperty('--bg-image');
     currentLbl.textContent = 'Default (Himalayan)';
     localStorage.removeItem(STORAGE_KEY);
     resetTheme();
@@ -2375,6 +2382,7 @@ function resetForm() {
 
   function applyImage(dataUrl, name) {
     hero.style.backgroundImage = `url('${dataUrl}')`;
+    document.documentElement.style.setProperty('--bg-image', `url('${dataUrl}')`);
     currentLbl.textContent = name || 'Custom image';
     localStorage.setItem(STORAGE_KEY, JSON.stringify({type:'image', value:dataUrl, name}));
     extractColors(dataUrl, applyTheme);
@@ -2399,7 +2407,9 @@ function resetForm() {
   (function restore(){
     const saved=localStorage.getItem(STORAGE_KEY);
     if(saved){ try{ const cfg=JSON.parse(saved); if(cfg.type==='image'){applyImage(cfg.value,cfg.name);return;} }catch(e){} }
-    currentLbl.textContent='Default (Himalayan)';
+    // Apply default himalayan bg — relative path works on GitHub Pages
+    currentLbl.textContent = 'Default (Himalayan)';
+    // CSS already has url('himalayan-bg.jpg') as default — nothing to set
   })();
 })();
 
@@ -3227,7 +3237,10 @@ document.addEventListener('DOMContentLoaded', function() {
   lbClose.addEventListener('click', closeLightbox);
   lb.addEventListener('click', function(e) { if (e.target === lb) closeLightbox(); });
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && lb.classList.contains('open')) closeLightbox();
+    if (e.key === 'Escape' && lb.classList.contains('open')) {
+      e.stopImmediatePropagation();
+      closeLightbox();
+    }
   });
   document.addEventListener('dblclick', function(e) {
     var item = e.target.closest('.gbm-photo-item');
