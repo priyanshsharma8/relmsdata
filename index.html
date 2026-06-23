@@ -291,8 +291,9 @@ body.dark-mode .sn-dot.active { background:#FFD700 !important; border-color:#FFD
 @media(max-width:480px){ .hero-section::after{ font-size:9px; letter-spacing:3px; } }
 .box {
   width:min(90vw,500px); margin:auto; padding:clamp(16px,2vw,25px);
-  background:#ffffff; backdrop-filter:blur(8px); border-radius:15px;
-  border:1px solid rgba(0,0,0,0.08); box-shadow:0 10px 30px rgba(20,15,10,0.10);
+  background:rgba(255,255,255,0.55); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,0.7); box-shadow:0 10px 40px rgba(20,15,10,0.12);
   transition:width .2s ease,padding .2s ease; overflow:hidden; z-index:2;
 }
 .box::before {
@@ -302,7 +303,7 @@ body.dark-mode .sn-dot.active { background:#FFD700 !important; border-color:#FFD
 h2 { text-align:center; color:#9a7600; margin-bottom:20px; font-size:clamp(22px,2vw,30px); }
 input,select {
   width:100%; padding:10px; margin:8px 0; border-radius:8px; border:none;
-  background:rgba(20,16,12,0.1); color:#1a1714; transition:all .2s ease;
+  background:rgba(255,255,255,0.45); color:#1a1714; transition:all .2s ease;
   height:clamp(38px,4vw,42px); font-size:clamp(13px,1vw,15px); box-sizing:border-box;
 }
 select { padding-right:30px; appearance:none;
@@ -330,7 +331,7 @@ button { padding:10px; margin:6px 0; cursor:pointer; border:none; border-radius:
 .csw { margin:8px 0; z-index:1; }
 .csw.open { z-index:10000; }
 .cst {
-  width:100%; height:clamp(38px,4vw,42px); padding:0 36px 0 10px; background:rgba(20,16,12,0.1);
+  width:100%; height:clamp(38px,4vw,42px); padding:0 36px 0 10px; background:rgba(255,255,255,0.45);
   border-radius:8px; color:#8a8174; font-size:15px; cursor:pointer;
   display:flex; align-items:center; box-sizing:border-box;
   transition:box-shadow .2s,transform .2s; user-select:none;
@@ -3154,7 +3155,12 @@ function greetUser(name){
     if (e.target.id === 'gbikeModalBackdrop') closeBikeModal();
   });
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && document.getElementById('gbikeModalBackdrop').classList.contains('gbm-open')) closeBikeModal();
+    if (e.key === 'Escape' && document.getElementById('gbikeModalBackdrop').classList.contains('gbm-open')) {
+      // Only close modal if lightbox is NOT open (lightbox handles its own ESC first)
+      const lb = document.getElementById('gbmLightbox');
+      if (lb && lb.classList.contains('open')) return;
+      closeBikeModal();
+    }
   });
 })();
 
