@@ -2092,7 +2092,7 @@ function buildColorDrop(wrapperId, triggerId, dropId, hiddenId, modelName) {
 }
 
 function buildPaymentDrop() {
-  const items = ['Cash','Finance','Both','Will decide later','Not Applicable'].map(o => ({ label:o, value:o }));
+  const items = ['Cash','Finance','Both','Not Informed','Not Applicable'].map(o => ({ label:o, value:o }));
   buildCustomDrop('wrap_payment','trig_payment','drop_payment', items, val => { document.getElementById('paymentMode').value = val; }, 'Select Payment Mode');
 }
 
