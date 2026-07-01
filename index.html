@@ -2112,7 +2112,11 @@ const bikeData = {
 "Super Meteor 650":  {"Celestial Red":439960,"Celestial Blue":439960,"Interstellar Green":422972,"Interstellar Grey":422972,"Astral Black":405988},
 "Bullet 650":        {"Cannon Black":364856,"Battleship Blue":364856}
 };
-
+const statePrices = {
+"Bullet 350": {
+  "Battalion Black": {"Chandigarh":167108,"Delhi":166511,"Madhya Pradesh":166088,"Punjab":165438}
+}
+};
 const bikeInfo = {
 "Hunter 350":         { about:["Roadster","Daily Riding","City Riding"],            usp:"349cc, single-cylinder, air cooled",     mileage:"36.2 KM/L" },
 "Bullet 350":         { about:["Heritage","Daily Riding","City Commute"],           usp:"349cc, single-cylinder, air cooled",     mileage:"37 KM/L"   },
@@ -2313,6 +2317,12 @@ function _tagsHTML(name){
 const t = ((bikeInfo[name]||{}).about)||[];
 return t.length ? `<div class="bsc-tags-label">Riding Purpose</div><div class="bsc-tags">${t.map(x=>`<span class="bsc-tag">${x}</span>`).join('')}</div>` : '';
 }
+function _statePriceHTML(name,color){
+const sp = (statePrices[name]||{})[color];
+if(!sp) return '';
+const rows = Object.entries(sp).map(([st,p])=>`<div class="bsc-row"><span class="bsc-lbl">${st}</span><span class="bsc-val">${fmtINR(p)}</span></div>`).join('');
+return `<div class="bsc-block-lbl">State-wise Price</div><div class="bsc-specs">${rows}</div>`;
+}
 
 /* ── COMMON CARD (bike-level, shared specs only) ── */
 function buildCommonCardHTML(name){
@@ -2371,6 +2381,7 @@ return `
      <div class="bsc-head"><div class="bsc-name">${name}</div><div class="bsc-price">${fmtINR(v.price)}</div></div>
      <div class="bsc-color">${colorsLine}</div>
      ${_tagsHTML(name)}
+     ${_statePriceHTML(name, repColor)}
      <div class="bsc-block-lbl">Variant Hardware</div>
      <div class="bsc-specs">${hwRows}</div>
      ${cosmeticBanner}
