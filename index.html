@@ -1330,6 +1330,7 @@ body.dark-mode .theme-toggle-section { border-top-color:rgba(255,255,255,0.06) !
 #entry-gate { position:fixed; inset:0; z-index:200000; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,rgba(8,8,8,0.88),rgba(18,18,18,0.85)); transition:opacity .55s ease,visibility .55s ease; opacity:1; visibility:visible; padding:20px; box-sizing:border-box; }
 #entry-gate.gate-hidden { opacity:0; visibility:hidden; pointer-events:none; }
 .entry-card { width:min(100%,440px); background:rgba(20,16,12,0.035); backdrop-filter:blur(16px); border:1px solid rgba(255,215,0,0.13); border-radius:20px; padding:clamp(28px,5vw,44px) clamp(24px,5vw,40px); box-shadow:0 20px 60px rgba(0,0,0,0.55); animation:entry-rise .65s cubic-bezier(.22,1,.36,1) both; }
+.entry-updated-badge { position:absolute; top:14px; right:18px; font-size:10px; font-weight:600; letter-spacing:0.4px; color:rgba(255,215,0,0.45); white-space:nowrap; z-index:3; }
 @keyframes entry-rise { from{opacity:0;transform:translateY(28px) scale(0.97)} to{opacity:1;transform:translateY(0) scale(1)} }
 .entry-brand { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:32px; }
 .entry-brand-line { height:1px; flex:1; background:linear-gradient(to right,transparent,rgba(255,215,0,0.25)); }
@@ -1627,6 +1628,7 @@ body.dark-mode .cmp-empty{color:rgba(255,255,255,0.4) !important;}
 <!-- ===== ENTRY GATE ===== -->
 <div id="entry-gate" role="dialog" aria-modal="true" aria-labelledby="entry-title">
 <div class="entry-card">
+<div class="entry-updated-badge">Last Updated on 12th September 2026</div>    
 <div class="entry-brand">
 <div class="entry-brand-line"></div>
 <div class="entry-brand-badge">Royal Enfield CRM</div>
