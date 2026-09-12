@@ -1794,8 +1794,9 @@ Logout
 <input id="altNumber"  placeholder="Alternate Number">
 <input type="hidden" id="paymentMode">
 <div class="csw" id="wrap_payment"><div class="cst" id="trig_payment" tabindex="0">Select Payment Mode</div><div class="cdrop" id="drop_payment"></div></div>
-<input id="CustomerName" placeholder="Customer Name (if applicable)">
-<input id="lostReason"   placeholder="Reason for lost case (if applicable)">
+<input id="exchangeVehicle" placeholder="Exchange (If Applicable)">
+<input id="CustomerName" placeholder="Customer Name (If applicable)">
+<input id="lostReason"   placeholder="Reason for lost case (If applicable)">
 </div>
 
 <div id="bookedSection" class="hide">
@@ -2641,6 +2642,7 @@ model.value        && `, Model / ${model.value}`,
 color.value && color.value!=='Select Color' && `, Color / ${color.value}`,
 altNumber.value    && `, Alternate number / ${altNumber.value}`,
 paymentMode.value  && `, Payment mode / ${paymentMode.value}`,
+exchangeVehicle.value && `, Exchange / ${exchangeVehicle.value}`,
 CustomerName.value && `, Customer name / ${CustomerName.value}`,
 lostReason.value   && `, Reason / ${lostReason.value}`
 ].filter(Boolean).join('');
