@@ -6,11 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ═══════════════════════════════════════
-    CACHE & PERFORMANCE META
-    ▶ HTML itself is not cached (always latest)
-    ▶ Static assets versioned via ?v=1.0.0
-    ▶ To force users onto a new build, bump APP_VERSION in window.APP_VERSION below
-    ═══════════════════════════════════════ -->
+   CACHE & PERFORMANCE META
+   ▶ HTML itself is not cached (always latest)
+   ▶ Static assets versioned via ?v=1.0.0
+   ▶ To force users onto a new build, bump APP_VERSION in window.APP_VERSION below
+   ═══════════════════════════════════════ -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -21,7 +21,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 <script>window.APP_VERSION = "1.0.0";</script>
 
-    
+
 <style>
 /* ── RESET ── */
 body { margin:0; padding:0; font-family:'Segoe UI',sans-serif; }
@@ -33,7 +33,7 @@ html { scroll-behavior:smooth; }
 #logout-modal-backdrop { z-index:490000 !important; }
 
 /* ═══════════════════════════════════════
-  FIXED GLOBAL HEADER
+ FIXED GLOBAL HEADER
 ═══════════════════════════════════════ */
 #global-header {
 position:fixed; top:0; left:0; right:0; height:58px; z-index:150000;
@@ -107,7 +107,7 @@ transition:all .25s ease; margin-right:4px; white-space:nowrap;
 @media(max-width:560px){ .theme-toggle-btn span:last-child{ display:none; } .theme-toggle-btn{ padding:6px 9px; } }
 
 /* ════════════════════════════════════════════
-  DARK MODE — applied via body.dark-mode
+ DARK MODE — applied via body.dark-mode
 ════════════════════════════════════════════ */
 body.dark-mode #global-header { background:rgba(10,8,8,0.96) !important; border-bottom-color:rgba(229,53,23,0.15) !important; }
 body.dark-mode .theme-toggle-btn { border-color:rgba(255,255,255,0.12) !important; background:rgba(255,255,255,0.07) !important; color:rgba(255,255,255,0.82) !important; }
@@ -251,7 +251,7 @@ body.dark-mode .sn-dot { border-color:rgba(255,255,255,0.14) !important; backgro
 body.dark-mode .sn-dot.active { background:#FFD700 !important; border-color:#FFD700 !important; }
 
 /* ═══════════════════════════════════════
-  SCROLL NAV DOTS
+ SCROLL NAV DOTS
 ═══════════════════════════════════════ */
 .scroll-nav {
 position:fixed; right:16px; top:50%; transform:translateY(-50%);
@@ -291,8 +291,8 @@ display:flex; flex-direction:column; justify-content:center; box-sizing:border-b
 transition:background-color .4s ease; overflow:hidden;
 }
 /* Clean, elegant default backdrop — auto-hidden once a user photo
-  (--bg-image) is set, since the photo + gradient above paint over it.
-  No figurative art; just a refined topographic-line texture + soft brand glow. */
+ (--bg-image) is set, since the photo + gradient above paint over it.
+ No figurative art; just a refined topographic-line texture + soft brand glow. */
 .hero-section::before {
 content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
 background:
@@ -404,7 +404,7 @@ box-shadow:0 6px 24px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06); z-index:9999
 #tt-about { text-align:right; color:#2a2620; font-size:12px; line-height:1.4; }
 
 /* ═══════════════════════════════════════
-  SHARED SECTION STYLES
+ SHARED SECTION STYLES
 ═══════════════════════════════════════ */
 .section-inner {
 max-width:1160px; margin:0 auto; padding:90px 40px 80px; position:relative; z-index:2;
@@ -431,7 +431,7 @@ margin:0 0 10px; letter-spacing:-0.5px; line-height:1.15; text-align:left;
 .section-sub { font-size:13.5px; color:rgba(20,16,12,0.33); margin:0 0 42px; max-width:480px; line-height:1.75; }
 
 /* ═══════════════════════════════════════
-  REVEAL ANIMATIONS
+ REVEAL ANIMATIONS
 ═══════════════════════════════════════ */
 .reveal-el { opacity:0; transform:translateY(26px); transition:opacity .65s ease,transform .65s ease; }
 .reveal-el.revealed { opacity:1; transform:translateY(0); }
@@ -441,7 +441,7 @@ margin:0 0 10px; letter-spacing:-0.5px; line-height:1.15; text-align:left;
 .reveal-el[data-delay="4"]{ transition-delay:.44s; }
 
 /* ═══════════════════════════════════════
-  EMI SECTION
+ EMI SECTION
 ═══════════════════════════════════════ */
 .emi-section {
 min-height:100vh; background-color:#faf7f0;
@@ -604,7 +604,7 @@ border-radius:14px;
 .edp-emi-soon-sub  { font-size:12px; color:rgba(20,16,12,0.18); line-height:1.6; }
 
 /* ═══════════════════════════════════════
-  SINGLE NOTE
+ SINGLE NOTE
 ═══════════════════════════════════════ */
 .single-note-wrap {
 background:rgba(20,16,12,0.025); border:1px solid rgba(255,215,0,0.12);
@@ -746,7 +746,7 @@ min-height:240px; gap:10px; opacity:.4; text-align:center; position:relative; z-
 .ne-sub   { font-size:13px; color:rgba(20,16,12,0.3); }
 
 /* ═══════════════════════════════════════
-  NOTE EDITOR MODAL
+ NOTE EDITOR MODAL
 ═══════════════════════════════════════ */
 .note-editor-backdrop {
 position:fixed; inset:0; z-index:400000; background:rgba(0,0,0,0);
@@ -826,7 +826,7 @@ cursor:pointer; border:none; margin:0; transition:all .18s; letter-spacing:0.3px
 .nem-btn-save:hover { filter:brightness(1.08); transform:translateY(-1px); box-shadow:0 6px 20px rgba(255,215,0,0.35); }
 
 /* ═══════════════════════════════════════
-  GALLERY SECTION (segment banners)
+ GALLERY SECTION (segment banners)
 ═══════════════════════════════════════ */
 .gallery-section {
 min-height:100vh; background-color:#fdf6e3;
@@ -1131,7 +1131,7 @@ body.dark-mode .gbm-photo-item { background:rgba(30,24,16,0.6) !important; borde
 body.dark-mode .gbm-photo-label { color:rgba(255,255,255,0.8) !important; background:rgba(20,14,6,0.5) !important; border-top-color:rgba(255,255,255,0.07) !important; }
 
 /* ═══════════════════════════════════════
-  PREMIUM FOOTER
+ PREMIUM FOOTER
 ═══════════════════════════════════════ */
 .re-footer {
 width:100%; margin-top:0; background:#f0ebe0;
@@ -1421,8 +1421,8 @@ to   { opacity:1; transform:scale(1); }
 }
 
 /* ══════════════════════════════════════════
-  DARK MODE — COMPREHENSIVE TEXT FIX
-  All elements that had invisible dark text
+ DARK MODE — COMPREHENSIVE TEXT FIX
+ All elements that had invisible dark text
 ══════════════════════════════════════════ */
 
 /* Gallery card sub-elements */
@@ -1500,11 +1500,11 @@ transition:flex-basis .36s cubic-bezier(.22,1,.36,1),width .36s cubic-bezier(.22
 #bike-spec-panel .bsc::-webkit-scrollbar{width:5px;}
 #bike-spec-panel .bsc::-webkit-scrollbar-thumb{background:#cfc6b3;border-radius:4px;}
 @media(max-width:1280px){
-  .crm-stage{flex-direction:column;align-items:center;}
-  #bike-spec-panel{flex:0 0 auto;width:min(90vw,500px);margin-left:0;align-self:center;}
-  .crm-stage.stage-wide #bike-spec-panel{width:min(90vw,500px);margin-left:0;margin-top:20px;}
-  #bike-spec-panel:not(.bsp-open){display:none;}
-  #bike-spec-panel .bsc{position:relative;inset:auto;max-height:72vh;}
+.crm-stage{flex-direction:column;align-items:center;}
+#bike-spec-panel{flex:0 0 auto;width:min(90vw,500px);margin-left:0;align-self:center;}
+.crm-stage.stage-wide #bike-spec-panel{width:min(90vw,500px);margin-left:0;margin-top:20px;}
+#bike-spec-panel:not(.bsp-open){display:none;}
+#bike-spec-panel .bsc{position:relative;inset:auto;max-height:72vh;}
 }
 /* ═══ Toast + custom confirm (preview-sandbox me native alert/confirm block hote hain) ═══ */
 #_reToast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(16px);background:rgba(20,20,20,.92);color:#fff;padding:12px 22px;border-radius:12px;font-weight:600;font-size:15px;letter-spacing:.2px;box-shadow:0 10px 30px rgba(0,0,0,.35);opacity:0;pointer-events:none;z-index:200000;transition:opacity .2s ease,transform .2s ease;}
@@ -1569,10 +1569,10 @@ body.dark-mode .bsc-foot{color:rgba(255,255,255,0.28) !important;border-top-colo
 
 /* ═══ COMPARE SECTION (added) ═══ */
 .compare-section{min-height:100vh;background-color:#faf7f0;
-  background-image:
-    radial-gradient(ellipse 55% 60% at 8% 10%,rgba(229,53,23,0.08) 0%,transparent 58%),
-    radial-gradient(ellipse 50% 55% at 94% 92%,rgba(201,151,0,0.09) 0%,transparent 58%);
-  position:relative;overflow:hidden;}
+background-image:
+radial-gradient(ellipse 55% 60% at 8% 10%,rgba(229,53,23,0.08) 0%,transparent 58%),
+radial-gradient(ellipse 50% 55% at 94% 92%,rgba(201,151,0,0.09) 0%,transparent 58%);
+position:relative;overflow:hidden;}
 body.dark-mode .compare-section{background-color:#060606 !important;}
 .cmp-controls{display:flex;gap:14px;flex-wrap:wrap;align-items:stretch;margin-bottom:14px;position:relative;z-index:2;}
 .cmp-slot{flex:1;min-width:230px;background:rgba(20,16,12,0.03);border:1px solid rgba(20,16,12,0.08);border-radius:14px;padding:14px;position:relative;}
@@ -1581,7 +1581,7 @@ body.dark-mode .cmp-slot{background:rgba(255,255,255,0.04) !important;border-col
 .cmp-slot-lbl{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(20,16,12,0.35);margin-bottom:10px;}
 body.dark-mode .cmp-slot-lbl{color:rgba(255,255,255,0.4) !important;}
 .cmp-slot select{width:100%;height:40px;border-radius:8px;border:1px solid rgba(20,16,12,0.12);background-color:rgba(255,255,255,0.7);color:#1a1714;font-size:13.5px;padding:0 30px 0 10px;margin:0 0 8px;cursor:pointer;appearance:none;box-sizing:border-box;
-  background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233a352c' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right 10px center;background-size:15px;}
+background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233a352c' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right 10px center;background-size:15px;}
 .cmp-slot select:last-child{margin-bottom:0;}
 .cmp-slot select:focus{outline:none;box-shadow:0 0 0 2px rgba(255,215,0,0.35);transform:none;}
 body.dark-mode .cmp-slot select{background-color:rgba(255,255,255,0.08) !important;border-color:rgba(255,255,255,0.12) !important;color:#eee !important;}
@@ -1700,7 +1700,7 @@ body.dark-mode .cmp-empty{color:rgba(255,255,255,0.4) !important;}
 <span class="gh-nav-icon">💰</span>
 <span class="gh-nav-label">EMI</span>
 </button>
-    <button class="gh-nav-item" data-tab="compare">
+<button class="gh-nav-item" data-tab="compare">
 <span class="gh-nav-icon">⚖️</span>
 <span class="gh-nav-label">Compare</span>
 </button>
@@ -1716,6 +1716,7 @@ body.dark-mode .cmp-empty{color:rgba(255,255,255,0.4) !important;}
 <div class="gh-right">
 <div class="gh-alert-wrap" id="ghAlertWrap">
 <span class="gh-alert-icon">⚠️</span>
+<div class="gh-alert-tooltip">For any Updates or Changes Kindly contact Ms Harshita Khandelwal</div>
 <div class="gh-alert-tooltip">For any Updates or Changes Kindly contact Mrs Harshita Khandelwal</div>
 </div>
 <button class="hbg-btn" id="hbgBtn" aria-label="Open menu" aria-expanded="false" aria-controls="hbgPanel">
@@ -1788,7 +1789,7 @@ Logout
 <div class="scroll-nav" id="scrollNav" aria-hidden="true">
 <div class="sn-dot active" data-section="heroSection" title="CRM"></div>
 <div class="sn-dot" data-section="emiSection" title="EMI"></div>
-  <div class="sn-dot" data-section="compareSection" title="Compare"></div>
+<div class="sn-dot" data-section="compareSection" title="Compare"></div>
 <div class="sn-dot" data-section="notesSection" title="Notes"></div>
 <div class="sn-dot" data-section="gallerySection" title="Gallery"></div>
 </div>
@@ -1930,19 +1931,19 @@ Logout
 
 <!-- ===== COMPARE SECTION ===== -->
 <section class="compare-section" id="compareSection">
-  <div class="section-inner">
-    <div class="section-eyebrow reveal-el">Side By Side</div>
-    <h2 class="section-title reveal-el" data-delay="1">Compare <span>Bikes &amp; Variants</span></h2>
-    <p class="section-sub reveal-el" data-delay="2">Pick a model + colour in each slot. Leave colour on <b>Common</b> to compare whole bikes, or choose a colour for an exact variant — mix freely. Add a third to compare 2-vs-3. Rows that differ are highlighted.</p>
+<div class="section-inner">
+<div class="section-eyebrow reveal-el">Side By Side</div>
+<h2 class="section-title reveal-el" data-delay="1">Compare <span>Bikes &amp; Variants</span></h2>
+<p class="section-sub reveal-el" data-delay="2">Pick a model + colour in each slot. Leave colour on <b>Common</b> to compare whole bikes, or choose a colour for an exact variant — mix freely. Add a third to compare 2-vs-3. Rows that differ are highlighted.</p>
 
-    <div class="cmp-controls reveal-el" data-delay="2" id="cmpSlots"></div>
-    <div class="cmp-tools reveal-el" data-delay="3">
-      <button class="cmp-add" id="cmpAddBtn">＋ Add third</button>
-      <label class="cmp-only"><input type="checkbox" id="cmpOnlyDiff"> Show only differences</label>
-      <span class="cmp-legend"><i></i> highlighted = differs</span>
-    </div>
-    <div class="cmp-scroll reveal-el" data-delay="3"><div id="cmpTableHost"></div></div>
-  </div>
+<div class="cmp-controls reveal-el" data-delay="2" id="cmpSlots"></div>
+<div class="cmp-tools reveal-el" data-delay="3">
+<button class="cmp-add" id="cmpAddBtn">＋ Add third</button>
+<label class="cmp-only"><input type="checkbox" id="cmpOnlyDiff"> Show only differences</label>
+<span class="cmp-legend"><i></i> highlighted = differs</span>
+</div>
+<div class="cmp-scroll reveal-el" data-delay="3"><div id="cmpTableHost"></div></div>
+</div>
 </section>
 
 <!-- ===== NOTES SECTION ===== -->
@@ -2126,12 +2127,11 @@ fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="9" stroke-linecap="rou
 <script>
 // ─── BIKE DATA ─────────────────────────────────────────────────────────────
 const bikeData = {
-const bikeData = {
-"Hunter 350":       {"Tokyo Black":172445,"London Red":172445,"Rebel Blue":172445,"Moonshot White":172445,"Mumbai Yellow":172445,"Dapper Grey":167703,"Rio White":167703,"Graphite Gray":167703,"Tarmac Black":152235,"Factory Black":137640},
-"Bullet 350":       {"Black Gold":211250,"Standard Black":193273,"Standard Maroon":193273,"Battalion Black":169243,"Military Black":166981},
-"Classic 350":      {"Signature White":226069,"Emerald":226069,"Stealth Black":221179,"Gun Grey":221179,"Gorkha Green":212370,"Commando Sand":212370,"Meddalion Bronze":200633,"Madras Red":196227,"Redditch Red":188934},
-"Meteor 350":       {"Supernova Black":223077,"Aurora Retro Green":213167,"Aurora Red":213167,"Stellar Marine Blue":210201,"Stellar Matt Grey":210201,"Fireball Orange":201590,"Fireball Grey":201590},
-"Goan Classic 350": {"Rave Red":230012,"Trip Teal":230012,"Shack Black":227114,"Purple Haze":227114},
+"Hunter 350":        {"Tokyo Black":171077,"London Red":171077,"Rebel Blue":171077,"Moonshot White":171077,"Mumbai Yellow":171077,"Dapper Grey":166372,"Rio White":166372,"Graphite Gray":166372,"Tarmac Black":151025,"Factory Black":137640},
+"Bullet 350":        {"Black Gold":209572,"Standard Black":191739,"Standard Maroon":191739,"Battalion Black":167900,"Military Black":165656},
+"Classic 350":       {"Signature White":224275,"Emerald":224275,"Stealth Black":219423,"Gun Grey":219423,"Gorkha Green":210684,"Commando Sand":210684,"Meddalion Bronze":199040,"Madras Red":194668,"Redditch Red":187434},
+"Meteor 350":        {"Supernova Black":221307,"Aurora Retro Green":211475,"Aurora Red":211475,"Stellar Marine Blue":208532,"Stellar Matt Grey":208532,"Fireball Orange":199990,"Fireball Grey":199990},
+"Goan Classic 350":  {"Rave Red":228187,"Trip Teal":228187,"Shack Black":225311,"Purple Haze":225311},
 "Scram 440":         {"Force Grey":232371,"Force Teal":232371,"Force Blue":232371,"Trail Blue":224805,"Trail Green":224805},
 "Himalayan 440":     {"Mustang Brown":229000,"Sela Black":229000,"Nelong White":229000},
 "Himalayan 450":     {"Mana Black":339564,"Hanle Black":322081,"Kamet White":316678,"Slate Himalayan Salt":312353,"Slate Poppy Blue":312353,"Kaza Brown":308029},
@@ -2146,7 +2146,7 @@ const bikeData = {
 };
 const statePrices = {
 "Bullet 350": {
-  "Battalion Black": {"Chandigarh":167108,"Delhi":166511,"Madhya Pradesh":166088,"Punjab":165438}
+"Battalion Black": {"Chandigarh":167108,"Delhi":166511,"Madhya Pradesh":166088,"Punjab":165438}
 }
 };
 const bikeInfo = {
@@ -2246,7 +2246,7 @@ const bikeSpecs = {
 };
 
 /* VARIANT hardware. base = standard kit; tiers[price] overrides it.
-  cosmetic:true → trims differ only by paint/finish (hardware = base for all). */
+ cosmetic:true → trims differ only by paint/finish (hardware = base for all). */
 const variantHW = {
 "Hunter 350":{
 base:{wheels:"Alloy",tyres:'110/70-17 F · 140/70-17 R · tubeless',brakes:"300mm Disc F · 270mm Disc R",abs:"Dual-channel",lights:"LED",extras:"Slipper clutch · USB-C · Tripper nav"},
@@ -2373,15 +2373,15 @@ const photo = img ? `<img src="${img}" alt="${name}" loading="lazy">` : `<div cl
 const note = s.note ? `<div class="bsc-note">ⓘ ${s.note}</div>` : '';
 const colorCount = Object.keys(bikeData[name]||{}).length;
 return `
-   <div class="bsc">
-     <div class="bsc-photo">${photo}<div class="bsc-seg">${s.seg||''}${ccOf(name)?` · ${ccOf(name)}cc`:''}</div></div>
-     <div class="bsc-head"><div class="bsc-name">${name}</div><div class="bsc-price">${priceTxt}</div></div>
-     <div class="bsc-strip">${colorCount} colour${colorCount!==1?'s':''} · ${variants.length} trim${variants.length!==1?'s':''} — hover a colour for variant details</div>
-     ${_tagsHTML(name)}
-     <div class="bsc-specs">${_sharedRows(s)}</div>
-     ${note}
-     <div class="bsc-foot">Specs sourced from Royal Enfield · indicative ex-showroom</div>
-   </div>`;
+  <div class="bsc">
+    <div class="bsc-photo">${photo}<div class="bsc-seg">${s.seg||''}${ccOf(name)?` · ${ccOf(name)}cc`:''}</div></div>
+    <div class="bsc-head"><div class="bsc-name">${name}</div><div class="bsc-price">${priceTxt}</div></div>
+    <div class="bsc-strip">${colorCount} colour${colorCount!==1?'s':''} · ${variants.length} trim${variants.length!==1?'s':''} — hover a colour for variant details</div>
+    ${_tagsHTML(name)}
+    <div class="bsc-specs">${_sharedRows(s)}</div>
+    ${note}
+    <div class="bsc-foot">Specs sourced from Royal Enfield · indicative ex-showroom</div>
+  </div>`;
 }
 
 /* ── VARIANT CARD (colour-level, full details) ── */
@@ -2413,20 +2413,20 @@ const cosmeticBanner = v.cosmetic ? `<div class="bsc-note bsc-note-soft">Mechani
 const noteHTML = v.note ? `<div class="bsc-note">ⓘ ${v.note}</div>` : (s.note?`<div class="bsc-note">ⓘ ${s.note}</div>`:'');
 
 return `
-   <div class="bsc">
-     <div class="bsc-photo">${photo}<div class="bsc-seg">${v.trim}</div></div>
-     <div class="bsc-head"><div class="bsc-name">${name}</div><div class="bsc-price">${fmtINR(v.price)}</div></div>
-     <div class="bsc-color">${colorsLine}</div>
-     ${_tagsHTML(name)}
-     ${_statePriceHTML(name, repColor)}
-     <div class="bsc-block-lbl">Variant Hardware</div>
-     <div class="bsc-specs">${hwRows}</div>
-     ${cosmeticBanner}
-     <div class="bsc-block-lbl">Common Specs</div>
-     <div class="bsc-specs">${_sharedRows(s)}</div>
-     ${noteHTML}
-     <div class="bsc-foot">Variant ${fmtINR(v.price)} · specs sourced from Royal Enfield</div>
-   </div>`;
+  <div class="bsc">
+    <div class="bsc-photo">${photo}<div class="bsc-seg">${v.trim}</div></div>
+    <div class="bsc-head"><div class="bsc-name">${name}</div><div class="bsc-price">${fmtINR(v.price)}</div></div>
+    <div class="bsc-color">${colorsLine}</div>
+    ${_tagsHTML(name)}
+    ${_statePriceHTML(name, repColor)}
+    <div class="bsc-block-lbl">Variant Hardware</div>
+    <div class="bsc-specs">${hwRows}</div>
+    ${cosmeticBanner}
+    <div class="bsc-block-lbl">Common Specs</div>
+    <div class="bsc-specs">${_sharedRows(s)}</div>
+    ${noteHTML}
+    <div class="bsc-foot">Variant ${fmtINR(v.price)} · specs sourced from Royal Enfield</div>
+  </div>`;
 }
 
 let _specHideT, _pinnedSpecHTML=null, _hoverActive=false, _wideT;
@@ -2455,11 +2455,11 @@ item.addEventListener('mouseenter',()=>hoverSpecCard(buildVariantCardHTML(modelN
 window.buildCommonCardHTML=buildCommonCardHTML;
 window.buildVariantCardHTML=buildVariantCardHTML;
 window.getVariants=getVariants;
-  window.bikeSpecs=bikeSpecs;
-  window.variantHW=variantHW;
-  window.getColorImage=getColorImage;
-  window.fmtINR=fmtINR;
-  window.bikeHeroImage=bikeHeroImage;
+window.bikeSpecs=bikeSpecs;
+window.variantHW=variantHW;
+window.getColorImage=getColorImage;
+window.fmtINR=fmtINR;
+window.bikeHeroImage=bikeHeroImage;
 window.showSpecPanel=showSpecPanel;
 window.pinSpecPanel=pinSpecPanel;
 window.unpinSpecPanel=unpinSpecPanel;
@@ -2730,26 +2730,26 @@ copyToClipboard(text);
 showToast('Copied ✅');
 }
 function copyToClipboard(text){
-  try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).catch(()=>fallbackCopy(text)); } else { fallbackCopy(text); } }catch(e){ fallbackCopy(text); }
+try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).catch(()=>fallbackCopy(text)); } else { fallbackCopy(text); } }catch(e){ fallbackCopy(text); }
 }
 function fallbackCopy(text){
-  try{ const ta=document.createElement('textarea'); ta.value=text; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.top='-1000px'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); try{ta.setSelectionRange(0, text.length);}catch(e){} document.execCommand('copy'); document.body.removeChild(ta); }catch(e){}
+try{ const ta=document.createElement('textarea'); ta.value=text; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.top='-1000px'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); try{ta.setSelectionRange(0, text.length);}catch(e){} document.execCommand('copy'); document.body.removeChild(ta); }catch(e){}
 }
 function showToast(msg){
-  let t=document.getElementById('_reToast'); if(!t){ t=document.createElement('div'); t.id='_reToast'; document.body.appendChild(t); }
-  t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'), 1600);
+let t=document.getElementById('_reToast'); if(!t){ t=document.createElement('div'); t.id='_reToast'; document.body.appendChild(t); }
+t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'), 1600);
 }
 function showConfirm(title, msg, onYes){
-  const old=document.getElementById('_reConfirm'); if(old) old.remove();
-  const ov=document.createElement('div'); ov.id='_reConfirm'; ov.className='re-confirm-ov';
-  ov.innerHTML='<div class="re-confirm-box"><div class="re-confirm-title"></div><div class="re-confirm-msg"></div><div class="re-confirm-actions"><button class="re-confirm-cancel">Cancel</button><button class="re-confirm-ok">Reset</button></div></div>';
-  ov.querySelector('.re-confirm-title').textContent=title;
-  ov.querySelector('.re-confirm-msg').textContent=msg;
-  document.body.appendChild(ov); requestAnimationFrame(()=>ov.classList.add('show'));
-  const closeOv=()=>{ ov.classList.remove('show'); setTimeout(()=>ov.remove(),200); };
-  ov.querySelector('.re-confirm-cancel').addEventListener('click', e=>{ e.stopPropagation(); closeOv(); });
-  ov.querySelector('.re-confirm-ok').addEventListener('click', e=>{ e.stopPropagation(); closeOv(); if(onYes) onYes(); });
-  ov.addEventListener('click', e=>{ if(e.target===ov) closeOv(); });
+const old=document.getElementById('_reConfirm'); if(old) old.remove();
+const ov=document.createElement('div'); ov.id='_reConfirm'; ov.className='re-confirm-ov';
+ov.innerHTML='<div class="re-confirm-box"><div class="re-confirm-title"></div><div class="re-confirm-msg"></div><div class="re-confirm-actions"><button class="re-confirm-cancel">Cancel</button><button class="re-confirm-ok">Reset</button></div></div>';
+ov.querySelector('.re-confirm-title').textContent=title;
+ov.querySelector('.re-confirm-msg').textContent=msg;
+document.body.appendChild(ov); requestAnimationFrame(()=>ov.classList.add('show'));
+const closeOv=()=>{ ov.classList.remove('show'); setTimeout(()=>ov.remove(),200); };
+ov.querySelector('.re-confirm-cancel').addEventListener('click', e=>{ e.stopPropagation(); closeOv(); });
+ov.querySelector('.re-confirm-ok').addEventListener('click', e=>{ e.stopPropagation(); closeOv(); if(onYes) onYes(); });
+ov.addEventListener('click', e=>{ if(e.target===ov) closeOv(); });
 }
 
 // ─── RESET ─────────────────────────────────────────────────────────────────
@@ -2863,33 +2863,33 @@ const btnBg        = isDark ? 'rgba(255,255,255,0.08)'  : 'rgba(0,0,0,0.08)';
 const topBtnBorder = isDark ? 'rgba(255,255,255,0.15)'  : 'rgba(0,0,0,0.15)';
 
 styleEl.textContent = `
-     #global-header { background:${headerBg} !important; }
-     .gh-nav-item            { color:${isDark ? 'rgba(255,255,255,0.72)' : 'rgba(0,0,0,0.72)'} !important; }
-     .gh-nav-item:hover      { color:${isDark ? '#fff' : '#000'} !important; background:${isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'} !important; border-color:${isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)'} !important; }
-     .gh-nav-item.active     { color:var(--theme-accent) !important; background:rgba(${accentR},${accentG},${accentB},0.10) !important; border-color:rgba(${accentR},${accentG},${accentB},0.25) !important; }
-     .section-title span { color:var(--theme-accent) !important; }
-     .section-eyebrow    { color:rgba(${accentR},${accentG},${accentB},0.8) !important; }
-     .section-eyebrow::before { background:rgba(${accentR},${accentG},${accentB},0.7) !important; }
-     h2                  { color:var(--theme-accent) !important; }
-     .sn-dot.active      { background:var(--theme-accent) !important; border-color:var(--theme-accent) !important; box-shadow:0 0 12px rgba(${accentR},${accentG},${accentB},0.65) !important; }
-     .edp-model-name     { color:var(--theme-accent) !important; }
-     .edp-emi-amount     { color:var(--theme-accent) !important; }
-     .emc-badge          { color:rgba(${accentR},${accentG},${accentB},0.8) !important; background:rgba(${accentR},${accentG},${accentB},0.09) !important; border-color:rgba(${accentR},${accentG},${accentB},0.18) !important; }
-     .single-note-btn.save { background:linear-gradient(135deg,var(--theme-accent),rgba(${accentR},${accentG},${accentB},0.8)) !important; }
-     .hbg-bar            { background:var(--theme-accent) !important; }
-     .add-note-btn       { background:linear-gradient(135deg,rgba(${accentR},${accentG},${accentB},1),rgba(${Math.max(0,accentR-30)},${Math.max(0,accentG-30)},${Math.max(0,accentB-30)},1)) !important; }
-     .efp.active         { color:var(--theme-accent) !important; border-color:rgba(${accentR},${accentG},${accentB},0.4) !important; }
+    #global-header { background:${headerBg} !important; }
+    .gh-nav-item            { color:${isDark ? 'rgba(255,255,255,0.72)' : 'rgba(0,0,0,0.72)'} !important; }
+    .gh-nav-item:hover      { color:${isDark ? '#fff' : '#000'} !important; background:${isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'} !important; border-color:${isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)'} !important; }
+    .gh-nav-item.active     { color:var(--theme-accent) !important; background:rgba(${accentR},${accentG},${accentB},0.10) !important; border-color:rgba(${accentR},${accentG},${accentB},0.25) !important; }
+    .section-title span { color:var(--theme-accent) !important; }
+    .section-eyebrow    { color:rgba(${accentR},${accentG},${accentB},0.8) !important; }
+    .section-eyebrow::before { background:rgba(${accentR},${accentG},${accentB},0.7) !important; }
+    h2                  { color:var(--theme-accent) !important; }
+    .sn-dot.active      { background:var(--theme-accent) !important; border-color:var(--theme-accent) !important; box-shadow:0 0 12px rgba(${accentR},${accentG},${accentB},0.65) !important; }
+    .edp-model-name     { color:var(--theme-accent) !important; }
+    .edp-emi-amount     { color:var(--theme-accent) !important; }
+    .emc-badge          { color:rgba(${accentR},${accentG},${accentB},0.8) !important; background:rgba(${accentR},${accentG},${accentB},0.09) !important; border-color:rgba(${accentR},${accentG},${accentB},0.18) !important; }
+    .single-note-btn.save { background:linear-gradient(135deg,var(--theme-accent),rgba(${accentR},${accentG},${accentB},0.8)) !important; }
+    .hbg-bar            { background:var(--theme-accent) !important; }
+    .add-note-btn       { background:linear-gradient(135deg,rgba(${accentR},${accentG},${accentB},1),rgba(${Math.max(0,accentR-30)},${Math.max(0,accentG-30)},${Math.max(0,accentB-30)},1)) !important; }
+    .efp.active         { color:var(--theme-accent) !important; border-color:rgba(${accentR},${accentG},${accentB},0.4) !important; }
 
-     /* CRM box & inputs */
-     .box                { background:${boxBg} !important; border-color:${boxBorder} !important; }
-     .box input, .box select, .cst { background:${inputBg} !important; color:${inputText} !important; border:none !important; }
-     .box input::placeholder        { color:${inputPh} !important; }
-     .cst                           { color:${inputPh} !important; }
-     .cst.has-value                 { color:${inputText} !important; }
-     .topBtn                        { background:${btnBg} !important; color:${btnText} !important; border:1px solid ${topBtnBorder} !important; }
-     .di                            { color:${inputText} !important; background:${isDark ? '#1c1c1c' : '#f5f5f5'} !important; }
-     .di:hover                      { background:rgba(${accentR},${accentG},${accentB},0.1) !important; color:var(--theme-accent) !important; }
-   `;
+    /* CRM box & inputs */
+    .box                { background:${boxBg} !important; border-color:${boxBorder} !important; }
+    .box input, .box select, .cst { background:${inputBg} !important; color:${inputText} !important; border:none !important; }
+    .box input::placeholder        { color:${inputPh} !important; }
+    .cst                           { color:${inputPh} !important; }
+    .cst.has-value                 { color:${inputText} !important; }
+    .topBtn                        { background:${btnBg} !important; color:${btnText} !important; border:1px solid ${topBtnBorder} !important; }
+    .di                            { color:${inputText} !important; background:${isDark ? '#1c1c1c' : '#f5f5f5'} !important; }
+    .di:hover                      { background:rgba(${accentR},${accentG},${accentB},0.1) !important; color:var(--theme-accent) !important; }
+  `;
 }
 
 function resetTheme() {
@@ -3096,7 +3096,7 @@ window.addEventListener('load',()=>nameInput.focus());
 const SECTIONS = [
 { id:'heroSection',  tab:null },
 { id:'emiSection',   tab:'emi' },
-    { id:'compareSection', tab:'compare' },
+{ id:'compareSection', tab:'compare' },
 { id:'notesSection', tab:'notes' },
 { id:'gallerySection', tab:'gallery' }
 ];
@@ -3104,8 +3104,8 @@ const dots    = Array.from(document.querySelectorAll('.sn-dot'));
 const navBtns = document.querySelectorAll('.gh-nav-item[data-tab]');
 
 navBtns.forEach(btn => {
-    if (btn.dataset.tab === 'emi' || btn.dataset.tab === 'notes' || btn.dataset.tab === 'gallery') btn.classList.remove('coming-soon');
-    if (btn.dataset.tab === 'emi' || btn.dataset.tab === 'compare' || btn.dataset.tab === 'notes' || btn.dataset.tab === 'gallery') btn.classList.remove('coming-soon');
+if (btn.dataset.tab === 'emi' || btn.dataset.tab === 'notes' || btn.dataset.tab === 'gallery') btn.classList.remove('coming-soon');
+if (btn.dataset.tab === 'emi' || btn.dataset.tab === 'compare' || btn.dataset.tab === 'notes' || btn.dataset.tab === 'gallery') btn.classList.remove('coming-soon');
 btn.addEventListener('click', () => {
 const match = SECTIONS.find(s => s.tab === btn.dataset.tab);
 if (match) document.getElementById(match.id)?.scrollIntoView({ behavior:'smooth' });
@@ -3167,9 +3167,9 @@ const card = document.createElement('div');
 card.className = 'emi-model-card' + (selectedModel === name ? ' selected' : '');
 card.dataset.model = name;
 card.innerHTML = `
-       <div class="emc-badge">${cc}cc</div>
-       <div class="emc-name">${name}</div>
-     `;
+      <div class="emc-badge">${cc}cc</div>
+      <div class="emc-name">${name}</div>
+    `;
 card.addEventListener('click', () => {
 if (selectedModel === name) { closeDetail(); }
 else { selectModel(name); }
@@ -3203,29 +3203,29 @@ const tenures = Object.keys(rates).map(Number);
 
 if (tenures.length > 0) {
 emiContainer.innerHTML = `
-       <div class="edp-emi-grid">
-         ${tenures.map(months => {
-           const rate = rates[months];
-           return `
-             <div class="edp-emi-card">
-               <div class="edp-emi-tenure">${months} Months</div>
-               <div class="edp-emi-amount">${fmtINR(rate)}</div>
-               <div class="edp-emi-mo">/month per ₹1L</div>
-             </div>
-           `;
-         }).join('')}
-       </div>
-     `;
+      <div class="edp-emi-grid">
+        ${tenures.map(months => {
+          const rate = rates[months];
+          return `
+            <div class="edp-emi-card">
+              <div class="edp-emi-tenure">${months} Months</div>
+              <div class="edp-emi-amount">${fmtINR(rate)}</div>
+              <div class="edp-emi-mo">/month per ₹1L</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
 } else {
 emiContainer.innerHTML = `
-       <div class="edp-emi-grid">
-         <div class="edp-emi-soon">
-           <div class="edp-emi-soon-icon">📋</div>
-           <div class="edp-emi-soon-text">EMI Plans Not Available</div>
-           <div class="edp-emi-soon-sub">Finance plans for ${name} are not listed yet.<br>Please check with your nearest RE dealership.</div>
-         </div>
-       </div>
-     `;
+      <div class="edp-emi-grid">
+        <div class="edp-emi-soon">
+          <div class="edp-emi-soon-icon">📋</div>
+          <div class="edp-emi-soon-text">EMI Plans Not Available</div>
+          <div class="edp-emi-soon-sub">Finance plans for ${name} are not listed yet.<br>Please check with your nearest RE dealership.</div>
+        </div>
+      </div>
+    `;
 }
 
 // Show with animation
@@ -3274,77 +3274,77 @@ const Wd= 'rgba(255,215,0,0.18)';     // soft fill
 // Reusable wheel
 function wheel(cx,cy,r){
 return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${W}" stroke-width="2.6"/>
-           <circle cx="${cx}" cy="${cy}" r="${r*0.42}" fill="none" stroke="${W}" stroke-width="1.4" opacity="0.55"/>
-           <circle cx="${cx}" cy="${cy}" r="2.4" fill="${W}"/>`;
+          <circle cx="${cx}" cy="${cy}" r="${r*0.42}" fill="none" stroke="${W}" stroke-width="1.4" opacity="0.55"/>
+          <circle cx="${cx}" cy="${cy}" r="2.4" fill="${W}"/>`;
 }
 const svgOpen = `<svg class="gseg-bike-svg" viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" fill="none">`;
 const svgClose= `</svg>`;
 
 const segArt = {
 'Roadster': svgOpen + `
-     ${wheel(40,118,26)} ${wheel(206,118,26)}
-     <path d="M40 118 L88 86 L150 84 L172 92 L206 118" stroke="${W}" stroke-width="2.6"/>
-     <path d="M88 86 L96 56 L132 50" stroke="${W}" stroke-width="2.6"/>
-     <path d="M132 50 L116 44" stroke="${W}" stroke-width="2.6"/>
-     <path d="M150 84 L160 118" stroke="${W}" stroke-width="2.6"/>
-     <ellipse cx="118" cy="78" rx="26" ry="9" fill="${Wd}" stroke="${W}" stroke-width="1.6"/>
-     <path d="M70 100 Q90 84 116 88" stroke="${W}" stroke-width="2"/>
-   ` + svgClose,
+    ${wheel(40,118,26)} ${wheel(206,118,26)}
+    <path d="M40 118 L88 86 L150 84 L172 92 L206 118" stroke="${W}" stroke-width="2.6"/>
+    <path d="M88 86 L96 56 L132 50" stroke="${W}" stroke-width="2.6"/>
+    <path d="M132 50 L116 44" stroke="${W}" stroke-width="2.6"/>
+    <path d="M150 84 L160 118" stroke="${W}" stroke-width="2.6"/>
+    <ellipse cx="118" cy="78" rx="26" ry="9" fill="${Wd}" stroke="${W}" stroke-width="1.6"/>
+    <path d="M70 100 Q90 84 116 88" stroke="${W}" stroke-width="2"/>
+  ` + svgClose,
 
 'Heritage': svgOpen + `
-     ${wheel(42,120,27)} ${wheel(204,120,27)}
-     <path d="M42 120 Q34 96 56 90 L42 120" fill="none" stroke="${W}" stroke-width="1.8" opacity="0.65"/>
-     <path d="M204 120 Q212 96 190 90 L204 120" fill="none" stroke="${W}" stroke-width="1.8" opacity="0.65"/>
-     <path d="M42 120 L86 92 L146 90 L168 100 L204 120" stroke="${W}" stroke-width="2.6"/>
-     <path d="M86 92 L92 60 L120 54" stroke="${W}" stroke-width="2.6"/>
-     <circle cx="124" cy="52" r="8" fill="none" stroke="${W}" stroke-width="1.8"/>
-     <ellipse cx="118" cy="82" rx="24" ry="9" fill="${Wd}" stroke="${W}" stroke-width="1.6"/>
-     <circle cx="100" cy="86" r="4" fill="none" stroke="${W}" stroke-width="1.5"/>
-     <path d="M168 100 Q188 96 198 86 Q204 80 196 76" stroke="${W}" stroke-width="2.2"/>
-   ` + svgClose,
+    ${wheel(42,120,27)} ${wheel(204,120,27)}
+    <path d="M42 120 Q34 96 56 90 L42 120" fill="none" stroke="${W}" stroke-width="1.8" opacity="0.65"/>
+    <path d="M204 120 Q212 96 190 90 L204 120" fill="none" stroke="${W}" stroke-width="1.8" opacity="0.65"/>
+    <path d="M42 120 L86 92 L146 90 L168 100 L204 120" stroke="${W}" stroke-width="2.6"/>
+    <path d="M86 92 L92 60 L120 54" stroke="${W}" stroke-width="2.6"/>
+    <circle cx="124" cy="52" r="8" fill="none" stroke="${W}" stroke-width="1.8"/>
+    <ellipse cx="118" cy="82" rx="24" ry="9" fill="${Wd}" stroke="${W}" stroke-width="1.6"/>
+    <circle cx="100" cy="86" r="4" fill="none" stroke="${W}" stroke-width="1.5"/>
+    <path d="M168 100 Q188 96 198 86 Q204 80 196 76" stroke="${W}" stroke-width="2.2"/>
+  ` + svgClose,
 
 'Cruiser': svgOpen + `
-     ${wheel(26,122,24)} ${wheel(228,122,24)}
-     <path d="M26 122 L70 100 L150 98 L182 106 L228 122" stroke="${W}" stroke-width="2.6"/>
-     <path d="M70 100 L78 64 L100 58" stroke="${W}" stroke-width="2.6"/>
-     <path d="M70 100 Q56 78 66 60" stroke="${W}" stroke-width="2"/>
-     <ellipse cx="120" cy="92" rx="28" ry="8" fill="${Wd}" stroke="${W}" stroke-width="1.6"/>
-     <path d="M150 98 Q168 92 176 100" stroke="${W}" stroke-width="2"/>
-     <path d="M182 106 L196 122 L210 122" stroke="${W}" stroke-width="2.2"/>
-     <path d="M118 84 Q140 78 152 86" stroke="${W}" stroke-width="1.6" opacity="0.6"/>
-   ` + svgClose,
+    ${wheel(26,122,24)} ${wheel(228,122,24)}
+    <path d="M26 122 L70 100 L150 98 L182 106 L228 122" stroke="${W}" stroke-width="2.6"/>
+    <path d="M70 100 L78 64 L100 58" stroke="${W}" stroke-width="2.6"/>
+    <path d="M70 100 Q56 78 66 60" stroke="${W}" stroke-width="2"/>
+    <ellipse cx="120" cy="92" rx="28" ry="8" fill="${Wd}" stroke="${W}" stroke-width="1.6"/>
+    <path d="M150 98 Q168 92 176 100" stroke="${W}" stroke-width="2"/>
+    <path d="M182 106 L196 122 L210 122" stroke="${W}" stroke-width="2.2"/>
+    <path d="M118 84 Q140 78 152 86" stroke="${W}" stroke-width="1.6" opacity="0.6"/>
+  ` + svgClose,
 
 'Adventure': svgOpen + `
-     ${wheel(44,114,30)} ${wheel(204,120,24)}
-     <path d="M44 114 L40 78 L36 70" stroke="${W}" stroke-width="2.4"/>
-     <path d="M44 114 L88 92 L150 88 L172 96 L204 120" stroke="${W}" stroke-width="2.6"/>
-     <path d="M88 92 L96 54 L118 44" stroke="${W}" stroke-width="2.6"/>
-     <path d="M30 86 L52 64 L60 50" stroke="${W}" stroke-width="2.2"/>
-     <path d="M118 44 L132 40" stroke="${W}" stroke-width="2.2"/>
-     <ellipse cx="120" cy="80" rx="22" ry="8" fill="${Wd}" stroke="${W}" stroke-width="1.6"/>
-     <path d="M150 88 Q170 86 180 100 L190 120" stroke="${W}" stroke-width="2.2"/>
-   ` + svgClose,
+    ${wheel(44,114,30)} ${wheel(204,120,24)}
+    <path d="M44 114 L40 78 L36 70" stroke="${W}" stroke-width="2.4"/>
+    <path d="M44 114 L88 92 L150 88 L172 96 L204 120" stroke="${W}" stroke-width="2.6"/>
+    <path d="M88 92 L96 54 L118 44" stroke="${W}" stroke-width="2.6"/>
+    <path d="M30 86 L52 64 L60 50" stroke="${W}" stroke-width="2.2"/>
+    <path d="M118 44 L132 40" stroke="${W}" stroke-width="2.2"/>
+    <ellipse cx="120" cy="80" rx="22" ry="8" fill="${Wd}" stroke="${W}" stroke-width="1.6"/>
+    <path d="M150 88 Q170 86 180 100 L190 120" stroke="${W}" stroke-width="2.2"/>
+  ` + svgClose,
 
 'Pure Sport': svgOpen + `
-     ${wheel(40,120,25)} ${wheel(206,120,25)}
-     <path d="M40 120 L90 96 L148 96 L172 104 L206 120" stroke="${W}" stroke-width="2.6"/>
-     <path d="M90 96 L98 66 L84 56" stroke="${W}" stroke-width="2.6"/>
-     <path d="M84 56 L70 52" stroke="${W}" stroke-width="2.2"/>
-     <path d="M148 96 Q166 86 176 90 Q184 92 180 100" stroke="${W}" stroke-width="2.2"/>
-     <ellipse cx="118" cy="90" rx="24" ry="7" fill="${Wd}" stroke="${W}" stroke-width="1.6"/>
-     <path d="M68 100 Q88 80 116 86" stroke="${W}" stroke-width="2"/>
-   ` + svgClose,
+    ${wheel(40,120,25)} ${wheel(206,120,25)}
+    <path d="M40 120 L90 96 L148 96 L172 104 L206 120" stroke="${W}" stroke-width="2.6"/>
+    <path d="M90 96 L98 66 L84 56" stroke="${W}" stroke-width="2.6"/>
+    <path d="M84 56 L70 52" stroke="${W}" stroke-width="2.2"/>
+    <path d="M148 96 Q166 86 176 90 Q184 92 180 100" stroke="${W}" stroke-width="2.2"/>
+    <ellipse cx="118" cy="90" rx="24" ry="7" fill="${Wd}" stroke="${W}" stroke-width="1.6"/>
+    <path d="M68 100 Q88 80 116 86" stroke="${W}" stroke-width="2"/>
+  ` + svgClose,
 
 'Electric': svgOpen + `
-     ${wheel(42,118,26)} ${wheel(204,118,26)}
-     <path d="M42 118 L86 90 L148 88 L170 96 L204 118" stroke="${W}" stroke-width="2.6"/>
-     <path d="M86 90 L94 58 L122 52" stroke="${W}" stroke-width="2.6"/>
-     <rect x="100" y="92" width="40" height="18" rx="4" fill="${Wd}" stroke="${W}" stroke-width="1.8"/>
-     <circle cx="120" cy="101" r="3" fill="${W}"/>
-     <ellipse cx="116" cy="76" rx="22" ry="7" fill="${Wd}" stroke="${W}" stroke-width="1.6"/>
-     <path d="M148 88 Q164 84 172 92" stroke="${W}" stroke-width="2"/>
-     <path d="M60 96 l6 6 m-2 -10 l6 6" stroke="${W}" stroke-width="1.6" opacity="0.7"/>
-   ` + svgClose
+    ${wheel(42,118,26)} ${wheel(204,118,26)}
+    <path d="M42 118 L86 90 L148 88 L170 96 L204 118" stroke="${W}" stroke-width="2.6"/>
+    <path d="M86 90 L94 58 L122 52" stroke="${W}" stroke-width="2.6"/>
+    <rect x="100" y="92" width="40" height="18" rx="4" fill="${Wd}" stroke="${W}" stroke-width="1.8"/>
+    <circle cx="120" cy="101" r="3" fill="${W}"/>
+    <ellipse cx="116" cy="76" rx="22" ry="7" fill="${Wd}" stroke="${W}" stroke-width="1.6"/>
+    <path d="M148 88 Q164 84 172 92" stroke="${W}" stroke-width="2"/>
+    <path d="M60 96 l6 6 m-2 -10 l6 6" stroke="${W}" stroke-width="1.6" opacity="0.7"/>
+  ` + svgClose
 };
 
 // ── Per-bike unique art (so every individual model looks different,
@@ -3502,9 +3502,9 @@ const bikeImages = {
 "Twilight Blue": "https://raw.githubusercontent.com/priyanshsharma8/relmsdata/main/images/guerrilla450/guerrilla450twilightblue.jpg"
 },
 "Himalayan 440": {
-  "Mustang Brown": "https://raw.githubusercontent.com/priyanshsharma8/relmsdata/main/images/Himalayan440/mustangbrown.jpg",
-  "Sela Black": "https://raw.githubusercontent.com/priyanshsharma8/relmsdata/main/images/Himalayan440/selablack.jpg",
-  "Nelong White": "https://raw.githubusercontent.com/priyanshsharma8/relmsdata/main/images/Himalayan440/nelongwhite.jpg"
+"Mustang Brown": "https://raw.githubusercontent.com/priyanshsharma8/relmsdata/main/images/Himalayan440/mustangbrown.jpg",
+"Sela Black": "https://raw.githubusercontent.com/priyanshsharma8/relmsdata/main/images/Himalayan440/selablack.jpg",
+"Nelong White": "https://raw.githubusercontent.com/priyanshsharma8/relmsdata/main/images/Himalayan440/nelongwhite.jpg"
 },
 "Himalayan 450": {
 "Hanle Black": "https://raw.githubusercontent.com/priyanshsharma8/relmsdata/main/images/himalayan450/himalayan450hanleblack.jpg",
@@ -3594,28 +3594,28 @@ const second = imgs[1] || null;
 const dots   = imgs.slice(0, 6).map((_, i) =>
 `<div class="gseg-dot${i===0?' active':''}"></div>`).join('');
 photoHtml = `<div class="gseg-photo-wrap">
-         <img src="${first.src}" alt="${name} ${first.color}" loading="lazy">
-         ${second ? `<img class="gseg-img-hover" src="${second.src}" alt="${name} ${second.color}" loading="lazy">` : ''}
-         <div class="gseg-dot-strip">${dots}</div>
-       </div>`;
+        <img src="${first.src}" alt="${name} ${first.color}" loading="lazy">
+        ${second ? `<img class="gseg-img-hover" src="${second.src}" alt="${name} ${second.color}" loading="lazy">` : ''}
+        <div class="gseg-dot-strip">${dots}</div>
+      </div>`;
 } else {
 photoHtml = `<div class="gseg-photo-placeholder">${bikeArtFor(name, seg)}</div>`;
 }
 
 card.innerHTML = `
-       ${photoHtml}
-       <div class="gseg-card-info">
-         <div class="gseg-card-left">
-           <div class="gseg-eyebrow">Royal Enfield · ${seg}</div>
-           <div class="gseg-name">${name}</div>
-           <div class="gseg-color-count">${colorCount} colour${colorCount !== 1 ? 's' : ''}</div>
-         </div>
-         <div class="gseg-card-right">
-           <div class="gseg-price-label">Starting</div>
-           <div class="gseg-price-val">${minPrice ? fmtINR(minPrice) : 'TBA'}</div>
-         </div>
-       </div>
-     `;
+      ${photoHtml}
+      <div class="gseg-card-info">
+        <div class="gseg-card-left">
+          <div class="gseg-eyebrow">Royal Enfield · ${seg}</div>
+          <div class="gseg-name">${name}</div>
+          <div class="gseg-color-count">${colorCount} colour${colorCount !== 1 ? 's' : ''}</div>
+        </div>
+        <div class="gseg-card-right">
+          <div class="gseg-price-label">Starting</div>
+          <div class="gseg-price-val">${minPrice ? fmtINR(minPrice) : 'TBA'}</div>
+        </div>
+      </div>
+    `;
 card.addEventListener('click', () => openBikeModal(name, seg, minPrice));
 grid.appendChild(card);
 });
@@ -3634,11 +3634,11 @@ footer.innerHTML = '';
 } else {
 // All photos in one continuous 2-col grid
 grid.innerHTML = photos.map(({ color, src }) => `
-       <div class="gbm-photo-item">
-         <img src="${src}" alt="${color}" loading="lazy">
-         <div class="gbm-photo-label">${color}</div>
-       </div>
-     `).join('');
+      <div class="gbm-photo-item">
+        <img src="${src}" alt="${color}" loading="lazy">
+        <div class="gbm-photo-label">${color}</div>
+      </div>
+    `).join('');
 
 // Page dots: each "page" = 4 photos (2×2)
 const totalPages = Math.ceil(photos.length / 4);
@@ -3761,95 +3761,95 @@ load();
 <script>
 // ═══ COMPARE SECTION — bikes & variants side by side (reuses spec-panel data) ═══
 (function(){
-  const getVariants=window.getVariants, fmtINR=window.fmtINR, getColorImage=window.getColorImage,
-        bikeSpecs=window.bikeSpecs, bikeHeroImage=window.bikeHeroImage;
-  const host=document.getElementById('cmpSlots');
-  if(!host || !getVariants || !bikeSpecs) return;
+const getVariants=window.getVariants, fmtINR=window.fmtINR, getColorImage=window.getColorImage,
+bikeSpecs=window.bikeSpecs, bikeHeroImage=window.bikeHeroImage;
+const host=document.getElementById('cmpSlots');
+if(!host || !getVariants || !bikeSpecs) return;
 
-  function itemFields(model,color){
-    const s=bikeSpecs[model]||{};
-    const variants=getVariants(model);
-    let hw,trim,price,photo;
-    if(color){
-      const p=bikeData[model][color];
-      const v=variants.find(x=>x.price===p)||variants[0];
-      hw=v.hw; trim=color+' · '+v.trim; price=fmtINR(v.price);
-      photo=getColorImage(model,color)||bikeHeroImage[model]||'';
-    }else{
-      const ps=Object.values(bikeData[model]).filter(x=>x!=null);
-      const mn=Math.min(...ps),mx=Math.max(...ps);
-      price=mn===mx?fmtINR(mn):fmtINR(mn)+' – '+fmtINR(mx);
-      photo=bikeHeroImage[model]||'';
-      hw={wheels:'varies by trim',tyres:'varies by trim',brakes:'varies by trim',abs:'varies by trim',lights:'varies by trim',extras:'varies by trim'};
-    }
-    return { _photo:photo,_name:model,_trim:color?trim:'Common (all variants)',_price:price,
-      rows:{
-        'Segment':s.seg,'Riding Purpose':((bikeInfo[model]||{}).about||[]).join(', '),'Price':price,
-        'Engine':s.engine,'Max Power':s.power,'Max Torque':s.torque,'Gearbox':s.gearbox,'Mileage':s.mileage,'Top Speed':s.topSpeed,
-        'Fuel Tank':s.fuelTank,'Seat Height':s.seatHeight,'Kerb Weight':s.weight,'Ground Clearance':s.gc,'Wheelbase':s.wheelbase,'Suspension':s.susp,
-        'Wheels':hw.wheels,'Tyres':hw.tyres,'Brakes':hw.brakes,'ABS':hw.abs,'Lighting':hw.lights,'Features':hw.extras
-      } };
-  }
-  const GROUPS=[
-    ['Overview',['Segment','Riding Purpose','Price']],
-    ['Engine & Performance',['Engine','Max Power','Max Torque','Gearbox','Mileage','Top Speed']],
-    ['Dimensions & Capacity',['Fuel Tank','Seat Height','Kerb Weight','Ground Clearance','Wheelbase','Suspension']],
-    ['Variant Hardware',['Wheels','Tyres','Brakes','ABS','Lighting','Features']]
-  ];
-  const models=Object.keys(bikeData);
-  let slots=[{model:'Hunter 350',color:'London Red'},{model:'Hunter 350',color:'Factory Black'}];
+function itemFields(model,color){
+const s=bikeSpecs[model]||{};
+const variants=getVariants(model);
+let hw,trim,price,photo;
+if(color){
+const p=bikeData[model][color];
+const v=variants.find(x=>x.price===p)||variants[0];
+hw=v.hw; trim=color+' · '+v.trim; price=fmtINR(v.price);
+photo=getColorImage(model,color)||bikeHeroImage[model]||'';
+}else{
+const ps=Object.values(bikeData[model]).filter(x=>x!=null);
+const mn=Math.min(...ps),mx=Math.max(...ps);
+price=mn===mx?fmtINR(mn):fmtINR(mn)+' – '+fmtINR(mx);
+photo=bikeHeroImage[model]||'';
+hw={wheels:'varies by trim',tyres:'varies by trim',brakes:'varies by trim',abs:'varies by trim',lights:'varies by trim',extras:'varies by trim'};
+}
+return { _photo:photo,_name:model,_trim:color?trim:'Common (all variants)',_price:price,
+rows:{
+'Segment':s.seg,'Riding Purpose':((bikeInfo[model]||{}).about||[]).join(', '),'Price':price,
+'Engine':s.engine,'Max Power':s.power,'Max Torque':s.torque,'Gearbox':s.gearbox,'Mileage':s.mileage,'Top Speed':s.topSpeed,
+'Fuel Tank':s.fuelTank,'Seat Height':s.seatHeight,'Kerb Weight':s.weight,'Ground Clearance':s.gc,'Wheelbase':s.wheelbase,'Suspension':s.susp,
+'Wheels':hw.wheels,'Tyres':hw.tyres,'Brakes':hw.brakes,'ABS':hw.abs,'Lighting':hw.lights,'Features':hw.extras
+} };
+}
+const GROUPS=[
+['Overview',['Segment','Riding Purpose','Price']],
+['Engine & Performance',['Engine','Max Power','Max Torque','Gearbox','Mileage','Top Speed']],
+['Dimensions & Capacity',['Fuel Tank','Seat Height','Kerb Weight','Ground Clearance','Wheelbase','Suspension']],
+['Variant Hardware',['Wheels','Tyres','Brakes','ABS','Lighting','Features']]
+];
+const models=Object.keys(bikeData);
+let slots=[{model:'Hunter 350',color:'London Red'},{model:'Hunter 350',color:'Factory Black'}];
 
-  function colorOptions(model,sel){
-    let h='<option value="">— Common (all variants) —</option>';
-    Object.entries(bikeData[model]).sort((a,b)=>a[1]-b[1]).forEach(([c,p])=>{
-      h+='<option value="'+c+'"'+(c===sel?' selected':'')+'>'+c+' · '+fmtINR(p)+'</option>';
-    });
-    return h;
-  }
-  function syncAdd(){ const b=document.getElementById('cmpAddBtn'); if(b) b.disabled=slots.length>=3; }
-  function renderSlots(){
-    host.innerHTML='';
-    slots.forEach((sl,i)=>{
-      const div=document.createElement('div'); div.className='cmp-slot';
-      div.innerHTML='<div class="cmp-slot-lbl">Slot '+(i+1)+'</div>'+
-        (i>=2?'<button class="cmp-rm" data-i="'+i+'" title="Remove">✕</button>':'')+
-        '<select class="cmp-m" data-i="'+i+'">'+models.map(m=>'<option'+(m===sl.model?' selected':'')+'>'+m+'</option>').join('')+'</select>'+
-        '<select class="cmp-c" data-i="'+i+'">'+colorOptions(sl.model,sl.color)+'</select>';
-      host.appendChild(div);
-    });
-    host.querySelectorAll('select.cmp-m').forEach(s=>s.addEventListener('change',e=>{const i=+e.target.dataset.i;slots[i].model=e.target.value;slots[i].color='';renderSlots();renderTable();}));
-    host.querySelectorAll('select.cmp-c').forEach(s=>s.addEventListener('change',e=>{const i=+e.target.dataset.i;slots[i].color=e.target.value;renderTable();}));
-    host.querySelectorAll('.cmp-rm').forEach(b=>b.addEventListener('click',e=>{slots.splice(+e.target.dataset.i,1);renderSlots();renderTable();}));
-    syncAdd();
-  }
-  function renderTable(){
-    const host2=document.getElementById('cmpTableHost'); if(!host2) return;
-    const onlyDiff=document.getElementById('cmpOnlyDiff').checked;
-    const items=slots.map(sl=>itemFields(sl.model,sl.color));
-    if(items.length<2){ host2.innerHTML='<div class="cmp-empty">Pick at least two slots to compare.</div>'; return; }
-    let h='<table class="cmp"><thead><tr><td class="rowlbl"></td>';
-    items.forEach(it=>{
-      const ph=it._photo?'<img src="'+it._photo+'" alt="'+it._name+'">':'<span class="noimg">🏍️</span>';
-      h+='<td><div class="cmp-itemhead"><div class="ph">'+ph+'</div><div class="nm">'+it._name+'</div><div class="tr">'+it._trim+'</div><div class="pr">'+it._price+'</div></div></td>';
-    });
-    h+='</tr></thead><tbody>';
-    GROUPS.forEach(([gname,keys])=>{
-      let rows='';
-      keys.forEach(k=>{
-        const vals=items.map(it=>it.rows[k]||'—');
-        const diff=new Set(vals).size>1;
-        if(onlyDiff&&!diff) return;
-        rows+='<tr class="'+(diff?'diff':'')+'"><td class="rowlbl">'+k+'</td>'+vals.map(v=>'<td class="val">'+v+'</td>').join('')+'</tr>';
-      });
-      if(rows) h+='<tr class="grp"><td class="rowlbl">'+gname+'</td>'+items.map(()=>'<td></td>').join('')+'</tr>'+rows;
-    });
-    h+='</tbody></table>';
-    host2.innerHTML=h;
-  }
-  const addBtn=document.getElementById('cmpAddBtn');
-  if(addBtn) addBtn.addEventListener('click',()=>{ if(slots.length<3){ slots.push({model:'Classic 350',color:''}); renderSlots(); renderTable(); } });
-  const od=document.getElementById('cmpOnlyDiff'); if(od) od.addEventListener('change',renderTable);
-  renderSlots(); renderTable();
+function colorOptions(model,sel){
+let h='<option value="">— Common (all variants) —</option>';
+Object.entries(bikeData[model]).sort((a,b)=>a[1]-b[1]).forEach(([c,p])=>{
+h+='<option value="'+c+'"'+(c===sel?' selected':'')+'>'+c+' · '+fmtINR(p)+'</option>';
+});
+return h;
+}
+function syncAdd(){ const b=document.getElementById('cmpAddBtn'); if(b) b.disabled=slots.length>=3; }
+function renderSlots(){
+host.innerHTML='';
+slots.forEach((sl,i)=>{
+const div=document.createElement('div'); div.className='cmp-slot';
+div.innerHTML='<div class="cmp-slot-lbl">Slot '+(i+1)+'</div>'+
+(i>=2?'<button class="cmp-rm" data-i="'+i+'" title="Remove">✕</button>':'')+
+'<select class="cmp-m" data-i="'+i+'">'+models.map(m=>'<option'+(m===sl.model?' selected':'')+'>'+m+'</option>').join('')+'</select>'+
+'<select class="cmp-c" data-i="'+i+'">'+colorOptions(sl.model,sl.color)+'</select>';
+host.appendChild(div);
+});
+host.querySelectorAll('select.cmp-m').forEach(s=>s.addEventListener('change',e=>{const i=+e.target.dataset.i;slots[i].model=e.target.value;slots[i].color='';renderSlots();renderTable();}));
+host.querySelectorAll('select.cmp-c').forEach(s=>s.addEventListener('change',e=>{const i=+e.target.dataset.i;slots[i].color=e.target.value;renderTable();}));
+host.querySelectorAll('.cmp-rm').forEach(b=>b.addEventListener('click',e=>{slots.splice(+e.target.dataset.i,1);renderSlots();renderTable();}));
+syncAdd();
+}
+function renderTable(){
+const host2=document.getElementById('cmpTableHost'); if(!host2) return;
+const onlyDiff=document.getElementById('cmpOnlyDiff').checked;
+const items=slots.map(sl=>itemFields(sl.model,sl.color));
+if(items.length<2){ host2.innerHTML='<div class="cmp-empty">Pick at least two slots to compare.</div>'; return; }
+let h='<table class="cmp"><thead><tr><td class="rowlbl"></td>';
+items.forEach(it=>{
+const ph=it._photo?'<img src="'+it._photo+'" alt="'+it._name+'">':'<span class="noimg">🏍️</span>';
+h+='<td><div class="cmp-itemhead"><div class="ph">'+ph+'</div><div class="nm">'+it._name+'</div><div class="tr">'+it._trim+'</div><div class="pr">'+it._price+'</div></div></td>';
+});
+h+='</tr></thead><tbody>';
+GROUPS.forEach(([gname,keys])=>{
+let rows='';
+keys.forEach(k=>{
+const vals=items.map(it=>it.rows[k]||'—');
+const diff=new Set(vals).size>1;
+if(onlyDiff&&!diff) return;
+rows+='<tr class="'+(diff?'diff':'')+'"><td class="rowlbl">'+k+'</td>'+vals.map(v=>'<td class="val">'+v+'</td>').join('')+'</tr>';
+});
+if(rows) h+='<tr class="grp"><td class="rowlbl">'+gname+'</td>'+items.map(()=>'<td></td>').join('')+'</tr>'+rows;
+});
+h+='</tbody></table>';
+host2.innerHTML=h;
+}
+const addBtn=document.getElementById('cmpAddBtn');
+if(addBtn) addBtn.addEventListener('click',()=>{ if(slots.length<3){ slots.push({model:'Classic 350',color:''}); renderSlots(); renderTable(); } });
+const od=document.getElementById('cmpOnlyDiff'); if(od) od.addEventListener('change',renderTable);
+renderSlots(); renderTable();
 })();
 </script>
 
