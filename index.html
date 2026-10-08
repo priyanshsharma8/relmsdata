@@ -2144,7 +2144,68 @@ const bikeData = {
 "Super Meteor 650":  {"Celestial Red":439960,"Celestial Blue":439960,"Interstellar Green":422972,"Interstellar Grey":422972,"Astral Black":405988},
 "Bullet 650":        {"Cannon Black":364856,"Battleship Blue":364856}
 };
-const statePrices = {
+// ═══ LIVE PRICES — Google Sheet (WebPrices tab) ═══
+(function(){
+  var CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRnhjTbOysMZCTvs8k7IwTywVbgJk6iHhQrFYZELHGpKgmLctrUwamJn1pqv0z1HeJtGR2Jx4lzLJDa/pub?gid=1546235503&single=true&output=csv';
+  var KEY = 're_crm_live_prices_v2';
+
+  function parseCSV(t){
+    var rows=[],row=[],f='',q=false;
+    for(var i=0;i<t.length;i++){
+      var c=t[i];
+      if(q){ if(c==='"'){ if(t[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+      else if(c==='"') q=true;
+      else if(c===','){ row.push(f); f=''; }
+      else if(c==='\n'||c==='\r'){ if(c==='\r'&&t[i+1]==='\n') i++; row.push(f); f=''; rows.push(row); row=[]; }
+      else f+=c;
+    }
+    if(f!==''||row.length){ row.push(f); rows.push(row); }
+    return rows;
+  }
+  function parseSheet(rows){
+    var prices={}, updated='';
+    var head=rows[0]||[], di=-1;
+    head.forEach(function(h,i){ if(/last\s*updated/i.test(h||'')) di=i; });
+    if(di>-1 && rows[1] && rows[1][di]) updated=String(rows[1][di]).trim();
+    rows.forEach(function(r,i){
+      if(i===0) return;
+      var m=(r[0]||'').trim(), c=(r[1]||'').trim();
+      var p=parseInt(String(r[2]||'').replace(/[^0-9]/g,''),10);
+      if(!m||!c||!(p>=10000&&p<=10000000)) return;
+      (prices[m]=prices[m]||{})[c]=p;
+    });
+    return {prices:prices, updated:updated};
+  }
+  function apply(d){
+    var changed=0;
+    Object.keys(d.prices).forEach(function(m){
+      if(!bikeData[m]){ bikeData[m]={}; changed++; }
+      Object.keys(d.prices[m]).forEach(function(c){
+        if(bikeData[m][c]!==d.prices[m][c]){ bikeData[m][c]=d.prices[m][c]; changed++; }
+      });
+    });
+    if(d.updated){
+      var el=document.querySelector('.entry-updated-badge');
+      if(el) el.textContent='Last Updated on '+d.updated;
+    }
+    return changed;
+  }
+
+  // 1) last saved data turant lagao (offline me bhi chalega)
+  try{ var cached=JSON.parse(localStorage.getItem(KEY)||'null'); if(cached&&cached.prices) apply(cached); }catch(e){}
+
+  // 2) fresh data background me lao
+  fetch(CSV_URL,{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw 0; return r.text(); })
+    .then(function(t){
+      var d=parseSheet(parseCSV(t));
+      if(!Object.keys(d.prices).length) return;
+      var changed=apply(d);
+      try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){}
+      if(changed && typeof showToast==='function') showToast('Prices updated ✅ — reload for latest');
+    })
+    .catch(function(){});
+})();const statePrices = {
 "Bullet 350": {
 "Battalion Black": {"Chandigarh":167108,"Delhi":166511,"Madhya Pradesh":166088,"Punjab":165438}
 }
@@ -3759,62 +3820,7 @@ load();
 </script>
 
 <script>
-// ═══ LIVE PRICES — Google Sheet (WebPrices tab) ═══
-(function(){
-  var CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRnhjTbOysMZCTvs8k7IwTywVbgJk6iHhQrFYZELHGpKgmLctrUwamJn1pqv0z1HeJtGR2Jx4lzLJDa/pub?gid=1546235503&single=true&output=csv';
-  var KEY = 're_crm_live_prices';
-
-  function parseCSV(t){
-    var rows=[],row=[],f='',q=false;
-    for(var i=0;i<t.length;i++){
-      var c=t[i];
-      if(q){ if(c==='"'){ if(t[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
-      else if(c==='"') q=true;
-      else if(c===','){ row.push(f); f=''; }
-      else if(c==='\n'||c==='\r'){ if(c==='\r'&&t[i+1]==='\n') i++; row.push(f); f=''; rows.push(row); row=[]; }
-      else f+=c;
-    }
-    if(f!==''||row.length){ row.push(f); rows.push(row); }
-    return rows;
-  }
-  function toMap(rows){
-    var map={};
-    rows.forEach(function(r,i){
-      if(i===0&&/model/i.test(r[0])) return;
-      var m=(r[0]||'').trim(), c=(r[1]||'').trim();
-      var p=parseInt(String(r[2]||'').replace(/[^0-9]/g,''),10);
-      if(!m||!c||!(p>=10000&&p<=10000000)) return;
-      (map[m]=map[m]||{})[c]=p;
-    });
-    return map;
-  }
-  function apply(map){
-    var changed=0;
-    Object.keys(map).forEach(function(m){
-      if(!bikeData[m]) return;
-      Object.keys(map[m]).forEach(function(c){
-        if(!(c in bikeData[m])) return;
-        if(bikeData[m][c]!==map[m][c]){ bikeData[m][c]=map[m][c]; changed++; }
-      });
-    });
-    return changed;
-  }
-
-  // 1) last saved prices turant lagao (offline me bhi chalega)
-  try{ var cached=JSON.parse(localStorage.getItem(KEY)||'null'); if(cached) apply(cached); }catch(e){}
-
-  // 2) fresh prices background me lao
-  fetch(CSV_URL,{cache:'no-store'})
-    .then(function(r){ if(!r.ok) throw 0; return r.text(); })
-    .then(function(t){
-      var map=toMap(parseCSV(t));
-      if(!Object.keys(map).length) return;
-      var changed=apply(map);
-      try{ localStorage.setItem(KEY,JSON.stringify(map)); }catch(e){}
-      if(changed && typeof showToast==='function') showToast('Prices updated ✅ — reload for latest');
-    })
-    .catch(function(){});
-})();// ═══ VARIANT TIERS — colour ke naam se (price badle toh bhi match hoga) ═══
+// ═══ VARIANT TIERS — colour ke naam se (price badle toh bhi match hoga) ═══
 (function(){
   var hw = window.variantHW; if(!hw) return;
   var DEFS = {
