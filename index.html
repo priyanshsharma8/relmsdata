@@ -3759,7 +3759,62 @@ load();
 </script>
 
 <script>
-// ═══ COMPARE SECTION — bikes & variants side by side (reuses spec-panel data) ═══
+// ═══ LIVE PRICES — Google Sheet (WebPrices tab) ═══
+(function(){
+  var CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRnhjTbOysMZCTvs8k7IwTywVbgJk6iHhQrFYZELHGpKgmLctrUwamJn1pqv0z1HeJtGR2Jx4lzLJDa/pub?gid=1546235503&single=true&output=csv';
+  var KEY = 're_crm_live_prices';
+
+  function parseCSV(t){
+    var rows=[],row=[],f='',q=false;
+    for(var i=0;i<t.length;i++){
+      var c=t[i];
+      if(q){ if(c==='"'){ if(t[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+      else if(c==='"') q=true;
+      else if(c===','){ row.push(f); f=''; }
+      else if(c==='\n'||c==='\r'){ if(c==='\r'&&t[i+1]==='\n') i++; row.push(f); f=''; rows.push(row); row=[]; }
+      else f+=c;
+    }
+    if(f!==''||row.length){ row.push(f); rows.push(row); }
+    return rows;
+  }
+  function toMap(rows){
+    var map={};
+    rows.forEach(function(r,i){
+      if(i===0&&/model/i.test(r[0])) return;
+      var m=(r[0]||'').trim(), c=(r[1]||'').trim();
+      var p=parseInt(String(r[2]||'').replace(/[^0-9]/g,''),10);
+      if(!m||!c||!(p>=10000&&p<=10000000)) return;
+      (map[m]=map[m]||{})[c]=p;
+    });
+    return map;
+  }
+  function apply(map){
+    var changed=0;
+    Object.keys(map).forEach(function(m){
+      if(!bikeData[m]) return;
+      Object.keys(map[m]).forEach(function(c){
+        if(!(c in bikeData[m])) return;
+        if(bikeData[m][c]!==map[m][c]){ bikeData[m][c]=map[m][c]; changed++; }
+      });
+    });
+    return changed;
+  }
+
+  // 1) last saved prices turant lagao (offline me bhi chalega)
+  try{ var cached=JSON.parse(localStorage.getItem(KEY)||'null'); if(cached) apply(cached); }catch(e){}
+
+  // 2) fresh prices background me lao
+  fetch(CSV_URL,{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw 0; return r.text(); })
+    .then(function(t){
+      var map=toMap(parseCSV(t));
+      if(!Object.keys(map).length) return;
+      var changed=apply(map);
+      try{ localStorage.setItem(KEY,JSON.stringify(map)); }catch(e){}
+      if(changed && typeof showToast==='function') showToast('Prices updated ✅ — reload for latest');
+    })
+    .catch(function(){});
+})();// ═══ COMPARE SECTION — bikes & variants side by side (reuses spec-panel data) ═══
 (function(){
 const getVariants=window.getVariants, fmtINR=window.fmtINR, getColorImage=window.getColorImage,
 bikeSpecs=window.bikeSpecs, bikeHeroImage=window.bikeHeroImage;
