@@ -3814,6 +3814,45 @@ load();
       if(changed && typeof showToast==='function') showToast('Prices updated ✅ — reload for latest');
     })
     .catch(function(){});
+})();// ═══ VARIANT TIERS — colour ke naam se (price badle toh bhi match hoga) ═══
+(function(){
+  var hw = window.variantHW; if(!hw) return;
+  var DEFS = {
+    "Hunter 350":[
+      {colours:["Factory Black"], trim:"Base · Factory", wheels:"Spoke", tyres:'100/80-17 F · 120/80-17 R · tube', brakes:"300mm Disc F · 153mm Drum R", abs:"Single-channel", lights:"Halogen", extras:"Basic console · no slipper clutch"},
+      {colours:["Tarmac Black"], trim:"Base Premium", wheels:"Alloy", tyres:"Tubeless", brakes:"Disc F · Disc R", abs:"Single-channel", lights:"Halogen", extras:"—"},
+      {colours:["Dapper Grey","Rio White","Graphite Gray"], trim:"Mid · Dapper"},
+      {colours:["Tokyo Black","London Red","Rebel Blue","Moonshot White","Mumbai Yellow"], trim:"Top · Rebel"}
+    ],
+    "Bullet 350":[
+      {colours:["Military Black"], trim:"Base · Military", brakes:"Disc F · Drum R", abs:"Single-channel"},
+      {colours:["Battalion Black"], trim:"Battalion", brakes:"Disc F · Drum R", abs:"Single-channel"},
+      {colours:["Standard Black","Standard Maroon"], trim:"Standard"},
+      {colours:["Black Gold"], trim:"Top · Black Gold"}
+    ],
+    "Classic 350":[
+      {colours:["Redditch Red"], trim:"Base · Redditch", wheels:"Spoke", abs:"Single-channel", lights:"Halogen", extras:"USB port"}
+    ],
+    "Scram 440":[
+      {colours:["Trail Blue","Trail Green"], trim:"Trail", wheels:"Spoke", tyres:'19" F · 17" R · tube · dual-purpose'},
+      {colours:["Force Grey","Force Teal","Force Blue"], trim:"Force"}
+    ]
+  };
+  Object.keys(DEFS).forEach(function(model){
+    if(!hw[model] || !bikeData[model]) return;
+    var tiers = {};
+    DEFS[model].forEach(function(d){
+      var price = null;
+      for(var i=0;i<d.colours.length;i++){
+        if(bikeData[model][d.colours[i]] != null){ price = bikeData[model][d.colours[i]]; break; }
+      }
+      if(price == null) return;
+      var cfg = {};
+      Object.keys(d).forEach(function(k){ if(k !== 'colours') cfg[k] = d[k]; });
+      tiers[price] = cfg;
+    });
+    hw[model].tiers = tiers;
+  });
 })();// ═══ COMPARE SECTION — bikes & variants side by side (reuses spec-panel data) ═══
 (function(){
 const getVariants=window.getVariants, fmtINR=window.fmtINR, getColorImage=window.getColorImage,
