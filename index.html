@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>window.APP_VERSION = "1.0.0";</script>
 
 
@@ -1629,6 +1630,117 @@ body.dark-mode .cmp-itemhead .pr{color:rgba(255,150,120,0.9) !important;}
 .cmp-empty{padding:40px 20px;text-align:center;color:rgba(20,16,12,0.35);font-size:14px;}
 body.dark-mode .cmp-empty{color:rgba(255,255,255,0.4) !important;}
 </style>
+<style id="fb-style">
+/* ═══════════════════════════════════════
+   ONE-TIME FEEDBACK (instrument cluster) — shown after the name gate, once per rider
+   Everything is scoped to #fb-gate so it cannot clash with the CRM's global button/input/p rules.
+═══════════════════════════════════════ */
+#fb-gate {
+  --fb-bg:#0A110E; --fb-panel:#101A15; --fb-panel2:#16231C; --fb-glass:#0B130F;
+  --fb-fg:#E8EDE8; --fb-muted:#98A89F; --fb-line:#2A3A32;
+  --fb-accent:#D9A64B; --fb-accent-hi:#F2CB79; --fb-accent-ink:#17110A; --fb-star-off:#3A4B42; --fb-danger:#FF8F7E;
+  --fb-display:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;
+  --fb-mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  position:fixed; inset:0; z-index:500001 !important; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  background-color:var(--fb-bg);
+  background-image:radial-gradient(900px 420px at 50% -80px,#1B2B22 0%,transparent 70%);
+  color:var(--fb-fg); color-scheme:dark;
+  font-family:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif; font-size:16px; line-height:1.55;
+  padding:28px 16px 48px; box-sizing:border-box; outline:none;
+  opacity:1; visibility:visible; transition:opacity .45s ease,visibility .45s ease;
+}
+#fb-gate.fb-hidden { opacity:0; visibility:hidden; pointer-events:none; }
+#fb-gate, #fb-gate * { box-sizing:border-box; }
+#fb-gate [hidden] { display:none !important; }
+@media (min-width:700px) { #fb-gate { padding-top:56px; padding-bottom:72px; } }
+
+#fb-gate .fb-wrap { max-width:620px; margin:0 auto; display:flex; flex-direction:column; gap:22px; }
+#fb-gate .fb-top { display:flex; flex-direction:column; gap:14px; }
+#fb-gate .fb-pin { height:6px; border-top:1px solid var(--fb-accent); border-bottom:1px solid var(--fb-accent); opacity:.85; }
+#fb-gate .fb-eyebrow { font-family:var(--fb-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--fb-accent); }
+#fb-gate .fb-title { font-family:var(--fb-display); font-weight:800; text-transform:uppercase; font-size:clamp(40px,9vw,64px); line-height:.95; letter-spacing:.01em; color:var(--fb-fg); text-wrap:balance; }
+#fb-gate .fb-lede { color:var(--fb-muted); max-width:46ch; }
+
+#fb-gate .fb-cluster { background:linear-gradient(180deg,var(--fb-panel2),var(--fb-panel)); border:1px solid var(--fb-line); border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:16px; }
+#fb-gate .fb-glass { background:var(--fb-glass); border:1px solid var(--fb-line); border-radius:9px; padding:14px 8px 6px; display:flex; flex-direction:column; align-items:center; min-width:0; }
+#fb-gate svg.fb-gauge { width:100%; max-width:520px; height:auto; display:block; touch-action:pan-y; cursor:pointer; user-select:none; -webkit-user-select:none; }
+#fb-gate svg.fb-gauge.fb-locked { cursor:default; }
+#fb-gate .fb-track { fill:none; stroke:var(--fb-line); stroke-width:6; }
+#fb-gate .fb-lit { fill:none; stroke:var(--fb-accent); stroke-width:6; filter:drop-shadow(0 0 5px rgba(217,166,75,.55)); transition:stroke-dasharray .7s cubic-bezier(.34,1.3,.64,1); }
+#fb-gate .fb-tick { stroke:var(--fb-line); stroke-width:1.5; }
+#fb-gate .fb-tick.fb-major { stroke-width:2.5; }
+#fb-gate .fb-tick.fb-on { stroke:var(--fb-accent); }
+#fb-gate .fb-num { font-family:var(--fb-mono); font-size:13px; fill:var(--fb-muted); }
+#fb-gate .fb-det circle { fill:var(--fb-glass); stroke:var(--fb-line); stroke-width:2; transition:stroke .2s; }
+#fb-gate .fb-det .fb-st { fill:var(--fb-star-off); stroke:var(--fb-star-off); stroke-width:1.2; stroke-linejoin:round; transition:fill .2s,stroke .2s; }
+#fb-gate .fb-det.fb-on circle { stroke:var(--fb-accent); }
+#fb-gate .fb-det.fb-on .fb-st { fill:var(--fb-accent); stroke:var(--fb-accent); }
+#fb-gate .fb-det.fb-focus circle { stroke:var(--fb-fg); stroke-width:3; }
+#fbNeedle { transform-origin:200px 190px; transition:transform .75s cubic-bezier(.34,1.45,.64,1); }
+#fbNeedle polygon { fill:var(--fb-accent-hi); filter:drop-shadow(0 0 3px rgba(242,203,121,.5)); }
+#fb-gate.fb-loading #fbNeedle { animation:fb-rev 1.1s ease-in-out infinite; }
+@keyframes fb-rev { 0%,100% { transform:rotate(0deg); } 50% { transform:rotate(150deg); } }
+#fb-gate .fb-hub { fill:var(--fb-panel2); stroke:var(--fb-accent); stroke-width:3; }
+#fb-gate .fb-hubdot { fill:var(--fb-accent); }
+#fb-gate .fb-win { fill:#070C09; stroke:var(--fb-line); stroke-width:1.5; }
+#fb-gate .fb-winlabel { font-family:var(--fb-mono); font-size:10px; letter-spacing:.18em; fill:var(--fb-muted); }
+#fb-gate .fb-digit { font-family:var(--fb-display); font-weight:800; font-size:36px; fill:var(--fb-accent-hi); }
+#fb-gate .fb-sr { position:absolute !important; width:1px !important; height:1px !important; margin:0 !important; padding:0 !important; opacity:0; overflow:hidden; clip-path:inset(50%); }
+#fb-gate .fb-fieldset { border:0; padding:0; margin:0; min-width:0; }
+#fb-gate .fb-caption { min-height:22px; margin:2px 0 8px; padding:0 8px; text-align:center; font-family:var(--fb-mono); font-size:13px; color:var(--fb-muted); }
+#fb-gate .fb-caption.fb-set { color:var(--fb-fg); }
+
+#fb-gate .fb-progress { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+#fb-gate .fb-progress li { border-top:3px solid var(--fb-line); padding-top:8px; font-family:var(--fb-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--fb-muted); transition:border-color .3s,color .3s; }
+#fb-gate .fb-progress li.fb-done { border-top-color:var(--fb-accent); }
+#fb-gate .fb-progress li.fb-active { border-top-color:var(--fb-accent); color:var(--fb-fg); }
+#fb-gate.fb-loading .fb-lower { display:none; }
+#fb-gate .fb-lower { display:flex; flex-direction:column; gap:16px; }
+
+#fb-gate form.fb-form { margin:0; padding:0 4px 4px; }
+#fb-gate .fb-step { display:flex; flex-direction:column; gap:12px; }
+#fb-gate .fb-step:not([hidden]) { animation:fb-slide .28s ease-out; }
+@keyframes fb-slide { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+#fb-gate .fb-q { font-family:var(--fb-display); font-weight:700; font-size:26px; line-height:1.1; letter-spacing:.01em; text-transform:uppercase; margin:0; color:var(--fb-fg); }
+#fb-gate label.fb-q { display:block; }
+#fb-gate .fb-head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+#fb-gate .fb-tag { font-family:var(--fb-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--fb-muted); white-space:nowrap; }
+#fb-gate .fb-tag.fb-req { color:var(--fb-accent); }
+#fb-gate .fb-help { color:var(--fb-muted); font-size:14px; }
+#fb-gate .fb-input, #fb-gate .fb-textarea {
+  display:block; width:100%; height:auto; margin:0; padding:12px 14px; font:inherit; font-size:16px; line-height:1.5;
+  color:var(--fb-fg) !important; background:var(--fb-glass) !important; background-color:var(--fb-glass) !important;
+  border:1px solid var(--fb-line); border-radius:4px; box-shadow:none !important; transform:none !important; transition:none;
+}
+#fb-gate .fb-textarea { min-height:150px; resize:vertical; }
+#fb-gate .fb-input::placeholder, #fb-gate .fb-textarea::placeholder { color:var(--fb-muted); opacity:.8; }
+#fb-gate .fb-input:focus, #fb-gate .fb-textarea:focus { outline:2px solid var(--fb-accent); outline-offset:2px; box-shadow:none !important; transform:none !important; }
+#fb-gate .fb-count { text-align:right; font-family:var(--fb-mono); font-size:11px; color:var(--fb-muted); }
+#fb-gate .fb-error { color:var(--fb-danger); font-size:14px; font-weight:500; }
+#fb-gate .fb-sending { font-family:var(--fb-mono); font-size:12px; color:var(--fb-muted); }
+#fb-gate .fb-sending strong { color:var(--fb-fg); font-weight:500; }
+#fb-gate .fb-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:4px; }
+#fb-gate .fb-btn {
+  display:inline-block; width:auto; height:auto; margin:0; padding:12px 22px; border:0; border-radius:4px; cursor:pointer;
+  font:inherit; font-size:16px; font-weight:600; line-height:1.2; text-decoration:none;
+  background:var(--fb-accent); color:var(--fb-accent-ink);
+}
+#fb-gate .fb-btn:hover { filter:brightness(1.08); }
+#fb-gate .fb-btn.fb-ghost { background:transparent; color:var(--fb-fg); border:1px solid var(--fb-line); }
+#fb-gate .fb-btn:focus-visible { outline:2px solid var(--fb-accent); outline-offset:2px; }
+
+#fb-gate .fb-thanks { display:flex; flex-direction:column; gap:14px; padding:0 4px 4px; }
+#fb-gate .fb-thanks-title { font-family:var(--fb-display); font-weight:800; text-transform:uppercase; font-size:clamp(34px,8vw,48px); line-height:1; color:var(--fb-fg); }
+#fb-gate .fb-thanks-text { color:var(--fb-muted); }
+#fb-gate .fb-recap { margin:0; padding:12px 0 0; border-top:1px solid var(--fb-line); display:grid; grid-template-columns:auto 1fr; gap:6px 18px; font-family:var(--fb-mono); font-size:13px; }
+#fb-gate .fb-recap dt { margin:0; color:var(--fb-muted); font-size:11px; text-transform:uppercase; letter-spacing:.08em; align-self:baseline; }
+#fb-gate .fb-recap dd { margin:0; overflow-wrap:anywhere; }
+
+@media (prefers-reduced-motion:reduce) {
+  #fbNeedle, #fb-gate .fb-lit, #fb-gate .fb-progress li, #fb-gate { transition:none; }
+  #fb-gate.fb-loading #fbNeedle, #fb-gate .fb-step:not([hidden]) { animation:none; }
+}
+</style>
 </head>
 <body>
 
@@ -1669,8 +1781,93 @@ body.dark-mode .cmp-empty{color:rgba(255,255,255,0.4) !important;}
 <div class="entry-divider-text">Secure &amp; Local</div>
 <div class="entry-divider-line"></div>
 </div>
-<p class="entry-note">Your name is saved <strong>locally on this device</strong> only.<br>No data is sent anywhere.</p>
+<p class="entry-note" id="entryNote">Your notes are saved <strong>locally on this device</strong> only.<br>Your name and one-time feedback are shared with the CRM owner.</p>
 <div class="entry-updated-badge">Last Updated on 7th october 2026</div>    
+</div>
+</div>
+
+<!-- ===== ONE-TIME FEEDBACK (after the name gate, once per rider, until the end date in the script) ===== -->
+<div id="fb-gate" class="fb-hidden" role="dialog" aria-modal="true" aria-labelledby="fbTitle" aria-hidden="true" tabindex="-1">
+<div class="fb-wrap">
+
+<div class="fb-top">
+<div class="fb-pin" aria-hidden="true"></div>
+<div class="fb-eyebrow">RE CRM &middot; Rider feedback</div>
+<div class="fb-title" id="fbTitle" role="heading" aria-level="1">How's the ride, <span id="fbFirst">Rider</span>?</div>
+<div class="fb-lede">Move the needle to rate the CRM, then tell us what to change. It takes under a minute and you only do it once.</div>
+</div>
+
+<div class="fb-cluster">
+<div class="fb-glass">
+<svg class="fb-gauge" id="fbGauge" viewBox="0 0 400 270" role="presentation" aria-hidden="true">
+<defs><symbol id="fbStar" viewBox="0 0 24 24"><polygon points="12,2 15.1,8.6 22.3,9.4 17,14.3 18.5,21.4 12,17.8 5.5,21.4 7,14.3 1.7,9.4 8.9,8.6"/></symbol></defs>
+<path class="fb-track" d="M50 190 A150 150 0 0 1 350 190" pathLength="100"/>
+<path class="fb-lit" id="fbLit" d="M50 190 A150 150 0 0 1 350 190" pathLength="100" stroke-dasharray="0 100"/>
+<g id="fbTicks"></g>
+<g id="fbNums"></g>
+<g id="fbDets"></g>
+<g id="fbNeedle"><polygon points="80,190 196,185 222,186.5 222,193.5 196,195"/></g>
+<circle class="fb-hub" cx="200" cy="190" r="13"/>
+<circle class="fb-hubdot" cx="200" cy="190" r="4"/>
+<rect class="fb-win" x="160" y="212" width="80" height="52" rx="5"/>
+<text class="fb-winlabel" x="200" y="227" text-anchor="middle">GEAR</text>
+<text class="fb-digit" id="fbDigit" x="200" y="257" text-anchor="middle">N</text>
+</svg>
+<div class="fb-caption" id="fbCaption" aria-live="polite">Drag or tap the dial to pick a gear. Rating is required.</div>
+<fieldset class="fb-fieldset">
+<legend class="fb-sr">Rate the CRM from 1 to 5</legend>
+<span id="fbRadios"></span>
+</fieldset>
+</div>
+
+<div class="fb-lower">
+<ol class="fb-progress" id="fbProgress" aria-label="Progress">
+<li class="fb-active">Rate</li><li>Suggest</li><li>Co-rider</li>
+</ol>
+
+<form class="fb-form" id="fbForm" novalidate>
+<div class="fb-step" data-fbstep="1">
+<div class="fb-q">Rate the CRM</div>
+<div class="fb-help">1 is rough, 5 is top gear. Move the needle above, or use the arrow keys.</div>
+<div class="fb-error" id="fbRatingError" role="alert" hidden>Pick a rating from 1 to 5 to continue.</div>
+<div class="fb-actions"><button class="fb-btn" type="button" id="fbNext1">Next</button></div>
+</div>
+
+<div class="fb-step" data-fbstep="2" hidden>
+<div class="fb-head"><label class="fb-q" for="fbSuggest">What should change?</label><span class="fb-tag">Optional</span></div>
+<textarea class="fb-textarea" id="fbSuggest" name="fbSuggest" placeholder="A missing feature, a slow screen, a price that looks wrong, anything."></textarea>
+<div class="fb-count" id="fbCount">0 / 1000 words</div>
+<div class="fb-actions">
+<button class="fb-btn fb-ghost" type="button" id="fbBack2">Back</button>
+<button class="fb-btn" type="button" id="fbNext2">Next</button>
+</div>
+</div>
+
+<div class="fb-step" data-fbstep="3" hidden>
+<div class="fb-head"><label class="fb-q" for="fbSource">Who suggested this CRM to you?</label><span class="fb-tag fb-req">Required</span></div>
+<input class="fb-input" type="text" id="fbSource" name="fbSource" maxlength="80" autocomplete="off" placeholder="Type their name">
+<div class="fb-error" id="fbSourceError" role="alert" hidden>Enter the name of the person who suggested the CRM.</div>
+<div class="fb-sending">Sending as <strong id="fbSendingAs">Rider</strong></div>
+<div class="fb-actions">
+<button class="fb-btn fb-ghost" type="button" id="fbBack3">Back</button>
+<button class="fb-btn" type="submit">Send feedback</button>
+</div>
+</div>
+</form>
+
+<div class="fb-thanks" id="fbThanks" hidden>
+<div class="fb-thanks-title" role="heading" aria-level="2">Ride logged, <span id="fbFirst2">Rider</span>.</div>
+<div class="fb-thanks-text">Thanks for the feedback. Opening the CRM now.</div>
+<dl class="fb-recap">
+<dt>Rating</dt><dd id="fbRRating"></dd>
+<dt>Suggestion</dt><dd id="fbRSuggest"></dd>
+<dt>Co-rider</dt><dd id="fbRSource"></dd>
+</dl>
+<div class="fb-actions"><button class="fb-btn" type="button" id="fbOpenNow">Open the CRM now</button></div>
+</div>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -3122,6 +3319,198 @@ entryInput.focus();
 });
 })();
 
+// ─── ONE-TIME FEEDBACK ─────────────────────────────────────────────────────
+// Asked once per rider, between the name gate and the app, until FEEDBACK_UNTIL.
+// Answers go to a Google Sheet through a Google Apps Script Web app (ENDPOINT below).
+(function(){
+var ENDPOINT = 'https://script.google.com/macros/s/AKfycbwCgZQCU5c6mRCuc5DqBJ_3rMihtNgOU_u6GLXS2R7vK-cVVAybgsCu6E-Mh_w0whAR7Q/exec'; // paste the Apps Script Web app URL here (it ends in /exec)
+var FEEDBACK_UNTIL = new Date('2026-10-16T23:59:59+05:30').getTime(); // last moment feedback is asked (IST)
+var FLAG = 'crm_feedback_done', SKIP = 'crm_feedback_skip';
+var G = document.getElementById('fb-gate');
+function $(id){ return document.getElementById(id); }
+function active(){ return Date.now() <= FEEDBACK_UNTIL; }
+
+// After the end date the login note goes back to its original wording.
+if(!active()){ var note=$('entryNote'); if(note) note.innerHTML='Your name is saved <strong>locally on this device</strong> only.<br>No data is sent anywhere.'; }
+if(!G){ window.crmFeedback = null; return; }
+
+var CX=200, CY=190, R=150, VBW=400, VBH=270;
+var ANG = {1:165, 2:127.5, 3:90, 4:52.5, 5:15};
+var GEARS = {1:'1st gear · Needs work', 2:'2nd gear · Getting there', 3:'3rd gear · Gets the job done', 4:'4th gear · Smooth ride', 5:'Top gear · Love it'};
+var IDLE = 'Drag or tap the dial to pick a gear. Rating is required.';
+var MAX_WORDS = 1000;
+var current=0, step=1, locked=false, dragging=false, finished=false, name='', onDone=null, prevOverflow='';
+
+function pt(a,r){ var t=a*Math.PI/180; return {x:CX+r*Math.cos(t), y:CY-r*Math.sin(t)}; }
+function storeSet(kind,key){ try{ (kind==='s'?sessionStorage:localStorage).setItem(key,'1'); }catch(e){} }
+function localDone(){ try{ return localStorage.getItem(FLAG)==='1'; }catch(e){ return true; } }
+function skipped(){ try{ return sessionStorage.getItem(SKIP)==='1'; }catch(e){ return false; } }
+
+// dial parts: ticks every 7.5 degrees (longer at the five gears), numerals, star detents, hidden radios
+(function build(){
+  var t='', nm='', dt='', rd='';
+  for(var a=180; a>=0; a-=7.5){
+    var major=[165,127.5,90,52.5,15].indexOf(a)!==-1, p1=pt(a,major?120:126), p2=pt(a,136);
+    t+='<line class="fb-tick'+(major?' fb-major':'')+'" data-a="'+a+'" x1="'+p1.x.toFixed(1)+'" y1="'+p1.y.toFixed(1)+'" x2="'+p2.x.toFixed(1)+'" y2="'+p2.y.toFixed(1)+'"/>';
+  }
+  for(var n=1; n<=5; n++){
+    var np=pt(ANG[n],100), dp=pt(ANG[n],R);
+    nm+='<text class="fb-num" x="'+np.x.toFixed(1)+'" y="'+np.y.toFixed(1)+'" text-anchor="middle" dominant-baseline="central">'+n+'</text>';
+    dt+='<g class="fb-det" data-n="'+n+'" transform="translate('+dp.x.toFixed(1)+' '+dp.y.toFixed(1)+')"><circle r="21"/><use href="#fbStar" class="fb-st" x="-11" y="-11" width="22" height="22"/></g>';
+    rd+='<input class="fb-sr" type="radio" name="fbRating" id="fbG'+n+'" value="'+n+'"><label class="fb-sr" for="fbG'+n+'">'+n+' of 5, '+GEARS[n]+'</label>';
+  }
+  $('fbTicks').innerHTML=t; $('fbNums').innerHTML=nm; $('fbDets').innerHTML=dt; $('fbRadios').innerHTML=rd;
+})();
+
+function render(){
+  var ang=current?ANG[current]:180;
+  $('fbNeedle').style.transform='rotate('+(180-ang)+'deg)';
+  $('fbLit').setAttribute('stroke-dasharray',((180-ang)/180*100).toFixed(2)+' 100');
+  Array.prototype.forEach.call(G.querySelectorAll('.fb-det'),function(d){ d.classList.toggle('fb-on', +d.getAttribute('data-n')<=current); });
+  Array.prototype.forEach.call(G.querySelectorAll('.fb-tick'),function(k){ k.classList.toggle('fb-on', current>0 && +k.getAttribute('data-a')>=ang); });
+  $('fbDigit').textContent=current?String(current):'N';
+  var c=$('fbCaption');
+  c.textContent=G.classList.contains('fb-loading')?'Checking your ride log…':(current?GEARS[current]:IDLE);
+  c.classList.toggle('fb-set',!!current && !G.classList.contains('fb-loading'));
+}
+function setValue(v){
+  if(v===current) return;
+  current=v;
+  var r=$('fbG'+v); if(r) r.checked=true;
+  $('fbRatingError').hidden=true;
+  render();
+}
+
+// dial: tap or drag anywhere above the hub
+var svg=$('fbGauge');
+function pick(e){
+  var box=svg.getBoundingClientRect();
+  var x=(e.clientX-box.left)*VBW/box.width, y=(e.clientY-box.top)*VBH/box.height;
+  var dx=x-CX, dy=CY-y;
+  if(dy<-8 || Math.sqrt(dx*dx+dy*dy)<34) return;
+  var angle=dy<=0?(dx<0?180:0):Math.atan2(dy,dx)*180/Math.PI;
+  var best=1, bestD=999;
+  for(var k=1;k<=5;k++){ var d=Math.abs(angle-ANG[k]); if(d<bestD){ bestD=d; best=k; } }
+  setValue(best);
+}
+svg.addEventListener('pointerdown',function(e){
+  if(locked || G.classList.contains('fb-loading')) return;
+  dragging=true;
+  try{ svg.setPointerCapture(e.pointerId); }catch(err){}
+  pick(e);
+});
+svg.addEventListener('pointermove',function(e){ if(dragging && !locked) pick(e); });
+function stopDrag(){ dragging=false; }
+svg.addEventListener('pointerup',stopDrag);
+svg.addEventListener('pointercancel',stopDrag);
+
+// keyboard, through the hidden radios
+$('fbRadios').addEventListener('change',function(e){ if(e.target && e.target.name==='fbRating') setValue(+e.target.value); });
+$('fbRadios').addEventListener('focusin',function(e){ var d=G.querySelector('.fb-det[data-n="'+e.target.value+'"]'); if(d) d.classList.add('fb-focus'); });
+$('fbRadios').addEventListener('focusout',function(){ Array.prototype.forEach.call(G.querySelectorAll('.fb-det'),function(d){ d.classList.remove('fb-focus'); }); });
+
+// steps: rate, suggest, co-rider
+function go(n,focus){
+  step=n;
+  Array.prototype.forEach.call(G.querySelectorAll('.fb-step'),function(s){ s.hidden = +s.getAttribute('data-fbstep')!==n; });
+  Array.prototype.forEach.call($('fbProgress').children,function(li,i){ li.classList.toggle('fb-done',i<n-1); li.classList.toggle('fb-active',i===n-1); });
+  if(focus && n===2) $('fbSuggest').focus();
+  if(focus && n===3) $('fbSource').focus();
+}
+function next1(){ if(!current){ $('fbRatingError').hidden=false; return; } go(2,true); }
+$('fbNext1').addEventListener('click',next1);
+$('fbNext2').addEventListener('click',function(){ go(3,true); });
+$('fbBack2').addEventListener('click',function(){ go(1,false); });
+$('fbBack3').addEventListener('click',function(){ go(2,true); });
+
+// suggestions: 1000 word limit
+function wordCount(s){ return (s.trim().match(/\S+/g)||[]).length; }
+$('fbSuggest').addEventListener('input',function(){
+  if(wordCount(this.value)>MAX_WORDS) this.value=(this.value.match(/\S+\s*/g)||[]).slice(0,MAX_WORDS).join('');
+  $('fbCount').textContent=wordCount(this.value)+' / '+MAX_WORDS+' words';
+});
+$('fbSource').addEventListener('input',function(){ $('fbSourceError').hidden=true; });
+
+// open, close, reset
+function resetUI(){
+  current=0; step=1; locked=false; dragging=false; finished=false;
+  $('fbForm').reset(); $('fbSuggest').value='';
+  $('fbCount').textContent='0 / '+MAX_WORDS+' words';
+  $('fbRatingError').hidden=true; $('fbSourceError').hidden=true;
+  $('fbThanks').hidden=true; $('fbForm').hidden=false; $('fbProgress').hidden=false;
+  svg.classList.remove('fb-locked');
+  render(); go(1,false);
+}
+function open(nm,done,hideEntry){
+  name=nm; onDone=done;
+  resetUI();
+  $('fbFirst').textContent=nm.split(' ')[0]; $('fbFirst2').textContent=nm.split(' ')[0]; $('fbSendingAs').textContent=nm;
+  if(hideEntry) hideEntry();
+  prevOverflow=document.body.style.overflow; document.body.style.overflow='hidden';
+  G.scrollTop=0;
+  G.classList.remove('fb-hidden'); G.setAttribute('aria-hidden','false');
+  try{ G.focus({preventScroll:true}); }catch(e){}
+}
+function finish(){
+  if(finished) return; finished=true;
+  G.classList.add('fb-hidden'); G.classList.remove('fb-loading'); G.setAttribute('aria-hidden','true');
+  document.body.style.overflow=prevOverflow;
+  var cb=onDone; onDone=null; if(cb) cb();
+}
+function setLoading(on){ G.classList.toggle('fb-loading',on); render(); }
+
+// decide whether to ask this rider
+function maybeAsk(nm,go_,hideEntry){
+  if(!active() || localDone() || skipped()){ go_(); return; }
+  open(nm,go_,hideEntry);
+  if(!ENDPOINT) return; // not configured yet: ask without checking the sheet
+  // one feedback per rider, not per device: look the name up in the sheet first
+  setLoading(true);
+  var settled=false;
+  function giveUp(){ storeSet('s',SKIP); finish(); } // sheet unreachable: skip for this session
+  var timer=setTimeout(function(){ if(settled) return; settled=true; giveUp(); },3500);
+  fetch(ENDPOINT+'?name='+encodeURIComponent(nm))
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(settled) return; settled=true; clearTimeout(timer);
+      if(d && d.done){ storeSet('l',FLAG); finish(); } else { setLoading(false); }
+    })
+    .catch(function(){ if(settled) return; settled=true; clearTimeout(timer); giveUp(); });
+}
+
+// submit
+$('fbForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  if(step===1){ next1(); return; }
+  if(step===2){ go(3,true); return; }
+  if(!current){ go(1,false); $('fbRatingError').hidden=false; return; }
+  var src=$('fbSource').value.trim();
+  if(!src){ $('fbSourceError').hidden=false; $('fbSource').focus(); return; }
+  var payload={ name:name, rating:current, suggestion:$('fbSuggest').value.trim(), suggestedBy:src, submittedAt:new Date().toISOString() };
+  var s=payload.suggestion;
+  $('fbRRating').textContent=payload.rating+' of 5 · '+GEARS[payload.rating];
+  $('fbRSuggest').textContent=s?(s.length>160?s.slice(0,160)+'…':s):'None';
+  $('fbRSource').textContent=src;
+  locked=true; svg.classList.add('fb-locked');
+  $('fbProgress').hidden=true; $('fbForm').hidden=true; $('fbThanks').hidden=false;
+  G.scrollTop=0;
+  // send in the background, keep the thank-you up for at least 1.8s, then open the CRM.
+  // The "done" flag is set only if the request did not fail, so a failed send asks again next time.
+  var minWait=new Promise(function(r){ setTimeout(r,1800); });
+  var cap=new Promise(function(r){ setTimeout(function(){ r(true); },5000); });
+  var sent=ENDPOINT
+    ? fetch(ENDPOINT,{ method:'POST', mode:'no-cors', keepalive:true, headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload) }).then(function(){ return true; },function(){ return false; })
+    : Promise.resolve(true);
+  Promise.all([minWait,Promise.race([sent,cap])]).then(function(res){
+    if(res[1]) storeSet('l',FLAG); else storeSet('s',SKIP);
+    finish();
+  });
+});
+$('fbOpenNow').addEventListener('click',function(){ storeSet('l',FLAG); finish(); });
+
+window.crmFeedback={ maybeAsk:maybeAsk };
+})();
+
 // ─── ENTRY GATE ────────────────────────────────────────────────────────────
 function getGreeting(){ const h=new Date().getHours(),m=new Date().getMinutes(),t=h*60+m; return t<720?'Good Morning':t<990?'Good Afternoon':'Good Evening'; }
 function greetUser(name){
@@ -3135,9 +3524,13 @@ if(logoutBtn){ const fresh=logoutBtn.cloneNode(true); logoutBtn.parentNode.repla
 const gate=document.getElementById('entry-gate'),appRoot=document.getElementById('app-root');
 const nameInput=document.getElementById('entryName'),btn=document.getElementById('entryBtn'),errMsg=document.getElementById('entryError');
 
+function enterApp(val,announce){
+function go(){ gate.classList.add('gate-hidden'); appRoot.classList.add('app-visible'); greetUser(val); if(announce) document.dispatchEvent(new CustomEvent('crm:logged-in')); }
+if(window.crmFeedback){ window.crmFeedback.maybeAsk(val,go,function(){ gate.classList.add('gate-hidden'); }); } else { go(); }
+}
 function showError(msg){ errMsg.textContent=msg; errMsg.classList.add('visible'); nameInput.classList.add('has-error'); nameInput.style.animation='none'; requestAnimationFrame(()=>{nameInput.style.animation='entry-shake .38s ease';}); nameInput.focus(); }
 function clearError(){ errMsg.classList.remove('visible'); nameInput.classList.remove('has-error'); }
-function submit(){ const val=nameInput.value.trim().replace(/\s+/g,' '); if(!val){showError('Please enter your name to continue.');return;} if(val.length<2){showError('Name must be at least 2 characters.');return;} localStorage.setItem('crm_user_name',val); clearError(); gate.classList.add('gate-hidden'); appRoot.classList.add('app-visible'); greetUser(val); document.dispatchEvent(new CustomEvent('crm:logged-in')); }
+function submit(){ const val=nameInput.value.trim().replace(/\s+/g,' '); if(!val){showError('Please enter your name to continue.');return;} if(val.length<2){showError('Name must be at least 2 characters.');return;} localStorage.setItem('crm_user_name',val); clearError(); enterApp(val,true); }
 
 // Always attach listeners so they work after logout too
 btn.addEventListener('click',submit);
@@ -3146,7 +3539,7 @@ nameInput.addEventListener('input',()=>{if(nameInput.value.trim())clearError();}
 
 const saved=localStorage.getItem('crm_user_name');
 if(saved&&saved.trim().length>0){
-gate.classList.add('gate-hidden'); appRoot.classList.add('app-visible'); greetUser(saved.trim());
+enterApp(saved.trim(),false);
 } else {
 window.addEventListener('load',()=>nameInput.focus());
 }
