@@ -1694,7 +1694,9 @@ body.dark-mode .cmp-empty{color:rgba(255,255,255,0.4) !important;}
 #fb-gate .fb-progress li { border-top:3px solid var(--fb-line); padding-top:8px; font-family:var(--fb-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--fb-muted); transition:border-color .3s,color .3s; }
 #fb-gate .fb-progress li.fb-done { border-top-color:var(--fb-accent); }
 #fb-gate .fb-progress li.fb-active { border-top-color:var(--fb-accent); color:var(--fb-fg); }
-#fb-gate.fb-loading .fb-lower { display:none; }
+#fb-gate.fb-loading .fb-lower, #fb-gate.fb-error .fb-lower { display:none; }
+#fb-gate .fb-net { display:flex; flex-direction:column; gap:12px; padding:4px 6px 6px; }
+#fb-gate .fb-net-msg { color:var(--fb-fg); }
 #fb-gate .fb-lower { display:flex; flex-direction:column; gap:16px; }
 
 #fb-gate form.fb-form { margin:0; padding:0 4px 4px; }
@@ -1794,7 +1796,7 @@ body.dark-mode .cmp-empty{color:rgba(255,255,255,0.4) !important;}
 <div class="fb-pin" aria-hidden="true"></div>
 <div class="fb-eyebrow">RE CRM &middot; Rider feedback</div>
 <div class="fb-title" id="fbTitle" role="heading" aria-level="1">How's the ride, <span id="fbFirst">Rider</span>?</div>
-<div class="fb-lede">Move the needle to rate the CRM, then tell us what to change. It takes under a minute and you only do it once.</div>
+<div class="fb-lede">Move the needle to rate the CRM, then tell us what to change. It takes under a minute, you only do it once, and the CRM opens right after.</div>
 </div>
 
 <div class="fb-cluster">
@@ -1818,6 +1820,11 @@ body.dark-mode .cmp-empty{color:rgba(255,255,255,0.4) !important;}
 <legend class="fb-sr">Rate the CRM from 1 to 5</legend>
 <span id="fbRadios"></span>
 </fieldset>
+</div>
+
+<div class="fb-net" id="fbNet" role="alert" hidden>
+<div class="fb-net-msg">Cannot reach the feedback server. Check your internet connection, then tap Try again. The CRM opens once your feedback is recorded.</div>
+<div class="fb-actions"><button class="fb-btn" type="button" id="fbRetry">Try again</button></div>
 </div>
 
 <div class="fb-lower">
@@ -1856,14 +1863,14 @@ body.dark-mode .cmp-empty{color:rgba(255,255,255,0.4) !important;}
 </form>
 
 <div class="fb-thanks" id="fbThanks" hidden>
-<div class="fb-thanks-title" role="heading" aria-level="2">Ride logged, <span id="fbFirst2">Rider</span>.</div>
-<div class="fb-thanks-text">Thanks for the feedback. Opening the CRM now.</div>
+<div class="fb-thanks-title" id="fbThanksTitle" role="heading" aria-level="2" aria-live="polite">Saving…</div>
+<div class="fb-thanks-text" id="fbThanksText">Saving your feedback. Please keep this screen open.</div>
 <dl class="fb-recap">
 <dt>Rating</dt><dd id="fbRRating"></dd>
 <dt>Suggestion</dt><dd id="fbRSuggest"></dd>
 <dt>Co-rider</dt><dd id="fbRSource"></dd>
 </dl>
-<div class="fb-actions"><button class="fb-btn" type="button" id="fbOpenNow">Open the CRM now</button></div>
+<div class="fb-actions"><button class="fb-btn" type="button" id="fbRetrySave" hidden>Try again</button></div>
 </div>
 </div>
 </div>
@@ -3321,11 +3328,12 @@ entryInput.focus();
 
 // ─── ONE-TIME FEEDBACK ─────────────────────────────────────────────────────
 // Asked once per rider, between the name gate and the app, until FEEDBACK_UNTIL.
+// The CRM opens only when the sheet confirms this rider's answer (or already holds one).
 // Answers go to a Google Sheet through a Google Apps Script Web app (ENDPOINT below).
 (function(){
 var ENDPOINT = 'https://script.google.com/macros/s/AKfycbwCgZQCU5c6mRCuc5DqBJ_3rMihtNgOU_u6GLXS2R7vK-cVVAybgsCu6E-Mh_w0whAR7Q/exec'; // paste the Apps Script Web app URL here (it ends in /exec)
 var FEEDBACK_UNTIL = new Date('2026-10-16T23:59:59+05:30').getTime(); // last moment feedback is asked (IST)
-var FLAG = 'crm_feedback_done', SKIP = 'crm_feedback_skip';
+var FLAG = 'crm_feedback_done';
 var G = document.getElementById('fb-gate');
 function $(id){ return document.getElementById(id); }
 function active(){ return Date.now() <= FEEDBACK_UNTIL; }
@@ -3339,12 +3347,12 @@ var ANG = {1:165, 2:127.5, 3:90, 4:52.5, 5:15};
 var GEARS = {1:'1st gear · Needs work', 2:'2nd gear · Getting there', 3:'3rd gear · Gets the job done', 4:'4th gear · Smooth ride', 5:'Top gear · Love it'};
 var IDLE = 'Drag or tap the dial to pick a gear. Rating is required.';
 var MAX_WORDS = 1000;
-var current=0, step=1, locked=false, dragging=false, finished=false, name='', onDone=null, prevOverflow='';
+var current=0, step=1, locked=false, dragging=false, finished=false, name='', onDone=null, prevOverflow='', payload=null, slowNote='', slowTimer=null;
 
 function pt(a,r){ var t=a*Math.PI/180; return {x:CX+r*Math.cos(t), y:CY-r*Math.sin(t)}; }
-function storeSet(kind,key){ try{ (kind==='s'?sessionStorage:localStorage).setItem(key,'1'); }catch(e){} }
-function localDone(){ try{ return localStorage.getItem(FLAG)==='1'; }catch(e){ return true; } }
-function skipped(){ try{ return sessionStorage.getItem(SKIP)==='1'; }catch(e){ return false; } }
+function storeSet(key){ try{ localStorage.setItem(key,'1'); }catch(e){} }
+function localDone(){ try{ return localStorage.getItem(FLAG)==='1'; }catch(e){ return false; } } // storage blocked: ask (the sheet check stops repeats)
+function wait(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
 
 // dial parts: ticks every 7.5 degrees (longer at the five gears), numerals, star detents, hidden radios
 (function build(){
@@ -3369,9 +3377,9 @@ function render(){
   Array.prototype.forEach.call(G.querySelectorAll('.fb-det'),function(d){ d.classList.toggle('fb-on', +d.getAttribute('data-n')<=current); });
   Array.prototype.forEach.call(G.querySelectorAll('.fb-tick'),function(k){ k.classList.toggle('fb-on', current>0 && +k.getAttribute('data-a')>=ang); });
   $('fbDigit').textContent=current?String(current):'N';
-  var c=$('fbCaption');
-  c.textContent=G.classList.contains('fb-loading')?'Checking your ride log…':(current?GEARS[current]:IDLE);
-  c.classList.toggle('fb-set',!!current && !G.classList.contains('fb-loading'));
+  var loading=G.classList.contains('fb-loading'), err=G.classList.contains('fb-error'), c=$('fbCaption');
+  c.textContent = loading ? (slowNote||'Checking your ride log…') : (err ? 'Cannot reach the feedback server.' : (current?GEARS[current]:IDLE));
+  c.classList.toggle('fb-set', !loading && !err && !!current);
 }
 function setValue(v){
   if(v===current) return;
@@ -3394,7 +3402,7 @@ function pick(e){
   setValue(best);
 }
 svg.addEventListener('pointerdown',function(e){
-  if(locked || G.classList.contains('fb-loading')) return;
+  if(locked || G.classList.contains('fb-loading') || G.classList.contains('fb-error')) return;
   dragging=true;
   try{ svg.setPointerCapture(e.pointerId); }catch(err){}
   pick(e);
@@ -3431,20 +3439,70 @@ $('fbSuggest').addEventListener('input',function(){
 });
 $('fbSource').addEventListener('input',function(){ $('fbSourceError').hidden=true; });
 
+// ── talking to the sheet ──
+function fetchT(url,opts,ms){
+  var ctl=('AbortController' in window)?new AbortController():null;
+  var t=setTimeout(function(){ if(ctl) ctl.abort(); },ms);
+  opts=opts||{}; if(ctl) opts.signal=ctl.signal;
+  return fetch(url,opts).then(function(r){ clearTimeout(t); return r; },function(e){ clearTimeout(t); throw e; });
+}
+// has this name already answered? Resolves true/false, rejects when the sheet cannot be read.
+function lookup(nm){
+  return fetchT(ENDPOINT+'?name='+encodeURIComponent(nm)+'&_='+Date.now(),{cache:'no-store'},25000)
+    .then(function(r){ if(!r.ok) throw new Error('http'); return r.json(); })
+    .then(function(d){ if(!d || typeof d.done!=='boolean') throw new Error('bad answer'); return d.done; });
+}
+function post(){
+  return fetchT(ENDPOINT,{ method:'POST', mode:'no-cors', keepalive:true, headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload) },30000)
+    .then(function(){ return true; },function(){ return false; });
+}
+// the sheet is the source of truth: after sending, read it back until this name shows up
+function confirmSaved(){
+  var tries=0;
+  function attempt(){
+    tries++;
+    return lookup(payload.name).catch(function(){ return false; }).then(function(ok){
+      if(ok) return true;
+      if(tries>=4) return false;
+      return wait(1200).then(attempt);
+    });
+  }
+  return attempt();
+}
+
+// screen states while asking the sheet: checking (dial revs) | error (message + Try again) | form
+function setNet(state){
+  G.classList.toggle('fb-loading',state==='checking');
+  G.classList.toggle('fb-error',state==='error');
+  $('fbNet').hidden = state!=='error';
+  slowNote='';
+  render();
+}
+function runCheck(nm){
+  setNet('checking');
+  clearTimeout(slowTimer);
+  slowTimer=setTimeout(function(){ if(G.classList.contains('fb-loading')){ slowNote='Still checking, please keep this screen open…'; render(); } },8000);
+  lookup(nm).then(function(done){
+    clearTimeout(slowTimer);
+    if(done){ storeSet(FLAG); finish(); } else { setNet('form'); }
+  }).catch(function(){ clearTimeout(slowTimer); setNet('error'); });
+}
+$('fbRetry').addEventListener('click',function(){ runCheck(name); });
+
 // open, close, reset
 function resetUI(){
-  current=0; step=1; locked=false; dragging=false; finished=false;
+  current=0; step=1; locked=false; dragging=false; finished=false; payload=null;
   $('fbForm').reset(); $('fbSuggest').value='';
   $('fbCount').textContent='0 / '+MAX_WORDS+' words';
   $('fbRatingError').hidden=true; $('fbSourceError').hidden=true;
   $('fbThanks').hidden=true; $('fbForm').hidden=false; $('fbProgress').hidden=false;
   svg.classList.remove('fb-locked');
-  render(); go(1,false);
+  setNet('form'); go(1,false);
 }
 function open(nm,done,hideEntry){
   name=nm; onDone=done;
   resetUI();
-  $('fbFirst').textContent=nm.split(' ')[0]; $('fbFirst2').textContent=nm.split(' ')[0]; $('fbSendingAs').textContent=nm;
+  $('fbFirst').textContent=nm.split(' ')[0]; $('fbSendingAs').textContent=nm;
   if(hideEntry) hideEntry();
   prevOverflow=document.body.style.overflow; document.body.style.overflow='hidden';
   G.scrollTop=0;
@@ -3453,32 +3511,45 @@ function open(nm,done,hideEntry){
 }
 function finish(){
   if(finished) return; finished=true;
-  G.classList.add('fb-hidden'); G.classList.remove('fb-loading'); G.setAttribute('aria-hidden','true');
+  clearTimeout(slowTimer);
+  G.classList.add('fb-hidden'); G.classList.remove('fb-loading','fb-error'); G.setAttribute('aria-hidden','true');
   document.body.style.overflow=prevOverflow;
   var cb=onDone; onDone=null; if(cb) cb();
 }
-function setLoading(on){ G.classList.toggle('fb-loading',on); render(); }
 
-// decide whether to ask this rider
+// decide whether to ask this rider. No timeouts, no skipping: the CRM opens only through finish().
 function maybeAsk(nm,go_,hideEntry){
-  if(!active() || localDone() || skipped()){ go_(); return; }
+  if(!active() || localDone()){ go_(); return; }
   open(nm,go_,hideEntry);
-  if(!ENDPOINT) return; // not configured yet: ask without checking the sheet
-  // one feedback per rider, not per device: look the name up in the sheet first
-  setLoading(true);
-  var settled=false;
-  function giveUp(){ storeSet('s',SKIP); finish(); } // sheet unreachable: skip for this session
-  var timer=setTimeout(function(){ if(settled) return; settled=true; giveUp(); },3500);
-  fetch(ENDPOINT+'?name='+encodeURIComponent(nm))
-    .then(function(r){ return r.json(); })
-    .then(function(d){
-      if(settled) return; settled=true; clearTimeout(timer);
-      if(d && d.done){ storeSet('l',FLAG); finish(); } else { setLoading(false); }
-    })
-    .catch(function(){ if(settled) return; settled=true; clearTimeout(timer); giveUp(); });
+  if(ENDPOINT) runCheck(nm); // one feedback per rider, not per device: look the name up in the sheet first
 }
 
 // submit
+function setThanks(mode){
+  var t=$('fbThanksTitle'), x=$('fbThanksText');
+  $('fbRetrySave').hidden = mode!=='failed';
+  if(mode==='saving'){ t.textContent='Saving…'; x.textContent='Saving your feedback. Please keep this screen open.'; }
+  else if(mode==='saved'){ t.textContent='Ride logged, '+name.split(' ')[0]+'.'; x.textContent='Thanks for the feedback. Opening the CRM now.'; }
+  else { t.textContent='Not saved yet.'; x.textContent='We could not save your feedback. Check your internet connection and tap Try again. The CRM opens once it is saved.'; }
+}
+function save(checkFirst){
+  setThanks('saving');
+  var min=wait(1800), job;
+  if(!ENDPOINT){ job=Promise.resolve(true); }
+  else {
+    job=(checkFirst ? lookup(payload.name).catch(function(){ return false; }) : Promise.resolve(false)).then(function(already){
+      if(already) return true;
+      return post().then(function(sent){ return sent ? confirmSaved() : false; });
+    });
+  }
+  job.then(function(ok){
+    if(!ok){ setThanks('failed'); return; }
+    setThanks('saved');
+    min.then(function(){ storeSet(FLAG); finish(); });
+  });
+}
+$('fbRetrySave').addEventListener('click',function(){ save(true); });
+
 $('fbForm').addEventListener('submit',function(e){
   e.preventDefault();
   if(step===1){ next1(); return; }
@@ -3486,7 +3557,7 @@ $('fbForm').addEventListener('submit',function(e){
   if(!current){ go(1,false); $('fbRatingError').hidden=false; return; }
   var src=$('fbSource').value.trim();
   if(!src){ $('fbSourceError').hidden=false; $('fbSource').focus(); return; }
-  var payload={ name:name, rating:current, suggestion:$('fbSuggest').value.trim(), suggestedBy:src, submittedAt:new Date().toISOString() };
+  payload={ name:name, rating:current, suggestion:$('fbSuggest').value.trim(), suggestedBy:src, submittedAt:new Date().toISOString() };
   var s=payload.suggestion;
   $('fbRRating').textContent=payload.rating+' of 5 · '+GEARS[payload.rating];
   $('fbRSuggest').textContent=s?(s.length>160?s.slice(0,160)+'…':s):'None';
@@ -3494,19 +3565,8 @@ $('fbForm').addEventListener('submit',function(e){
   locked=true; svg.classList.add('fb-locked');
   $('fbProgress').hidden=true; $('fbForm').hidden=true; $('fbThanks').hidden=false;
   G.scrollTop=0;
-  // send in the background, keep the thank-you up for at least 1.8s, then open the CRM.
-  // The "done" flag is set only if the request did not fail, so a failed send asks again next time.
-  var minWait=new Promise(function(r){ setTimeout(r,1800); });
-  var cap=new Promise(function(r){ setTimeout(function(){ r(true); },5000); });
-  var sent=ENDPOINT
-    ? fetch(ENDPOINT,{ method:'POST', mode:'no-cors', keepalive:true, headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload) }).then(function(){ return true; },function(){ return false; })
-    : Promise.resolve(true);
-  Promise.all([minWait,Promise.race([sent,cap])]).then(function(res){
-    if(res[1]) storeSet('l',FLAG); else storeSet('s',SKIP);
-    finish();
-  });
+  save(false);
 });
-$('fbOpenNow').addEventListener('click',function(){ storeSet('l',FLAG); finish(); });
 
 window.crmFeedback={ maybeAsk:maybeAsk };
 })();
