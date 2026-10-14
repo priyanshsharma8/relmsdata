@@ -4465,5 +4465,54 @@ if (img && img.src) openLightbox(img.src, name);
 <img id="gbmLightboxImg" src="" alt="">
 <div class="gbm-lightbox-name" id="gbmLightboxName"></div>
 </div>
+<script>
+// ─── DAILY REFRESH ─────────────────────────────────────────────────────────
+// Every open CRM tab reloads once each morning, at the first quiet moment after 8:00 (device time).
+// This is how a tab left open overnight (or for days) picks up the latest version.
+// It waits while someone is typing, clicking or has text in a field, never interrupts the feedback screen,
+// and reloads only after confirming the page can actually be fetched (so a Wi-Fi blip cannot leave a blank page).
+(function(){
+var HOUR = 8, MINUTE = 0;        // refresh time, 24-hour clock, device local time
+var IDLE_MS = 600000;            // reload only after 10 minutes with no keyboard, mouse or touch activity
+var CHECK_MS = 30000;            // how often to check
+var KEY = 'crm_daily_refresh';   // per tab: day this tab has already refreshed (stops any reload loop)
+var loadedAt = Date.now(), lastActive = Date.now(), pending = false;
+
+// Real user activity only. "scroll" is left out on purpose: the page and browser fire scroll events on their own,
+// and a user's own scrolling already arrives as wheel, touch, key or pointer events.
+['keydown','pointerdown','pointermove','touchstart','wheel','input'].forEach(function(ev){
+  window.addEventListener(ev, function(){ lastActive = Date.now(); }, { passive:true, capture:true });
+});
+
+function todayAt(){ var d = new Date(); d.setHours(HOUR, MINUTE, 0, 0); return d.getTime(); }
+function dayKey(){ var d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+function busy(){
+  var fb = document.getElementById('fb-gate');
+  if(fb && !fb.classList.contains('fb-hidden')) return true;           // feedback screen is open
+  var a = document.activeElement;
+  if(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && a.value && a.type !== 'button') return true; // half-typed text
+  return false;
+}
+function quiet(){ return !busy() && Date.now() - lastActive >= IDLE_MS; } // nobody is working on it
+function check(){
+  var now = Date.now(), due = todayAt();
+  if(pending || now < due || loadedAt >= due) return;                  // already underway, not 8:00 yet, or loaded after 8:00 today
+  try{ if(sessionStorage.getItem(KEY) === dayKey()) return; }catch(e){}
+  if(!quiet()) return;                                                 // someone is working: try again in 30 s
+  pending = true;
+  // make sure the page can be fetched before throwing the current one away
+  fetch(location.href, { method:'HEAD', cache:'no-store' }).then(function(r){
+    if(!r.ok) throw new Error('not reachable');
+    if(!quiet()){ pending = false; return; }                           // someone started working while we checked
+    try{ sessionStorage.setItem(KEY, dayKey()); }catch(e){}
+    location.reload();
+  }).catch(function(){ pending = false; });                            // offline or server error: keep the page, retry later
+}
+setInterval(check, CHECK_MS);
+document.addEventListener('visibilitychange', check);
+window.addEventListener('pageshow', check);
+window.addEventListener('focus', check);
+})();
+</script>
 </body>
 </html>
